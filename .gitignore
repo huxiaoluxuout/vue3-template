@@ -1,0 +1,13 @@
+node_modules
+.hbuilderx
+unpackage
+.idea
+*.DS_Store
+*.zip
+*.rar
+/test
+.vite
+/jest.config.js
+config.js
+!/network/config.js
+env.js
