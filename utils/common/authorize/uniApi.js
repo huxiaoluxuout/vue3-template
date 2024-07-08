@@ -106,7 +106,7 @@ export const uniGetLocation = async (options = {}) => {
 
     // #endif
 
-    return new Promise((resolve,reject) => {
+    return new Promise((resolve, reject) => {
         // #ifdef WEB
         console.log('web')
         resolve('web')
@@ -190,4 +190,27 @@ export const uniOpenLocation = async (options = {}) => {
     })
 
 }
+export const uniWake = async () => {
+    let result = true;
+    result = await showAuthTipModal('SIGNAL_PERSISTENT_PROCESSES')
 
+    return new Promise(resolve => {
+        if (!result) return
+
+        setTimeout(()=>{
+            resolve();
+        },200)
+    })
+}
+export const uniBLUETOOTH = async () => {
+    let result = true;
+    result = await showAuthTipModal('BLUETOOTH')
+
+    return new Promise(resolve => {
+        if (!result) return
+
+        setTimeout(()=>{
+            resolve('蓝牙授权成功');
+        },200)
+    })
+}

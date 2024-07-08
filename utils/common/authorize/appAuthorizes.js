@@ -81,6 +81,12 @@ export const showAuthTipModal = (authorizeTpe, disabled = false) => {
             title: "相册、相机权限说明",
             describe: '相册：便于您使用该功能上传您的照片、图片、视频，完善师傅认证信息。\n相机：便于您使用该功能拍摄图片、录制视频。\n请您确认授权，否则无法使用上述功能'
         },
+
+        ["BLUETOOTH"]: {
+            authorize: ["android.permission.BLUETOOTH","android.permission.BLUETOOTH_ADMIN","android.permission.BLUETOOTH",],
+            title: "蓝牙权限权限说明",
+            describe: "请您确认授权"
+        },
     }
 
     return new Promise((resolve) => {
@@ -141,6 +147,8 @@ export const authorizeReject = (authorize) => {
         ["android.permission.READ_EXTERNAL_STORAGE"]: "获取相册权限失败，请手动打开授权",
         ["android.permission.CAMERA"]: "获取相机权限失败，请手动打开授权",
         [['android.permission.READ_EXTERNAL_STORAGE', 'android.permission.CAMERA']]: "获取相机或相册权限失败，请手动打开授权",
+        [["android.permission.BLUETOOTH_PRIVILEGED","android.permission.BLUETOOTH_ADMIN","android.permission.BLUETOOTH",]]: "获取蓝牙限失败，请手动打开授权",
+
     }
     uni.showModal({
         title: '权限提示',

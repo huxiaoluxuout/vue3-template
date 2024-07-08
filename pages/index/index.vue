@@ -2,9 +2,11 @@
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
     <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
 
-    <ylx-uploadimg  ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList" @updateFileImageList="updateFileImageList"></ylx-uploadimg>
+    <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
+                   @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
+    <button @click="wakeFn">uniBLUETOOTH</button>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
       eius eos explicabo facere magnam, maxime omnis quam quidem velit voluptas voluptatum.
@@ -19,13 +21,16 @@ import {ref, computed, watch} from 'vue';
 import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
 import YlxNavbar from "@/components/ylx-components/ylx-navbar.vue";
 import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
+import {uniBLUETOOTH} from "@/utils/common/authorize/uniApi";
+
 /*-------------------------------------------------------*/
-const refUploadimg=ref(null)
-const fileImageList=ref([
-  {url:"https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
-  {url:"https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
-  {url:"https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
+const refUploadimg = ref(null)
+const fileImageList = ref([
+  {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
+  {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
+  {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
 ])
+
 function updateFileImageList({type, param}) {
   if (type === 'del') {
     fileImageList.value.splice(param, 1)
@@ -35,8 +40,19 @@ function updateFileImageList({type, param}) {
     fileImageList.value.splice(param.fileImageListLen, 1, param.itemAssign)
   }
 }
+
 function uploadimg() {
   refUploadimg.value.chooseFile()
+}
+
+onLoad(() => {
+
+})
+
+function wakeFn() {
+  uniBLUETOOTH().then(res=>{
+    console.log(res)
+  })
 }
 
 </script>
