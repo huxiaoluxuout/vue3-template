@@ -3,9 +3,9 @@ import {ref} from "vue";
 import {throttle} from "@/utils/throttle";
 import useDoQueue from "@/utils/common/useDoQueue";
 
-const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
 
 export default function useReachBottomRefreshVue3() {
+    const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
 
     // 当前页码
     const page = ref(1)

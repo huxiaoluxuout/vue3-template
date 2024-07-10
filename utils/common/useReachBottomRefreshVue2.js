@@ -1,9 +1,10 @@
 import {throttle} from "@/utils/throttle";
 import useDoQueue from "@/utils/common/useDoQueue";
 
-const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
 
 export default function mixinReachBottomPullDownRefreshVue2() {
+    const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
+
     const mixinReachBottomPullDownRefresh = {
         data() {
             return {
