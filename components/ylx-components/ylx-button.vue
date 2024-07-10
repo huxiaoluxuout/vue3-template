@@ -15,9 +15,17 @@ export default {
       type: String,
       default: '按钮'
     },
+    size: {
+      type: String,
+      default: '14px'
+    },
+    color: {
+      type: String,
+      default: '#fff'
+    },
     bgColor: {
       type: String,
-      default: 'transparent'
+      default: '#272729' // 'transparent'
     },
     height: {
       type: String,
@@ -27,13 +35,21 @@ export default {
       type: String,
       default: '100%'
     },
+    rounded: {
+      type: String,
+      default: '100px'
+    },
+
   },
   computed: {
     resultCustomStyle() {
       return ylxStyleObjectToString({
         height: this.height,
         width: this.width,
-        'background-color': this.bgColor,
+        fontSize: this.size,
+        borderRadius: this.rounded,
+        backgroundColor: this.bgColor,
+        color: this.color,
       }) + localStringStyle(this.customStyle)
     },
   },
@@ -42,7 +58,6 @@ export default {
     btnClick() {
       !this.disabled ? this.$emit('btnClick') :
           this.$emit('btnClickErr')
-
     },
   }
 
@@ -50,12 +65,9 @@ export default {
 }
 </script>
 
-<style scoped lang="scss">
+<style scoped>
 .btn {
-  font-size: 12px;
-  border-radius: 100px;
-  background-color: #272729;
-  color: #fff;
+
 }
 
 .btn:after {
