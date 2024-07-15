@@ -40,11 +40,13 @@ export class UniEventBusCore {
      * toPageType {navigateTo | switchTab}
      * */
     pageNotice({eventPathName, options = {}}, isToPage = false, toPageType = this.NAVIGATION_TYPES.navigateTo) {
+        const pages = getCurrentPages();
+        const currentEventName = '/' + pages[pages.length - 1]['route']
         uni.$emit('OnGlobEvent', {
             isToPage,
             toPageType,
             eventPathName,
-            options,
+            options: typeof options === 'object' ? Object.assign({fromPage: currentEventName}, options) : options,
         });
     }
     // 通知全局事件
