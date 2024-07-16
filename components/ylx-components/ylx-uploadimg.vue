@@ -309,6 +309,8 @@ export default {
 .upload-icon-position {
   border: 1px solid #e9e9e94d;
   border-radius: 10rpx;
+  aspect-ratio: var(--aspect-ratio);
+
 }
 
 

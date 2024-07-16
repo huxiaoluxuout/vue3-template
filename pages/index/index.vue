@@ -52,6 +52,7 @@ function uploadimg() {
   refUploadimg.value.chooseFile()
 }
 
+
 onLoad(() => {
 
 })
