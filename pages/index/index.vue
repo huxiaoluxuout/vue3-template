@@ -6,7 +6,7 @@
                    @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
-    <button @click="myOrder">my-order</button>
+    <button @click="instanceMyOrderHandler">my-order</button>
     <button @click="eventBusMine">eventBusMine</button>
     <button @click="sendGlobal">sendGlobal</button>
     <button @click="buttontn">uniBLUETOOTH</button>
@@ -14,7 +14,7 @@
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
       eius eos explicabo facere magnam, maxime omnis quam quidem velit voluptas voluptatum.
     </div>
-
+    <!--  -->
   </view>
 </template>
 
@@ -28,6 +28,7 @@ import {uniBLUETOOTH} from "@/utils/common/authorize/uniApi";
 import {ylxBluetoothAuthorize} from "@/utils/uniTools";
 import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
 import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
+import useLoginInterceptor from "@/utils/useLoginInterceptor";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -61,6 +62,8 @@ function myOrder() {
     targetPath:'/pagesSubMine/myOrder/myOrder'
   },true)
 }
+const instanceMyOrderHandler = useLoginInterceptor({onSuccess: myOrder})
+
 function eventBusMine() {
   instanceUniEventBus.sendPage({
     targetPath:'/pages/mine/mine'

@@ -19,17 +19,23 @@ function onErrorHandler() {
         }
     });
 }
+
 // 拦截登录判断
 export default function ({onError = onErrorHandler, onSuccess}) {
+    if (typeof onError !== 'function') {
+        return
+    }
+    if (typeof onSuccess !== 'function') {
+        return
+    }
     return function (...args) {
-        if (typeof onSuccess === 'function') {
-            if (isLogeIn.value) {
-                onSuccess(...args)
-            } else {
-                if (typeof onError === 'function') {
-                    onError()
-                }
+        if (!isLogeIn.value) {
+            onSuccess(...args)
+        } else {
+            if (typeof onError === 'function') {
+                onError()
             }
         }
     }
 }
+
