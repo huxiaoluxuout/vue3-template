@@ -6,8 +6,8 @@
                    @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
-    <button @click="eventBusBalances">eventBusmyBalances</button>
-    <button @click="eventBusMine">eventBusmine</button>
+    <button @click="myOrder">my-order</button>
+    <button @click="eventBusMine">eventBusMine</button>
     <button @click="sendGlobal">sendGlobal</button>
     <button @click="buttontn">uniBLUETOOTH</button>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
@@ -56,9 +56,9 @@ onLoad(() => {
 })
 
 /*--------------------------*/
-function eventBusBalances() {
+function myOrder() {
   instanceUniEventBus.sendPage({
-    targetPath:'/pagesSubMine/myBalances/myBalances'
+    targetPath:'/pagesSubMine/myOrder/myOrder'
   },true)
 }
 function eventBusMine() {

@@ -29,7 +29,7 @@ const {
   page,
   pageSize,
   reload,
-  updateNextPage,
+  dataHandler,
   reachBottomHandler,
   pullDownRefreshHandler,
   setFunction, invokeAllFn,
@@ -58,25 +58,26 @@ const getMyOrderList = () => {
     status: activeStatus.value
   }).then(res => {
     let reloadNextPage = res.data.current_page < res.data.last_page
-    updateNextPage(reloadNextPage)
-    myOrderList.value = [...myOrderList.value, ...res.data.data]
+    myOrderList.value = dataHandler({data: myOrderList.value, newData: res.data.data}, reloadNextPage)
     pageLoading.value = false
   })
 }
 setFunction(getMyOrderList)
 onReachBottom(reachBottomHandler)
 onPullDownRefresh(() => {
-  pullDownRefreshHandler(myOrderList.value)
+  pullDownRefreshHandler()
 })
 onLoad((option) => {
   console.log(option)
   activeIds.value = [Number(option.id)]
   invokeAllFn()
 })
-watch(activeStatus, (newVal) => {
+
+/*watch(activeStatus, (newVal) => {
+  console.log('newVal',newVal)
   pageLoading.value = true
-  reload(myOrderList.value)
-})
+  reload()
+})*/
 
 </script>
 

@@ -1,15 +1,15 @@
 <template>
-  <view class="page-content flex flex-column  align-center " :style="{'--navbar-height':`${navbarHeight}px`}">
+  <view class="page-content login " :style="{'--navbar-height':`${navbarHeight}px`}">
     <ylx-navbar
         :configNavBar="{ hiddenLeftIcon: false,hiddenBorder: true}" bg-color="transparent"
         @navbarHeight="(e)=>navbarHeight=e">
     </ylx-navbar>
 
-    <view class="flex-column flex align-center" style="width: 100%;">
+    <view class="login-flex" style="width: 100%;">
       <ylx-gap height="100px"></ylx-gap>
-      <view class="flex-column flex align-center  ylx-margin-bottom-20">
+      <view class="login-flex">
         <view class="title">LOGO</view>
-        <view class="ylx-color_919499 ylx-font-size_14 ylx-margin-top-20">欢迎使用壹剪美小程序</view>
+        <view style="font-size: 14px; margin-top: 20rpx; color:#919499;">欢迎使用壹剪美小程序</view>
       </view>
 
       <ylx-image width="400rpx" src="/static/logo.png"></ylx-image>
@@ -93,6 +93,21 @@ export default {
 }
 </script>
 <style scoped lang="scss">
+.page-content {
+  /* #ifdef WEB */
+  min-height: calc(100vh - var(--window-top));
+  /* #endif */
+
+  /* #ifndef WEB */
+  min-height: 100vh;
+  /* #endif */
+
+}
+.login-flex{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 .title {
 
   box-sizing: border-box;
@@ -111,7 +126,6 @@ export default {
   font-size: 18px;
   color: #333333;
   font-weight: bolder;
-  //margin-bottom: 40px;
 }
 
 

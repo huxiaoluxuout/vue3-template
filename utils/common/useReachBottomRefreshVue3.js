@@ -1,79 +1,75 @@
 import {ref} from "vue";
-
 import {throttle} from "@/utils/throttle";
 import useDoQueue from "@/utils/common/useDoQueue";
 
-
-export default function useReachBottomRefreshVue3() {
+export default function useReachBottomRefresh() {
     const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
-
     // 当前页码
     const page = ref(1)
-
     // 每页数量
     const pageSize = ref(10)
-
-    // 是否正在加载中
-    const isLoading = ref(false)
     let reloadNextPageStatus = true
 
+    const isReload = ref(false)
 
     // 重新加载
-    const reload = (data) => {
-        isLoading.value = false
+    const reload = () => {
         page.value = 1
+        isReload.value = true
         pageSize.value = 10
-        if(Array.isArray(data)){
-            data.length = 0
-        }
         invokeAllFn();
-
+    }
+    const setPageNum = (pageNum = 1) => {
+        page.value = pageNum
     }
 
-    // 更新pages
-    const updateNextPage = (reloadNextPage) => {
-        reloadNextPageStatus = reloadNextPage
+    const dataHandler = ({data = [], newData = []}, reloadNextPage = false) => {
         uni.stopPullDownRefresh();
+
         if (reloadNextPage) {
-            isLoading.value = false; // 加载完成
             page.value++; // 页码加1
+        }
+
+        if (!isReload.value) {
+            isReload.value = false;
+            return Array.isArray(data) && Array.isArray(newData)
+                ? data.concat(newData)
+                : newData;
         } else {
-            isLoading.value = false; // 加载失败
+            isReload.value = false;
+            return newData;
         }
     }
+
 
     // 触底加载下一页数据
     const reachBottomHandler = () => {
-        throttle(() => {
-            if (!isLoading.value) {
-                //isLoading.value = true; // 标记为正在加载中
-                if (reloadNextPageStatus) {
-                    invokeAllFn();
-                }
-            }
-        })
+        if (reloadNextPageStatus) {
+            throttle(() => {
+                invokeAllFn();
+            })
+        }
     }
 
     // 下拉刷新
-    const pullDownRefreshHandler = (dataList) => {
-        //isLoading.value = true; // 标记为正在加载中
-        reload(dataList)
-
+    const pullDownRefreshHandler = () => {
+        reload()
         setTimeout(() => {
             uni.stopPullDownRefresh();
-        }, 3000)
+        }, 2500)
     }
 
     return {
         page: page,
-        pageSize: pageSize,
-        isLoading:isLoading,
+        pageSize: pageSize.value,
+        isReload: isReload,
         reachBottomHandler,
         pullDownRefreshHandler,
         reload,
-        updateNextPage,
         setFunction,
         addFunctions,
-        invokeAllFn
+        invokeAllFn,
+        setPageNum,
+        dataHandler,
     };
 }
