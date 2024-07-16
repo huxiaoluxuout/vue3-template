@@ -16,6 +16,8 @@ import {ylxNavigateTo} from "@/utils/uniTools";
 import YlxGap from "@/components/ylx-components/ylx-gap.vue";
 
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
+import {useUniEventBusVue3} from "@/utils/common/uniEventBus/useUniEventBusVue3";
+import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
 const {pullDownRefreshHandler, setFunction} = useReachBottomRefreshVue3()
 
 const myOrderGridList = ref([
@@ -30,6 +32,14 @@ onPullDownRefresh(()=>{
   uni.stopPullDownRefresh();
 
 })
+/*---------------------------------------------------------------*/
+useUniEventBusVue3(()=>{
+  instanceUniEventBus.onPageNotification((options)=>{
+    console.log(options)
+  })
+})
+
+/*---------------------------------------------------------------*/
 </script>
 
 

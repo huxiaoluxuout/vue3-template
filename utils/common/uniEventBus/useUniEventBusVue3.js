@@ -7,11 +7,11 @@ export function useUniEventBusVue3(callback) {
         return;
     }
     const currentPageEventName = ref('')
-    instanceUniEventBus.getCurrentPageEventName().then(pageEventName => {
+    instanceUniEventBus.getCurrentRoute().then(pageEventName => {
         currentPageEventName.value = pageEventName
         callback()
     })
     onUnmounted(() => {
-        instanceUniEventBus.removeCurrentPageEventName(currentPageEventName.value)
+        instanceUniEventBus.removeCurrentRouteEvent(currentPageEventName.value)
     })
 }

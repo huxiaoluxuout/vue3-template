@@ -6,6 +6,9 @@
                    @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
+    <button @click="eventBusBalances">eventBusmyBalances</button>
+    <button @click="eventBusMine">eventBusmine</button>
+    <button @click="sendGlobal">sendGlobal</button>
     <button @click="buttontn">uniBLUETOOTH</button>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
@@ -24,6 +27,7 @@ import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
 import {uniBLUETOOTH} from "@/utils/common/authorize/uniApi";
 import {ylxBluetoothAuthorize} from "@/utils/uniTools";
 import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
+import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -50,6 +54,21 @@ function uploadimg() {
 onLoad(() => {
 
 })
+
+/*--------------------------*/
+function eventBusBalances() {
+  instanceUniEventBus.sendPage({
+    targetPath:'/pagesSubMine/myBalances/myBalances'
+  },true)
+}
+function eventBusMine() {
+  instanceUniEventBus.sendPage({
+    targetPath:'/pages/mine/mine'
+  },true,'switchTab')
+}
+function sendGlobal() {
+  instanceUniEventBus.sendGlobal('hahah')
+}
 
 /*--------------------------*/
 

@@ -22,8 +22,9 @@ onLaunch(() => {
 
   ylxOpenWxDebug()
   getWxLoginInfo()
-  instanceUniEventBus.registerGlobEvent(()=>{
-    getWxLoginInfo()
+  instanceUniEventBus.registerGlobalEvent((options)=>{
+    console.log(options)
+    // getWxLoginInfo()
   })
 })
 </script>

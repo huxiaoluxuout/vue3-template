@@ -7,12 +7,12 @@ export default {
         }
     },
     onLoad: function () {
-        instanceUniEventBus.getCurrentPageEventName().then(currentPageEventName => {
+        instanceUniEventBus.getCurrentRoute().then(currentPageEventName => {
             this.currentPageEventName = currentPageEventName
         })
     },
     onUnload() {
-        instanceUniEventBus.removeCurrentPageEventName(this.currentPageEventName)
+        instanceUniEventBus.removeCurrentRouteEvent(this.currentPageEventName)
     },
 }
 
