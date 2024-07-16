@@ -23,18 +23,18 @@ function onErrorHandler() {
 // 拦截登录判断
 export default function ({onError = onErrorHandler, onSuccess}) {
     if (typeof onError !== 'function') {
+        console.error(`${onError}:必须是函数`)
         return
     }
     if (typeof onSuccess !== 'function') {
+        console.error(`${onSuccess}:必须是函数`)
         return
     }
     return function (...args) {
         if (!isLogeIn.value) {
             onSuccess(...args)
         } else {
-            if (typeof onError === 'function') {
-                onError()
-            }
+            onError()
         }
     }
 }
