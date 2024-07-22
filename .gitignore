@@ -5,7 +5,7 @@ unpackage
 *.DS_Store
 *.zip
 *.rar
-/test
+
 .vite
 /jest.config.js
 config.js

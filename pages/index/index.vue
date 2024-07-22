@@ -6,9 +6,12 @@
                    @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
-    <button @click="instanceMyOrderHandler">my-order</button>
-    <button @click="eventBusMine">eventBusMine</button>
+    <hr />
     <button @click="sendGlobal">sendGlobal</button>
+    <button @click="myOrder">my-order</button>
+    <button @click="eventBusMine">eventBusMine</button>
+    <hr />
+
     <button @click="buttontn">uniBLUETOOTH</button>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
@@ -29,6 +32,7 @@ import {ylxBluetoothAuthorize} from "@/utils/uniTools";
 import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
 import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
 import useLoginInterceptor from "@/utils/useLoginInterceptor";
+import instanceWxEventBus from "@/tooffff/instanceEventBus.js";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -59,19 +63,22 @@ onLoad(() => {
 
 /*--------------------------*/
 function myOrder() {
-  instanceUniEventBus.sendPage({
+  instanceWxEventBus.sendPage({
     targetPath:'/pagesSubMine/myOrder/myOrder'
   },true)
 }
 const instanceMyOrderHandler = useLoginInterceptor({onSuccess: myOrder})
 
 function eventBusMine() {
-  instanceUniEventBus.sendPage({
-    targetPath:'/pages/mine/mine'
+  instanceWxEventBus.sendPage({
+    targetPath:'/pages/mine/mine',
+    options:{age:18}
   },true,'switchTab')
 }
 function sendGlobal() {
-  instanceUniEventBus.sendGlobal('hahah')
+  // instanceUniEventBus.sendGlobal('hahah')
+
+  instanceWxEventBus.sendGlobal()
 }
 
 /*--------------------------*/

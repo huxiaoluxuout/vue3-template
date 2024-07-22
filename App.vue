@@ -5,6 +5,7 @@ import {wxLogin} from "@/network/apis/meiFa";
 import {ylxOpenWxDebug} from "@/utils/uniTools";
 import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
 import {useUserStore} from "@/stores/user";
+import instanceWxEventBus from "@/tooffff/instanceEventBus.js";
 
 const userStore = useUserStore();
 
@@ -25,6 +26,10 @@ onLaunch(() => {
   instanceUniEventBus.registerGlobalEvent((options)=>{
     console.log(options)
     // getWxLoginInfo()
+  })
+  instanceWxEventBus.registerGlobalEvent(({args, source})=>{
+    console.log('instanceWxEventBus',...args, source)
+
   })
 })
 </script>

@@ -18,6 +18,7 @@ import YlxGap from "@/components/ylx-components/ylx-gap.vue";
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 import {useUniEventBusVue3} from "@/utils/common/uniEventBus/useUniEventBusVue3";
 import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
+import instanceWxEventBus from "@/tooffff/instanceEventBus.js";
 const {pullDownRefreshHandler, setFunction} = useReachBottomRefreshVue3()
 
 const myOrderGridList = ref([
@@ -34,10 +35,21 @@ onPullDownRefresh(()=>{
 })
 /*---------------------------------------------------------------*/
 useUniEventBusVue3(()=>{
-  instanceUniEventBus.onPageNotification((options)=>{
-    console.log(options)
+
+})
+
+const currentPageEventName = ref('')
+
+instanceWxEventBus.getCurrentRoute().then(pageEventName => {
+  currentPageEventName.value=pageEventName
+  instanceWxEventBus.onPageNotification(({args,source})=>{
+    console.log(...args,source)
   })
 })
+
+/*onUnmounted(() => {
+  instanceUniEventBus.removeCurrentRouteEvent(currentPageEventName.value)
+})*/
 
 /*---------------------------------------------------------------*/
 </script>

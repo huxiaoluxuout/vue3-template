@@ -1,0 +1,24 @@
+{
+  "name": "vue3-template",
+  "version": "1.0.0",
+  "description": "",
+  "main": "main.js",
+  "type": "module",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/huxiaoluxuout/vue3-template.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/huxiaoluxuout/vue3-template/issues"
+  },
+  "homepage": "https://github.com/huxiaoluxuout/vue3-template#readme"
+}
