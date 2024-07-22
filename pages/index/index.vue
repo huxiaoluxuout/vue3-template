@@ -12,7 +12,7 @@
     <button @click="eventBusMine">eventBusMine</button>
     <hr />
 
-    <button @click="buttontn">uniBLUETOOTH</button>
+<!--    <button @click="buttontn">uniBLUETOOTH</button>-->
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
       eius eos explicabo facere magnam, maxime omnis quam quidem velit voluptas voluptatum.

@@ -40,12 +40,9 @@ useUniEventBusVue3(()=>{
 
 const currentPageEventName = ref('')
 
-instanceWxEventBus.getCurrentRoute().then(pageEventName => {
-  currentPageEventName.value=pageEventName
-  instanceWxEventBus.onPageNotification(({args,source})=>{
-    console.log(...args,source)
-  })
-})
+instanceWxEventBus.onPageNotification(({args,source}) => {
+  console.log(...args,source)
+});
 
 /*onUnmounted(() => {
   instanceUniEventBus.removeCurrentRouteEvent(currentPageEventName.value)

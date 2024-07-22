@@ -11,7 +11,8 @@ export class WxEventBusCore {
 
     // 当前页面路径
     currentRoute = '';
-    GLOBAL_PAGES_EVENT = [];
+
+    static eventBusMap = [];
 
 
     // 构造函数，初始化默认的全局回调函数
@@ -29,10 +30,14 @@ export class WxEventBusCore {
     static handlerListener({args, source}) {
         let [{navigationType, targetPath, isNavigationEnabled, options}] = args
         const {path, query, delimiter} = WxEventBusCore.parseUrl(targetPath);
-
-        wxEventBus.once('GlobalEvent' + path, () => wxEventBus.emit({event: path, source}, options));
-
-        wxEventBus.emit({event: path, source: path}, options);
+        if (!WxEventBusCore.eventBusMap.includes(path)) {
+            wxEventBus.once('GLOBAL_PAGES_EVENT' + path, () => {
+                WxEventBusCore.eventBusMap.push(path)
+                return wxEventBus.emit({event: path, source: path}, options)
+            });
+        } else {
+            wxEventBus.emit({event: path, source: path}, options);
+        }
 
         WxEventBusCore.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
     }
@@ -68,22 +73,21 @@ export class WxEventBusCore {
      * @param {boolean} [isNavigationEnabled=false] 是否启用导航
      * @param {string} [navigationType=navigateTo] 导航类型
      */
-    async sendPage({targetPath, options = {}}, isNavigationEnabled = false, navigationType = WxEventBusCore.NAVIGATION_TYPES.NAVIGATE_TO) {
-        const {path, query, delimiter} = WxEventBusCore.parseUrl(targetPath);
+    async sendPage({
+                       targetPath,
+                       options = {}
+                   }, isNavigationEnabled = false, navigationType = WxEventBusCore.NAVIGATION_TYPES.NAVIGATE_TO) {
 
         const currentRoute = await WxEventBusCore.getRoute();
 
         const mergedOptions = typeof options === 'object' ? Object.assign({fromPage: currentRoute}, options) : options;
 
-        // wxEventBus.emit({event: 'GLOBAL_PAGES_EVENT', source: 'GLOBAL_PAGES_EVENT'}, mergedOptions);
-        wxEventBus.on(path, ({})=>{
-
+        wxEventBus.emit('GLOBAL_PAGES_EVENT', {
+            navigationType,
+            targetPath,
+            isNavigationEnabled,
+            options: mergedOptions
         });
-
-
-        wxEventBus.emit({event: path, source: currentRoute}, mergedOptions);
-
-        WxEventBusCore.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
 
 
     }
@@ -113,10 +117,14 @@ export class WxEventBusCore {
      * @param {Function} callback 回调函数
      */
     onPageNotification(callback) {
-        if (typeof callback !== 'function' || !this.currentRoute) return;
-
-        wxEventBus.on(this.currentRoute, callback);
-
+        if (typeof callback !== 'function') return;
+        WxEventBusCore.getRoute()
+            .then(currentRoute => {
+                if (!WxEventBusCore.eventBusMap.includes(currentRoute)) {
+                    wxEventBus.on(currentRoute, callback);
+                    wxEventBus.emit('GLOBAL_PAGES_EVENT' + currentRoute);
+                }
+            })
 
     }
 

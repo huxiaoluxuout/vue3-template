@@ -24,7 +24,13 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 import {getOrderList} from "@/network/apis/meiFa";
+import instanceWxEventBus from "@/tooffff/instanceEventBus.js";
+/*-------------------------------------------------------------*/
 
+instanceWxEventBus.onPageNotification(({args,source}) => {
+  console.log('instanceWxEventBus',...args,source)
+});
+/*-------------------------------------------------------------*/
 const {
   page,
   pageSize,
@@ -68,7 +74,7 @@ onPullDownRefresh(() => {
   pullDownRefreshHandler()
 })
 onLoad((option) => {
-  console.log(option)
+  // console.log(option)
   activeIds.value = [Number(option.id)]
   invokeAllFn()
 })
