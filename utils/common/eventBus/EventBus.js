@@ -1,17 +1,13 @@
-import {eventBus} from "./eventBus";
+import {EventBusCore} from "./EventBusCore.js";
 
-const wxEventBus = new eventBus()
+const instanceEventBus = new EventBusCore()
 
-export class WxEventBusCore {
+export class EventBus {
     // 定义导航类型常量
     static NAVIGATION_TYPES = {
         NAVIGATE_TO: 'navigateTo',
         SWITCH_TAB: 'switchTab'
     };
-
-    // 当前页面路径
-    currentRoute = '';
-
     static eventBusMap = [];
 
 
@@ -22,24 +18,24 @@ export class WxEventBusCore {
      * 注册全局事件监听器
      * @param {Function} globalCallback 全局回调函数
      */
-    registerGlobalEvent(globalCallback = WxEventBusCore.defaultGlobalCallback) {
-        wxEventBus.on('AppEvent', globalCallback);
-        wxEventBus.on('GLOBAL_PAGES_EVENT', WxEventBusCore.handlerListener);
+    registerGlobalEvent(globalCallback = EventBus.defaultGlobalCallback) {
+        instanceEventBus.on('AppEvent', globalCallback);
+        instanceEventBus.on('GLOBAL_PAGES_EVENT', EventBus.handlerListener);
     }
 
     static handlerListener({args, source}) {
         let [{navigationType, targetPath, isNavigationEnabled, options}] = args
-        const {path, query, delimiter} = WxEventBusCore.parseUrl(targetPath);
-        if (!WxEventBusCore.eventBusMap.includes(path)) {
-            wxEventBus.once('GLOBAL_PAGES_EVENT' + path, () => {
-                WxEventBusCore.eventBusMap.push(path)
-                return wxEventBus.emit({event: path, source: path}, options)
+        const {path, query, delimiter} = EventBus.parseUrl(targetPath);
+        if (!EventBus.eventBusMap.includes(path)) {
+            instanceEventBus.once('GLOBAL_PAGES_EVENT' + path, () => {
+                EventBus.eventBusMap.push(path)
+                return instanceEventBus.emit({event: path, source: path}, options)
             });
         } else {
-            wxEventBus.emit({event: path, source: path}, options);
+            instanceEventBus.emit({event: path, source: path}, options);
         }
 
-        WxEventBusCore.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
+        EventBus.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
     }
 
     /**
@@ -53,12 +49,12 @@ export class WxEventBusCore {
      */
     static handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled) {
         if (!isNavigationEnabled) return;
-        if (navigationType !== WxEventBusCore.NAVIGATION_TYPES.NAVIGATE_TO && navigationType !== WxEventBusCore.NAVIGATION_TYPES.SWITCH_TAB) {
-            console.error(`导航路径：${JSON.stringify(WxEventBusCore.NAVIGATION_TYPES)}`);
+        if (navigationType !== EventBus.NAVIGATION_TYPES.NAVIGATE_TO && navigationType !== EventBus.NAVIGATION_TYPES.SWITCH_TAB) {
+            console.error(`导航路径：${JSON.stringify(EventBus.NAVIGATION_TYPES)}`);
             return;
         }
 
-        const fullPath = navigationType === WxEventBusCore.NAVIGATION_TYPES.NAVIGATE_TO ? `${path}${query}${delimiter}currentRoute=${path}` : path;
+        const fullPath = navigationType === EventBus.NAVIGATION_TYPES.NAVIGATE_TO ? `${path}${query}${delimiter}currentRoute=${path}` : path;
         uni[navigationType]({
             url: fullPath,
             fail: err => console.error('Navigation Error:', err),
@@ -73,16 +69,15 @@ export class WxEventBusCore {
      * @param {boolean} [isNavigationEnabled=false] 是否启用导航
      * @param {string} [navigationType=navigateTo] 导航类型
      */
-    async sendPage({
-                       targetPath,
-                       options = {}
-                   }, isNavigationEnabled = false, navigationType = WxEventBusCore.NAVIGATION_TYPES.NAVIGATE_TO) {
+    async sendPage({targetPath, options = {}},
+                   isNavigationEnabled = false,
+                   navigationType = EventBus.NAVIGATION_TYPES.NAVIGATE_TO) {
 
-        const currentRoute = await WxEventBusCore.getRoute();
+        const currentRoute = await EventBus.getRoute();
 
         const mergedOptions = typeof options === 'object' ? Object.assign({fromPage: currentRoute}, options) : options;
 
-        wxEventBus.emit('GLOBAL_PAGES_EVENT', {
+        instanceEventBus.emit('GLOBAL_PAGES_EVENT', {
             navigationType,
             targetPath,
             isNavigationEnabled,
@@ -97,9 +92,9 @@ export class WxEventBusCore {
      * @param {Object} [options={}] 选项参数
      */
     async sendGlobal(options = {}) {
-        const currentRoute = await WxEventBusCore.getRoute();
+        const currentRoute = await EventBus.getRoute();
         const mergedOptions = typeof options === 'object' ? Object.assign({fromPage: currentRoute}, options) : options;
-        wxEventBus.emit({event: 'AppEvent', source: currentRoute}, mergedOptions);
+        instanceEventBus.emit({event: 'AppEvent', source: currentRoute}, mergedOptions);
     }
 
     /**
@@ -118,25 +113,14 @@ export class WxEventBusCore {
      */
     onPageNotification(callback) {
         if (typeof callback !== 'function') return;
-        WxEventBusCore.getRoute()
+        EventBus.getRoute()
             .then(currentRoute => {
-                if (!WxEventBusCore.eventBusMap.includes(currentRoute)) {
-                    wxEventBus.on(currentRoute, callback);
-                    wxEventBus.emit('GLOBAL_PAGES_EVENT' + currentRoute);
+                if (!EventBus.eventBusMap.includes(currentRoute)) {
+                    instanceEventBus.on(currentRoute, callback);
+                    instanceEventBus.emit('GLOBAL_PAGES_EVENT' + currentRoute);
                 }
             })
 
-    }
-
-    /**
-     * 获取当前页面路径并设置为当前路径
-     * @return {Promise<string>} 返回当前页面路径的 Promise 对象
-     */
-    getCurrentRoute() {
-        return WxEventBusCore.getRoute().then(route => {
-            this.currentRoute = route;
-            return route;
-        });
     }
 
     /**
@@ -144,7 +128,7 @@ export class WxEventBusCore {
      * @param {string} eventName 事件名称
      */
     removeCurrentRouteEvent(eventName) {
-        wxEventBus.off(eventName);
+        instanceEventBus.off(eventName);
     }
 
     /**
@@ -162,3 +146,4 @@ export class WxEventBusCore {
         };
     }
 }
+

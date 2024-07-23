@@ -1,4 +1,4 @@
-export class eventBus {
+export class EventBusCore {
     constructor() {
         this.listeners = new Map();
     }
@@ -52,11 +52,13 @@ export class eventBus {
 
         const listeners = this.listeners.get(event);
         if (!listeners) return;
-
+        // console.log('00000:listener:handler',handler,listeners)
         if (!handler) {
             listeners.forEach(listener => listener({ args, source: source }));
         } else {
             const fn = [...listeners].find(l => l.name === handler);
+
+
             if (fn) {
                 fn({ args, source: source });
             }

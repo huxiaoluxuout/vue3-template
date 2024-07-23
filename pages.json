@@ -18,7 +18,7 @@
     {
       "path": "pages/mine/mine",
       "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "MINE",
         "navigationBarBackgroundColor": "#fff",
         "enablePullDownRefresh": true
       }

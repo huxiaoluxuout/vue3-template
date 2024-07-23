@@ -24,7 +24,7 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 import {getOrderList} from "@/network/apis/meiFa";
-import instanceWxEventBus from "@/tooffff/instanceEventBus.js";
+import instanceWxEventBus from "@/utils/common/eventBus/instanceEventBus.js";
 /*-------------------------------------------------------------*/
 
 instanceWxEventBus.onPageNotification(({args,source}) => {
@@ -42,7 +42,7 @@ const {
 
 } = useReachBottomRefreshVue3()
 
-const pageLoading = ref(true)
+const pageLoading = ref(false)
 
 const labelList = ref([
   {id: 0, text: '全部'},
@@ -76,7 +76,7 @@ onPullDownRefresh(() => {
 onLoad((option) => {
   // console.log(option)
   activeIds.value = [Number(option.id)]
-  invokeAllFn()
+  // invokeAllFn()
 })
 
 /*watch(activeStatus, (newVal) => {
