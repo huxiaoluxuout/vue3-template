@@ -2,13 +2,14 @@ import {EventBusCore} from "./EventBusCore.js";
 
 const instanceEventBus = new EventBusCore()
 
-export class EventBus {
+export class useEventBus {
+
     // 定义导航类型常量
     static NAVIGATION_TYPES = {
         NAVIGATE_TO: 'navigateTo',
         SWITCH_TAB: 'switchTab'
     };
-    static eventBusMap = [];
+    static eventBusSet = new Set()
 
 
     // 构造函数，初始化默认的全局回调函数
@@ -18,28 +19,28 @@ export class EventBus {
      * 注册全局事件监听器
      * @param {Function} globalCallback 全局回调函数
      */
-    registerGlobalEvent(globalCallback = EventBus.defaultGlobalCallback) {
+    registerGlobalEvent(globalCallback = useEventBus.defaultGlobalCallback) {
         instanceEventBus.on('AppEvent', globalCallback);
-        instanceEventBus.on('GLOBAL_PAGES_EVENT', EventBus.handlerListener);
-    }
-
-    // 向目标页面发送数据
-    static sendPage(path, source, options) {
-        if (!EventBus.eventBusMap.includes(path)) {
-            instanceEventBus.once('CURRENT_PAGE_EVENT' + path, () => {
-                EventBus.eventBusMap.push(path)
-                return instanceEventBus.emit({event: path, source}, options)
-            });
-        } else {
-            instanceEventBus.emit({event: path, source}, options);
-        }
+        instanceEventBus.on('GLOBAL_PAGES_EVENT', useEventBus.handlerListener);
     }
 
     static handlerListener({args, source}) {
-        let [{navigationType, targetPath, isNavigationEnabled, options}] = args
-        const {path, query, delimiter} = EventBus.parseUrl(targetPath);
-        EventBus.sendPage(path, source, options)
-        EventBus.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
+        let [{navigationType, targetPath, isNavigationEnabled, options, sourceName}] = args
+        const {path, query, delimiter} = useEventBus.parseUrl(targetPath);
+        useEventBus.sendTargetPage(path, source, options, sourceName)
+        useEventBus.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
+    }
+
+    // 向目标页面发送数据
+    static sendTargetPage(path, source, options, sourceName) {
+        if (!useEventBus.eventBusSet.has(path)) {
+            instanceEventBus.once('CURRENT_PAGE_EVENT' + path, () => {
+                useEventBus.eventBusSet.add(path)
+                return instanceEventBus.emit({event: path, source: sourceName || source}, options)
+            });
+        } else {
+            instanceEventBus.emit({event: path, source: sourceName || source}, options);
+        }
     }
 
     /**
@@ -53,12 +54,18 @@ export class EventBus {
      */
     static handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled) {
         if (!isNavigationEnabled) return;
-        if (navigationType !== EventBus.NAVIGATION_TYPES.NAVIGATE_TO && navigationType !== EventBus.NAVIGATION_TYPES.SWITCH_TAB) {
-            console.error(`导航路径：${JSON.stringify(EventBus.NAVIGATION_TYPES)}`);
+        if (navigationType !== useEventBus.NAVIGATION_TYPES.NAVIGATE_TO && navigationType !== useEventBus.NAVIGATION_TYPES.SWITCH_TAB) {
+            console.error(`导航路径：${JSON.stringify(useEventBus.NAVIGATION_TYPES)}`);
             return;
         }
 
-        const fullPath = navigationType === EventBus.NAVIGATION_TYPES.NAVIGATE_TO ? `${path}${query}${delimiter}currentRoute=${path}` : path;
+        const fullPath = navigationType === useEventBus.NAVIGATION_TYPES.NAVIGATE_TO ? `${path}${query}${delimiter}currentRoute=${path}` : path;
+
+        /**
+         * TODO
+         * uni uniapp框架开发
+         * wx  微信小程序原生开发
+         */
         uni[navigationType]({
             url: fullPath,
             fail: err => console.error('Navigation Error:', err),
@@ -70,14 +77,15 @@ export class EventBus {
      * @param {Object} config 配置对象
      * @param {string} config.targetPath 目标路径
      * @param {Object} [config.options={}] 传递的数据
+     * @param {string} [config.source=''] 自定义来源名称
      * @param {boolean} [isNavigationEnabled=false] 是否启用导航
      * @param {string} [navigationType=navigateTo] 导航类型
      */
-    async sendPage({targetPath, options = {}},
-                   isNavigationEnabled = false,
-                   navigationType = EventBus.NAVIGATION_TYPES.NAVIGATE_TO) {
+    async emit({targetPath, options = {}, source = ''},
+               isNavigationEnabled = false,
+               navigationType = useEventBus.NAVIGATION_TYPES.NAVIGATE_TO) {
 
-        const currentRoute = await EventBus.getRoute();
+        const currentRoute = await useEventBus.getRoute();
 
         const mergedOptions = typeof options === 'object' ? Object.assign({fromPage: currentRoute}, options) : options;
 
@@ -85,7 +93,8 @@ export class EventBus {
             navigationType,
             targetPath,
             isNavigationEnabled,
-            options: mergedOptions
+            options: mergedOptions,
+            sourceName: source
         });
 
 
@@ -94,11 +103,12 @@ export class EventBus {
     /**
      * 发送全局事件
      * @param {Object} [options={}] 选项参数
+     * @param {String} [source=''] 自定义来源名称
      */
-    async sendGlobal(options = {}) {
-        const currentRoute = await EventBus.getRoute();
+    async sendGlobal(options = {}, source = '') {
+        const currentRoute = await useEventBus.getRoute();
         const mergedOptions = typeof options === 'object' ? Object.assign({fromPage: currentRoute}, options) : options;
-        instanceEventBus.emit({event: 'AppEvent', source: currentRoute}, mergedOptions);
+        instanceEventBus.emit({event: 'AppEvent', source: source || currentRoute}, mergedOptions);
     }
 
     /**
@@ -115,11 +125,12 @@ export class EventBus {
      * 注册页面通知回调
      * @param {Function} callback 回调函数
      */
-    onPageNotification(callback) {
+    on(callback) {
         if (typeof callback !== 'function') return;
-        EventBus.getRoute()
+        useEventBus.getRoute()
             .then(currentRoute => {
-                if (!EventBus.eventBusMap.includes(currentRoute)) {
+                if (!useEventBus.eventBusSet.has(currentRoute)) {
+                    useEventBus.eventBusSet.add(currentRoute)
                     // 注册事件
                     instanceEventBus.on(currentRoute, callback);
                     // 触发发送数据到目标页面

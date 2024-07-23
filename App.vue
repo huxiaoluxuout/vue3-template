@@ -5,7 +5,7 @@ import {wxLogin} from "@/network/apis/meiFa";
 import {ylxOpenWxDebug} from "@/utils/uniTools";
 import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
 import {useUserStore} from "@/stores/user";
-import instanceEventBus from "@/utils/common/eventBus/index.js";
+import instanceEventBus from "@/utils/common/eventBus/instance.js";
 
 const userStore = useUserStore();
 

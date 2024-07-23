@@ -6,13 +6,13 @@
                    @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
-    <hr />
+    <hr/>
     <button @click="sendGlobal">sendGlobal</button>
     <button @click="myOrder">my-order</button>
     <button @click="eventBusMine">eventBusMine</button>
-    <hr />
+    <hr/>
 
-<!--    <button @click="buttontn">uniBLUETOOTH</button>-->
+    <!--    <button @click="buttontn">uniBLUETOOTH</button>-->
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
       eius eos explicabo facere magnam, maxime omnis quam quidem velit voluptas voluptatum.
@@ -30,9 +30,9 @@ import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
 import {uniBLUETOOTH} from "@/utils/common/authorize/uniApi";
 import {ylxBluetoothAuthorize} from "@/utils/uniTools";
 import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
-import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
+
 import useLoginInterceptor from "@/utils/useLoginInterceptor";
-import instanceEventBus from "@/utils/common/eventBus/index.js";
+import instanceEventBus from "@/utils/common/eventBus/instance.js";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -63,21 +63,22 @@ onLoad(() => {
 
 /*--------------------------*/
 function myOrder() {
-  instanceEventBus.sendPage({
-    targetPath:'/pagesSubMine/myOrder/myOrder'
-  },true)
+  instanceEventBus.emit({
+    targetPath: '/pagesSubMine/myOrder/myOrder',
+    source: 'xixi'
+  }, true)
 }
+
 const instanceMyOrderHandler = useLoginInterceptor({onSuccess: myOrder})
 
 function eventBusMine() {
-  instanceEventBus.sendPage({
-    targetPath:'/pages/mine/mine',
-    options:{age:18}
-  },true,'switchTab')
+  instanceEventBus.emit({
+    targetPath: '/pages/mine/mine',
+    options: {age: 18}
+  }, true, 'switchTab')
 }
-function sendGlobal() {
-  // instanceUniEventBus.sendGlobal('hahah')
 
+function sendGlobal() {
   instanceEventBus.sendGlobal()
 }
 
