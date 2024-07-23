@@ -28,6 +28,7 @@ export class EventBusCore {
         };
         this.on(event, onceWrapper);
     }
+
     /**
      * 处理不同类型的 options 和任意数量的 args
      * @param {Object|string} options - 可以是对象或字符串
@@ -52,18 +53,16 @@ export class EventBusCore {
 
         const listeners = this.listeners.get(event);
         if (!listeners) return;
-        // console.log('00000:listener:handler',handler,listeners)
         if (!handler) {
-            listeners.forEach(listener => listener({ args, source: source }));
+            listeners.forEach(listener => listener({args, source: source}));
         } else {
             const fn = [...listeners].find(l => l.name === handler);
-
-
             if (fn) {
-                fn({ args, source: source });
+                fn({args, source: source});
             }
         }
     }
+
     /**
      * @param {string} event
      * @param {function} [listener]

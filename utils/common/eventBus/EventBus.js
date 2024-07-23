@@ -23,18 +23,22 @@ export class EventBus {
         instanceEventBus.on('GLOBAL_PAGES_EVENT', EventBus.handlerListener);
     }
 
+    // 向目标页面发送数据
+    static sendPage(path, source, options) {
+        if (!EventBus.eventBusMap.includes(path)) {
+            instanceEventBus.once('CURRENT_PAGE_EVENT' + path, () => {
+                EventBus.eventBusMap.push(path)
+                return instanceEventBus.emit({event: path, source}, options)
+            });
+        } else {
+            instanceEventBus.emit({event: path, source}, options);
+        }
+    }
+
     static handlerListener({args, source}) {
         let [{navigationType, targetPath, isNavigationEnabled, options}] = args
         const {path, query, delimiter} = EventBus.parseUrl(targetPath);
-        if (!EventBus.eventBusMap.includes(path)) {
-            instanceEventBus.once('GLOBAL_PAGES_EVENT' + path, () => {
-                EventBus.eventBusMap.push(path)
-                return instanceEventBus.emit({event: path, source: path}, options)
-            });
-        } else {
-            instanceEventBus.emit({event: path, source: path}, options);
-        }
-
+        EventBus.sendPage(path, source, options)
         EventBus.handleNavigation(navigationType, path, query, delimiter, options, isNavigationEnabled);
     }
 
@@ -77,7 +81,7 @@ export class EventBus {
 
         const mergedOptions = typeof options === 'object' ? Object.assign({fromPage: currentRoute}, options) : options;
 
-        instanceEventBus.emit('GLOBAL_PAGES_EVENT', {
+        instanceEventBus.emit({event: 'GLOBAL_PAGES_EVENT', source: currentRoute, handler: 'handlerListener'}, {
             navigationType,
             targetPath,
             isNavigationEnabled,
@@ -116,19 +120,13 @@ export class EventBus {
         EventBus.getRoute()
             .then(currentRoute => {
                 if (!EventBus.eventBusMap.includes(currentRoute)) {
+                    // 注册事件
                     instanceEventBus.on(currentRoute, callback);
-                    instanceEventBus.emit('GLOBAL_PAGES_EVENT' + currentRoute);
+                    // 触发发送数据到目标页面
+                    instanceEventBus.emit('CURRENT_PAGE_EVENT' + currentRoute);
                 }
             })
 
-    }
-
-    /**
-     * 移除当前页面的事件监听
-     * @param {string} eventName 事件名称
-     */
-    removeCurrentRouteEvent(eventName) {
-        instanceEventBus.off(eventName);
     }
 
     /**
@@ -146,4 +144,5 @@ export class EventBus {
         };
     }
 }
+
 

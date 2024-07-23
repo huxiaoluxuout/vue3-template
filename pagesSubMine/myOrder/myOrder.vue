@@ -24,10 +24,10 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 import {getOrderList} from "@/network/apis/meiFa";
-import instanceWxEventBus from "@/utils/common/eventBus/instanceEventBus.js";
+import instanceEventBus from "@/utils/common/eventBus/index.js";
 /*-------------------------------------------------------------*/
 
-instanceWxEventBus.onPageNotification(({args,source}) => {
+instanceEventBus.onPageNotification(({args,source}) => {
   console.log('instanceWxEventBus',...args,source)
 });
 /*-------------------------------------------------------------*/

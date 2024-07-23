@@ -32,7 +32,7 @@ import {ylxBluetoothAuthorize} from "@/utils/uniTools";
 import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
 import instanceUniEventBus from "@/utils/common/uniEventBus/instanceUniEventBus";
 import useLoginInterceptor from "@/utils/useLoginInterceptor";
-import instanceWxEventBus from "@/utils/common/eventBus/instanceEventBus.js";
+import instanceEventBus from "@/utils/common/eventBus/index.js";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -63,14 +63,14 @@ onLoad(() => {
 
 /*--------------------------*/
 function myOrder() {
-  instanceWxEventBus.sendPage({
+  instanceEventBus.sendPage({
     targetPath:'/pagesSubMine/myOrder/myOrder'
   },true)
 }
 const instanceMyOrderHandler = useLoginInterceptor({onSuccess: myOrder})
 
 function eventBusMine() {
-  instanceWxEventBus.sendPage({
+  instanceEventBus.sendPage({
     targetPath:'/pages/mine/mine',
     options:{age:18}
   },true,'switchTab')
@@ -78,7 +78,7 @@ function eventBusMine() {
 function sendGlobal() {
   // instanceUniEventBus.sendGlobal('hahah')
 
-  instanceWxEventBus.sendGlobal()
+  instanceEventBus.sendGlobal()
 }
 
 /*--------------------------*/
