@@ -24,7 +24,7 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 import {getOrderList} from "@/network/apis/meiFa";
-import instanceEventBus from "@/utils/common/eventBus/instance.js";
+import instanceEventBus from "@/utils/instanceEventBus.js";
 /*-------------------------------------------------------------*/
 
 instanceEventBus.on(({args,source}) => {

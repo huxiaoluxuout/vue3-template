@@ -32,7 +32,7 @@ import {ylxBluetoothAuthorize} from "@/utils/uniTools";
 import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
 
 import useLoginInterceptor from "@/utils/useLoginInterceptor";
-import instanceEventBus from "@/utils/common/eventBus/instance.js";
+import instanceEventBus from "@/utils/instanceEventBus.js";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)

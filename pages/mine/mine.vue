@@ -17,7 +17,7 @@ import YlxGap from "@/components/ylx-components/ylx-gap.vue";
 
 import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 
-import instanceEventBus from "@/utils/common/eventBus/instance.js";
+import instanceEventBus from "@/utils/instanceEventBus.js";
 const {pullDownRefreshHandler, setFunction} = useReachBottomRefreshVue3()
 
 const myOrderGridList = ref([
