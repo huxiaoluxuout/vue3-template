@@ -68,6 +68,9 @@ export const useUserStore = defineStore('user', {
                 }
             })
         },
+        setLogin(LoggedIn) {
+            this.isLoggedIn = LoggedIn;
+        },
         login(userInfo) {
             this.setUserInfo(userInfo);
             this.isLoggedIn = true;

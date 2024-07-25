@@ -7,8 +7,11 @@
 
     <button @click="uploadimg">uploadimg</button>
     <hr/>
+    isLogeIn:{{isLogeIn}}
+    <button @click="setLoginClick">setLogin</button>
+    <hr/>
     <button @click="sendGlobal">sendGlobal</button>
-    <button @click="myOrder">my-order</button>
+    <button @click="instanceMyOrderHandler">my-order</button>
     <button @click="eventBusMine">eventBusMine</button>
     <hr/>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
@@ -29,6 +32,7 @@ import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
 
 import useLoginInterceptor from "@/utils/useLoginInterceptor";
 import instanceEventBus from "@/utils/instanceEventBus.js";
+import {useUserStore} from "@/stores/user.js";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -50,6 +54,13 @@ function updateFileImageList({type, param}) {
 
 function uploadimg() {
   refUploadimg.value.chooseFile()
+}
+
+const userStore = useUserStore()
+
+const isLogeIn = computed(() => userStore.isLoggedIn)
+function setLoginClick() {
+  userStore.setLogin(!isLogeIn.value)
 }
 
 

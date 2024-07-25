@@ -9,7 +9,6 @@ const isLogeIn = computed(() => userStore.isLoggedIn)
 function onErrorHandler() {
     uni.showModal({
         title: '登录后，获取完整功能',
-        showCancel: false,
         success: function (res) {
             if (res.confirm) {
                 ylxRedirectTo('pages/login/login')
@@ -31,7 +30,7 @@ export default function ({onError = onErrorHandler, onSuccess}) {
         return
     }
     return function (...args) {
-        if (!isLogeIn.value) {
+        if (isLogeIn.value) {
             onSuccess(...args)
         } else {
             onError()
