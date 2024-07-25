@@ -19,12 +19,12 @@
 
 
       <!--  #ifdef MP -->
-      <ylx-button custom-class="login-btn active-bgc" custom-style="font-size:14px;line-height: 2.8;" open-type="getPhoneNumber" @getphonenumber="getMobilePhone"
+      <ylx-button custom-class="login-btn active-bgc" custom-style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhone"
                   text="微信一键登录"></ylx-button>
       <!-- #endif -->
 
       <!--  #ifdef WEB || APP-PLUS-->
-      <ylx-button custom-class="login-btn active-bgc" custom-style="font-size:14px;line-height: 2.8;" @btnClick="getTestToken"
+      <ylx-button custom-class="login-btn active-bgc" custom-style="font-size:14px;line-height: 3.4;" @btnClick="getTestToken"
                   text="微信一键登录"></ylx-button>
       <!-- #endif -->
 
@@ -116,11 +116,13 @@ export default {
   color: #272729;
   font-weight: bold;
   font-size: 24px;
+  margin-top: 20rpx;
 }
 .subtitle{
   color: #272729;
   font-weight: bold;
   font-size: 16px;
+  margin-top: 10rpx;
 
 }
 
@@ -130,7 +132,7 @@ export default {
   color: #ffffff;
   font-weight: bolder;
   background: #272729 !important;
-  width: 90%;
+  width: 90% !important;
 
 }
 
