@@ -37,7 +37,7 @@ import instanceEventBus from "@/utils/instanceEventBus.js";
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
 const fileImageList = ref([
-  {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
+  {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.xpng"},
   {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
   {url: "https://mf.hzjxsj.com/uploads/20240706/790ec706d1ad37a8e11617af3385fdfa.png"},
 ])
