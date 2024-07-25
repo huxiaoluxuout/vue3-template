@@ -26,12 +26,24 @@ export const request = (options) => {
                 uni.showToast({title: JSON.stringify(err), icon: 'none', duration: 5000})
                 reject(err)
             },
-            complete(res) {
+            complete(completeRes) {
 
-                if (res.statusCode === 500 || dataTypeJudge(res.data) === 'string') {
-                    console.error('complete', res)
-                    uni.showToast({title: res.data, icon: 'none', duration: 5000})
-                    reject(res)
+                if(completeRes.statusCode===500) {
+                    console.warn('接口传参：',options)
+                    console.warn('my-fail',completeRes)
+                    uni.showModal({
+                        title: '后端报错',
+                        content: '联系后端开发人员解决',
+                        success: function (res) {
+                            if (res.confirm) {
+                                console.log('用户点击确定');
+                            } else if (res.cancel) {
+                                console.log('用户点击取消');
+                            }
+                        }
+                    });
+
+                    return  reject(completeRes)
 
                 }
             }
@@ -39,24 +51,3 @@ export const request = (options) => {
 
     })
 };
-if (!Promise.prototype.finally) {
-    Promise.prototype.finally = function (callback) {
-        const Promise = this.constructor;
-        return this.then(
-            function (value) {
-                Promise.resolve(callback()).then(
-                    function () {
-                        return value;
-                    }
-                );
-            },
-            function (reason) {
-                Promise.resolve(callback()).then(
-                    function () {
-                        throw reason;
-                    }
-                );
-            }
-        );
-    }
-}

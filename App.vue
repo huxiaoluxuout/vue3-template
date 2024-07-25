@@ -37,7 +37,7 @@ onLaunch(() => {
 
 @import "static/css/ylx-tailwindcss.css";
 @import "static/css/common.css";
-@import "static/css/mf.css";
+@import "static/css/projects.css";
 
 
 </style>

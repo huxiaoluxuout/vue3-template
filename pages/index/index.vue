@@ -11,8 +11,6 @@
     <button @click="myOrder">my-order</button>
     <button @click="eventBusMine">eventBusMine</button>
     <hr/>
-
-    <!--    <button @click="buttontn">uniBLUETOOTH</button>-->
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
       eius eos explicabo facere magnam, maxime omnis quam quidem velit voluptas voluptatum.
@@ -27,9 +25,7 @@ import {ref, computed, watch} from 'vue';
 import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
 import YlxNavbar from "@/components/ylx-components/ylx-navbar.vue";
 import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
-import {uniBLUETOOTH} from "@/utils/common/authorize/uniApi";
-import {ylxBluetoothAuthorize} from "@/utils/uniTools";
-import useBluetoothManage from "@/utils/common/bluetooth/useBluetoothManage";
+
 
 import useLoginInterceptor from "@/utils/useLoginInterceptor";
 import instanceEventBus from "@/utils/instanceEventBus.js";
@@ -82,37 +78,6 @@ function sendGlobal() {
   instanceEventBus.sendGlobal()
 }
 
-/*--------------------------*/
-
-const isInitBle = ref(false) // 蓝牙已经初始化
-const bleIsConnected = ref(false) // 蓝牙已经连接
-const allBluetoothList = ref([]) //
-function buttontn() {
-  const {onSuccess, onError} = ylxBluetoothAuthorize()
-  onSuccess(() => {
-    uni.showToast({title: '正在搜索周围的设备', icon: 'loading', duration: 5000})
-    useBluetoothManage.initBle([])
-        .then(bluetoothList => {
-          const bleList = JSON.parse(JSON.stringify(bluetoothList));
-          allBluetoothList.value = bleList;
-          uni.setStorage({
-            key: 'bluetoothList',
-            data: bleList,
-            success() {
-              uni.hideToast()
-              uni.stopPullDownRefresh()
-            },
-          })
-        }).catch(err => {
-      uni.hideToast()
-      console.log('initBle', err)
-    })
-  })
-  onError(() => {
-    isInitBle.value = false
-    bleIsConnected.value = false
-  })
-}
 
 </script>
 
