@@ -1,11 +1,11 @@
 <template>
   <view class="page-content login" :style="{'--navbar-height':`${navbarHeight}px`}">
-    <view class="page-inner-bg"></view>
     <ylx-navbar
-        :configNavBar="{ hiddenLeftIcon: false,hiddenBorder: true}" bg-color="transparent"
+        :configNavBar="{ hiddenLeftIcon: false,hiddenBorder: true}"
+        :navbar-style="{ background:'rgb(152 207 250)'}"
         @navbarHeight="(e)=>navbarHeight=e" title="登录">
     </ylx-navbar>
-
+    <view class="page-inner-bg"></view>
     <view class="login-flex">
       <ylx-gap height="100px"></ylx-gap>
       <view class="login-flex">
@@ -19,9 +19,8 @@
 
       <ylx-gap height="30px"></ylx-gap>
 
-
       <!--  #ifdef MP -->
-      <ylx-button custom-class="login-btn" custom-style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhone"
+      <ylx-button custom-class="login-btn" custom-style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler"
                   text="微信一键登录"></ylx-button>
       <!-- #endif -->
 
@@ -54,16 +53,17 @@ onLoad((options) => {
 
 
 // 获取手机号
-function getMobilePhone(btnEvent) {
-  ylxLoginCode().then(loginCodeRes => {
-    wxRegister({
-      phone_code: btnEvent.detail.code,
-      code: loginCodeRes.code,
-    }).then((loginRes) => {
-      const resData = loginRes.data
-      setToken(resData)
-    })
-  })
+function getMobilePhoneHandler(btnEvent) {
+  ylxLoginCode()
+      .then(loginCodeRes => {
+        wxRegister({
+          phone_code: btnEvent.detail.code,
+          code: loginCodeRes.code,
+        }).then((loginRes) => {
+          const resData = loginRes.data
+          setToken(resData)
+        })
+      })
 }
 
 const setToken = (resData) => {
@@ -108,16 +108,18 @@ export default {
   /* #endif */
   margin: 0 30rpx;
 }
-.login{
+
+.login {
   position: relative;
 }
-.page-inner-bg{
+
+.page-inner-bg {
   position: absolute;
-  top:0;
+  top: 0;
   right: -30rpx;
   left: -30rpx;
   height: 568rpx;
-  background: linear-gradient( 180deg, #81C3F5 0%, #C9E5FB 55%, rgba(202,230,252,0) 100%);
+  background: linear-gradient(180deg, #81C3F5 0%, #C9E5FB 55%, rgba(202, 230, 252, 0) 100%);
 
 }
 
@@ -127,20 +129,23 @@ export default {
   align-items: center;
   width: 100%;
 }
-.title{
+
+.title {
   color: #272729;
   font-weight: bold;
   font-size: 24px;
   margin-top: 30rpx;
 }
-.subtitle{
+
+.subtitle {
   color: #272729;
   font-weight: bold;
   font-size: 18px;
   margin-top: 30rpx;
 
 }
-.desc{
+
+.desc {
   margin-top: 10vh;
   font-size: 14px;
   color: #000;
