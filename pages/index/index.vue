@@ -1,6 +1,6 @@
 <template>
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
-    <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
+    <ylx-navbar title="首页首首页首首页首首页首" bg-color="#fff"></ylx-navbar>
 
     <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
                    @updateFileImageList="updateFileImageList"></ylx-uploadimg>

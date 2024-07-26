@@ -1,8 +1,9 @@
 <template>
   <view class="page-content login" :style="{'--navbar-height':`${navbarHeight}px`}">
+    <view class="page-inner-bg"></view>
     <ylx-navbar
         :configNavBar="{ hiddenLeftIcon: false,hiddenBorder: true}" bg-color="transparent"
-        @navbarHeight="(e)=>navbarHeight=e">
+        @navbarHeight="(e)=>navbarHeight=e" title="登录">
     </ylx-navbar>
 
     <view class="login-flex">
@@ -14,17 +15,18 @@
 
       </view>
 
+      <view class="desc">为提供优质服务，我们需要您的授权</view>
 
       <ylx-gap height="30px"></ylx-gap>
 
 
       <!--  #ifdef MP -->
-      <ylx-button custom-class="login-btn active-bgc" custom-style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhone"
+      <ylx-button custom-class="login-btn" custom-style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhone"
                   text="微信一键登录"></ylx-button>
       <!-- #endif -->
 
       <!--  #ifdef WEB || APP-PLUS-->
-      <ylx-button custom-class="login-btn active-bgc" custom-style="font-size:14px;line-height: 3.4;" @btnClick="getTestToken"
+      <ylx-button custom-class="login-btn" custom-style="font-size:14px;line-height: 3.4;" @btnClick="getTestToken"
                   text="微信一键登录"></ylx-button>
       <!-- #endif -->
 
@@ -94,6 +96,7 @@ export default {
   }
 }
 </script>
+
 <style scoped lang="scss">
 .page-content {
   /* #ifdef WEB */
@@ -104,6 +107,18 @@ export default {
   min-height: 100vh;
   /* #endif */
   margin: 0 30rpx;
+}
+.login{
+  position: relative;
+}
+.page-inner-bg{
+  position: absolute;
+  top:0;
+  right: -30rpx;
+  left: -30rpx;
+  height: 568rpx;
+  background: linear-gradient( 180deg, #81C3F5 0%, #C9E5FB 55%, rgba(202,230,252,0) 100%);
+
 }
 
 .login-flex {
@@ -116,14 +131,19 @@ export default {
   color: #272729;
   font-weight: bold;
   font-size: 24px;
-  margin-top: 20rpx;
+  margin-top: 30rpx;
 }
 .subtitle{
   color: #272729;
   font-weight: bold;
-  font-size: 16px;
-  margin-top: 10rpx;
+  font-size: 18px;
+  margin-top: 30rpx;
 
+}
+.desc{
+  margin-top: 10vh;
+  font-size: 14px;
+  color: #000;
 }
 
 /*--------------------------------------*/
@@ -131,14 +151,9 @@ export default {
   font-size: 18px;
   color: #ffffff;
   font-weight: bolder;
-  background: #272729 !important;
+  background: #48A6EE !important;
   width: 90% !important;
 
-}
-
-
-.page-content .active-bgc.active-bgc.active-bgc.active-bgc {
-  background-color: #272729 !important;
 }
 
 /*--------------------------------------*/
