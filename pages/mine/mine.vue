@@ -15,10 +15,9 @@ import {onLoad, onTabItemTap, onReachBottom, onPullDownRefresh} from '@dcloudio/
 import {ylxNavigateTo} from "@/utils/uniTools";
 import YlxGap from "@/components/ylx-components/ylx-gap.vue";
 
-import useReachBottomRefreshVue3 from "@/utils/common/useReachBottomRefreshVue3";
 
 import instanceEventBus from "@/utils/instanceEventBus.js";
-const {pullDownRefreshHandler, setFunction} = useReachBottomRefreshVue3()
+
 
 const myOrderGridList = ref([
   {id: 1, text: "待付款", iconSrc: '/static/mine_order_icon_1.png', pagePath: 'pagesSubMine/myOrder/myOrder'},
