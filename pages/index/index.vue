@@ -30,9 +30,9 @@ import YlxNavbar from "@/components/ylx-components/ylx-navbar.vue";
 import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
 
 
-import useLoginInterceptor from "@/utils/useLoginInterceptor";
 import instanceEventBus from "@/utils/instanceEventBus.js";
 import {useUserStore} from "@/stores/user.js";
+import useMustLogIn from "@/utils/useMustLogIn.js";
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
@@ -76,7 +76,9 @@ function myOrder() {
   }, true)
 }
 
-const instanceMyOrderHandler = useLoginInterceptor({onSuccess: myOrder})
+
+const instanceMyOrderHandler = useMustLogIn({onSuccess: myOrder})
+
 
 function eventBusMine() {
   instanceEventBus.emit({
