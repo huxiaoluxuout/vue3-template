@@ -1,88 +1,104 @@
 import useDoQueue from "@/utils/common/useDoQueue.js";
 import createProxy from "@/utils/common/createProxy.js";
+import {dataTypeJudge} from "@/utils/tools.js";
 
-export default function useReachBottom() {
-    let pageData = null
+/**
+ *
+ * @param pageNum 当前页码
+ * @param pageSizeNum 分页大小
+ * @returns {{dataHandler: ((function({data?: [], resData?: []}, boolean=): (*[]))|*), reload: reloadHandler, invokeAllFn: (*|invokeAllFn), pageInfoProxy: (*|Object), reachBottomHandler: reachBottomHandler, mixinReachBottomPullDownRefresh: {onReachBottom(): void, onLoad(): void, onPullDownRefresh(): void}, setFunction: (*|setFunction), addFunctions: (*|addFunctionsCheckDuplicate)}}
+ */
+export default function useReachBottom(pageNum = 1, pageSizeNum = 10) {
+
+    let page = pageNum
+    let pageSize = pageSizeNum
+
+    let isNoData = false
+
+    let isByReload = false
+
+
     const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
     const pageInfo = {
-        page: 1,
-        pageSize: 10,
+        page: page,
+        pageSize: pageSize,
     };
     const pageInfoProxy = createProxy(pageInfo)
 
+
     function resetPageInfo() {
-        pageInfoProxy.page = 1
-        pageInfoProxy.pageSize = 10
+        pageInfoProxy.page = page
+        pageInfoProxy.pageSize = pageSize
     }
 
     resetPageInfo()
 
-    let isNoData = false
-    let isByReload = false
 
     // 重新加载
     function reloadHandler() {
         isByReload = true
         isNoData = false
         resetPageInfo()
-        if (Array.isArray(pageData)) {
-            pageData.length = 0
-        } else {
-            pageData = null
-        }
-
         invokeAllFn();
     }
 
     // 触底加载下一页数据
     function reachBottomHandler() {
-        console.log('触底加载下一页数据')
-        if (!isNoData) {
+        if (pageInfoProxy.page > 1 && !isNoData) {
             invokeAllFn();
-        } else {
-            console.warn('到底了')
         }
     }
+
+    let timeId = 0
 
     // 下拉刷新
     function pullDownRefreshHandler() {
         reloadHandler()
-
-        setTimeout(() => {
+        timeId = setTimeout(() => {
             uni.stopPullDownRefresh();
         }, 2500)
     }
 
+
     function resDataHandler({data = [], resData = []}, isNextPage = false) {
-        if (typeof pageData === null) {
-            pageData = data
-        }
-
         uni.stopPullDownRefresh();
-        if (!Array.isArray(data) || !Array.isArray(resData)) {
-            return resData;
-        }
+        clearTimeout(timeId)
 
-        // 处理重新加载
-        if (isByReload) {
-            isByReload = false;
+        if (dataTypeJudge(data, 'array')) {
+            if (!dataTypeJudge(resData, 'array')) {
+                console.warn('没有数据要返回空数组！！！')
+                resData = []
+            }
+            // 修复重新加载时，之前的数据没有清除的bug
+            if (isByReload) {
+                data = []
+                isNextPage = true
+                isByReload = false
+            }
+
+
             if (isNextPage) {
                 pageInfoProxy.page += 1;
-            }
-            return resData;
-        }
+                return data.concat(resData);
+            } else {
+                // 只有一页数据
+                if (pageInfoProxy.page === 1) {
+                    return resData
+                } else {
+                    // 这是最后的一页了1
+                    if (!isNoData) {
+                        // console.log('这是最后的一页了----1')
+                        isNoData = true
+                        return data.concat(resData);
+                    } else {
+                        // console.log('这是最后的一页了----2')
+                        return data
+                    }
+                }
 
-        // 处理下一页
-        if (isNextPage) {
-            pageInfoProxy.page += 1;
-            return data.concat(resData);
-        } else {
-            console.log('这是最后的一页了', pageInfoProxy.page);
-            if (isNoData) {
-                resData = [];
             }
-            isNoData = true;
-            return data.concat(resData);
+        } else {
+            return resData
         }
     }
 
@@ -92,9 +108,7 @@ export default function useReachBottom() {
             resetPageInfo()
         },
         onReachBottom() {
-            if (!isNoData && pageInfoProxy.page > 1) {
-                reachBottomHandler()
-            }
+            reachBottomHandler()
         },
         onPullDownRefresh() {
             pullDownRefreshHandler()
@@ -106,7 +120,9 @@ export default function useReachBottom() {
         // #ifndef VUE3
         mixinReachBottomPullDownRefresh,
         // #endif
-
+        // #ifdef VUE3
+        reachBottomHandler,
+        // #endif
         pageInfoProxy,
         setFunction,
         addFunctions,
