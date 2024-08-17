@@ -1,4 +1,4 @@
-import useInterceptorProxy from "@/utils/useInterceptorProxy.js";
+import useInterceptorProxy from "@/utils/common/useInterceptorProxy.js";
 import {ylxRedirectTo} from "@/utils/uniTools.js";
 import createProxy from "@/utils/common/createProxy.js";
 

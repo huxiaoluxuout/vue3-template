@@ -28,7 +28,7 @@ import {ylxNavigateTo, ylxStyleObjectToString} from "@/utils/uniTools";
 import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
 import {uniChooseImage} from "@/utils/common/authorize/uniApi";
 import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
-import {uploadFilePromise} from "@/components/ylx-components/uploadFilePromise.js";
+import {uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
 
 export default {
   name: "ylx-uploadimg",

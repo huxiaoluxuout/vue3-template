@@ -387,6 +387,7 @@ export default {
     },
 
     updateViewData() {
+      // console.log('updateViewData')
       this.$nextTick(() => {
         this.getAllDays(this.currentYear, this.currentMonth)
         this.setCurrentDate(this.currentYear, this.currentMonth, this.currentDay)

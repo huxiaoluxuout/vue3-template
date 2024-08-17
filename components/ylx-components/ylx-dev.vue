@@ -32,5 +32,10 @@ export default {
   z-index: 5000;
   text-align: center;
   box-sizing: border-box;
+  text-shadow:
+      -1px -1px 0 #fafafa,
+      1px -1px 0 #fafafa,
+      -1px 1px 0 #fafafa,
+      1px 1px 0 #fafafa;
 }
 </style>
