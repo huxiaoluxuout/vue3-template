@@ -7,6 +7,7 @@
         <view class="ylx-section-wrapper__right">》</view>
       </view>
     </view>
+    <ylx-calendar></ylx-calendar>
   </view>
 </template>
 <script setup>

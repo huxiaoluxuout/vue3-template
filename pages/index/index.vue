@@ -29,10 +29,13 @@ import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
 import YlxNavbar from "@/components/ylx-components/ylx-navbar.vue";
 import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
 
-
 import instanceEventBus from "@/utils/instanceEventBus.js";
 import {useUserStore} from "@/stores/user.js";
 import useMustLogIn from "@/utils/useMustLogIn.js";
+import ylxuni from "ylxuni";
+const{ylxToast}=ylxuni(uni)
+
+ylxToast('hahha')
 
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
