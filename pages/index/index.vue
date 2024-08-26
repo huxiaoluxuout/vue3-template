@@ -35,8 +35,8 @@ import useMustLogIn from "@/utils/useMustLogIn.js";
 import ylxuni from "ylxuni";
 const{ylxToast}=ylxuni(uni)
 
-ylxToast('hahha')
 
+ylxToast('hahha')
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
 const fileImageList = ref([
