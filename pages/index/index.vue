@@ -33,7 +33,9 @@ import instanceEventBus from "@/utils/instanceEventBus.js";
 import {useUserStore} from "@/stores/user.js";
 import useMustLogIn from "@/utils/useMustLogIn.js";
 import ylxuni from "ylxuni";
+// import ylxuni from "./yalc.lock";
 const{ylxToast}=ylxuni(uni)
+
 
 
 ylxToast('hahha')

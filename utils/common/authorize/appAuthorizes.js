@@ -69,7 +69,7 @@ export const showAuthTipModal = (authorizeTpe, disabled = false) => {
         ["READ_EXTERNAL_STORAGE"]: {
             authorize: 'android.permission.READ_EXTERNAL_STORAGE',
             title: "相册存储权限说明",
-            describe: "便于您使用该功能上传您的照片、图片、视频，完善师傅认证信息。请您确认授权，否则无法使用该功能"
+            describe: "便于您使用该功能上传您的照片、图片、视频，完善认证信息。请您确认授权，否则无法使用该功能"
         },
         ["CAMERA"]: {
             authorize: 'android.permission.CAMERA',
