@@ -13,8 +13,8 @@
 </template>
 <script>
 
-import {localStringStyle, ylxStyleObjectToString, componentsMixin} from "@/components/ylx-components/ylx-JS/template";
-
+import {localStringStyle, componentsMixin} from "@/components/ylx-components/ylx-JS/template";
+import {convertStyleObjectToString} from "@/utils/tools.js";
 
 export default {
   name: 'ylx-pick',
@@ -115,14 +115,14 @@ export default {
   },
   computed: {
     resultCustomStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         '--num-columns': this.numColumns,
         '--gap': this.gap,
       }) + localStringStyle(this.customStyle)
     },
 
     resultItemStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         'borderRadius': this.rounded,
         'fontSize': this.size,
         'color': this.color,
@@ -134,7 +134,7 @@ export default {
     },
 
     resultActiveStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         'borderRadius': this.rounded,
         'fontSize': this.size,
 

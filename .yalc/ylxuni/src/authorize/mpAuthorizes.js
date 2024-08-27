@@ -1,5 +1,3 @@
-
-
 /**
  * https://uniapp.dcloud.net.cn/api/other/authorize.html#scope-%E5%88%97%E8%A1%A8
  * */
@@ -67,3 +65,21 @@ function openSetting(rejectionTips) {
     });
 }
 
+const promiseCallback = (promiseFn, ...args) => {
+    return {
+        onSuccess: (callback) => {
+            promiseFn(...args).then(res => {
+                callback(res);
+            });
+        },
+        onError: (callback) => {
+            promiseFn(...args).catch(err => {
+                callback(err);
+            });
+        }
+    };
+}
+
+export function BluetoothAuthorize(leadText = '请允许小程序使用蓝牙') {
+    return promiseCallback(mpCheckAuthorizes, 'bluetooth', leadText)
+}

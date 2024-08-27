@@ -17,7 +17,8 @@ import {ylxNavigateTo} from "@/utils/uniTools";
 import YlxGap from "@/components/ylx-components/ylx-gap.vue";
 
 
-import instanceEventBus from "@/utils/instanceEventBus.js";
+
+import {ylxEventBus} from "@/utils/common/useYlxUni.js";
 
 
 const myOrderGridList = ref([
@@ -33,7 +34,7 @@ onPullDownRefresh(()=>{
 })
 
 
-instanceEventBus.on(({args,source}) => {
+ylxEventBus.on(({args,source}) => {
   console.log(...args,source)
 });
 

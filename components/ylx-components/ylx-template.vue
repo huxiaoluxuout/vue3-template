@@ -6,7 +6,8 @@
 <script>
 
 
-import {componentsMixin, localStringStyle, ylxStyleObjectToString} from "@/components/ylx-components/ylx-JS/template";
+import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
+import {convertStyleObjectToString} from "@/utils/tools.js";
 
 export default {
   mixins: [componentsMixin],
@@ -19,7 +20,7 @@ export default {
   },
   computed: {
     resultCustomStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         // 其它代码
 
       }) + localStringStyle(this.customStyle)

@@ -4,8 +4,9 @@
 <script>
 
 
-import {localStringStyle, ylxStyleObjectToString, componentsMixin} from "@/components/ylx-components/ylx-JS/template";
+import {localStringStyle, componentsMixin} from "@/components/ylx-components/ylx-JS/template";
 
+import {convertStyleObjectToString} from "@/utils/tools.js";
 
 export default {
   mixins: [componentsMixin],
@@ -29,7 +30,7 @@ export default {
   },
   computed: {
     resultCustomStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         height: this.height,
         width: this.width,
         'background-color': this.bgColor,

@@ -26,19 +26,12 @@
 
 import {ref, computed, watch} from 'vue';
 import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
-import YlxNavbar from "@/components/ylx-components/ylx-navbar.vue";
-import YlxUploadimg from "@/components/ylx-components/ylx-uploadimg.vue";
 
-import instanceEventBus from "@/utils/instanceEventBus.js";
 import {useUserStore} from "@/stores/user.js";
-import useMustLogIn from "@/utils/useMustLogIn.js";
-import ylxuni from "ylxuni";
-// import ylxuni from "./yalc.lock";
-const{ylxToast}=ylxuni(uni)
+
+import {ylxEventBus, ylxMustLogIn} from "@/utils/common/useYlxUni.js";
 
 
-
-ylxToast('hahha')
 /*-------------------------------------------------------*/
 const refUploadimg = ref(null)
 const fileImageList = ref([
@@ -75,25 +68,25 @@ onLoad(() => {
 
 /*--------------------------*/
 function myOrder() {
-  instanceEventBus.emit({
+  ylxEventBus.emit({
     targetPath: '/pagesSubMine/myOrder/myOrder',
     source: 'xixi'
   }, true)
 }
 
 
-const instanceMyOrderHandler = useMustLogIn({onSuccess: myOrder})
+const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({onSuccess: myOrder})
 
 
 function eventBusMine() {
-  instanceEventBus.emit({
+  ylxEventBus.emit({
     targetPath: '/pages/mine/mine',
     options: {age: 18}
   }, true, 'switchTab')
 }
 
 function sendGlobal() {
-  instanceEventBus.sendGlobal()
+  ylxEventBus.emitGlobal()
 }
 
 

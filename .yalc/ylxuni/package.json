@@ -5,10 +5,13 @@
   "main": "./index.js",
   "type": "module",
   "scripts": {
-    "build": "rollup -c"
+    "build": "rollup -c && yalc push"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "yalcSig": "5d523f017bd02bb15f61b51f0c72905d"
+  "dependencies": {
+    "mitt": "^3.0.1"
+  },
+  "yalcSig": "bd30de5b87fcc2405761028587ab72fb"
 }

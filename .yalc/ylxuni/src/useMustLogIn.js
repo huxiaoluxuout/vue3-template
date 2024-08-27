@@ -1,4 +1,4 @@
-import {createProxy, useInterceptorProxy} from "../utils/tools.js";
+import {createProxyObject, useInterceptorProxy} from "./utils/tools.js";
 
 export class MustLogIn {
     static targetLogin = {login: false}
@@ -9,16 +9,11 @@ export class MustLogIn {
      */
     constructor(platform) {
         MustLogIn.platform = platform
-        this.loginProxy = createProxy(MustLogIn.targetLogin)
-        this.onError = this.handleError
-        this.setLoginToken = this.handleSetLoginToken
-        this.updateLogin = this.handleUpdateLogin
-        this.unSetLoginToken = this.handleUnSetLoginToken
-        this.interceptMastLogIn = this.handleInterceptMastLogIn
+        this.loginProxyObject = createProxyObject(MustLogIn.targetLogin)
     }
 
 
-    handleError() {
+    static onError() {
         MustLogIn.platform.showModal({
             title: '登录后，获取完整功能',
             success: function (res) {
@@ -31,8 +26,8 @@ export class MustLogIn {
         })
     }
 
-    handleSetLoginToken({tokenKey, tokenData}, callback) {
-        this.loginProxy.login = true
+    setLoginToken({tokenKey, tokenData}, callback) {
+        this.loginProxyObject.login = true
         MustLogIn.platform.setStorage({
             key: tokenKey,
             data: tokenData,
@@ -44,15 +39,15 @@ export class MustLogIn {
         })
     }
 
-    handleUpdateLogin(callback) {
-        this.loginProxy.login = true
+    updateLogin(callback) {
+        this.loginProxyObject.login = true
         if (typeof callback === 'function') {
             callback()
         }
     }
 
-    handleUnSetLoginToken(tokenKey, callback) {
-        this.loginProxy.login = false
+    unSetLoginToken(tokenKey, callback) {
+        this.loginProxyObject.login = false
         MustLogIn.platform.removeStorage({
             key: tokenKey,
             success: function () {
@@ -69,9 +64,9 @@ export class MustLogIn {
      * @param onError
      * @returns {(function(...[*]): void)|*}
      */
-    handleInterceptMastLogIn({onSuccess, onError = this.onError}) {
-        const {interceptor: logInterceptor} = useInterceptorProxy(MustLogIn.targetLogin)
-        return logInterceptor({onSuccess, onError})
+    interceptMastLogIn({onSuccess, onError = MustLogIn.onError}) {
+        const {createInterceptor} = useInterceptorProxy(MustLogIn.targetLogin)
+        return createInterceptor({onSuccess, onError})
     }
 
 

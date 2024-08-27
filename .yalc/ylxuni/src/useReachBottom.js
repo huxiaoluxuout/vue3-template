@@ -1,11 +1,25 @@
-import {useDoQueue, createProxy, dataTypeJudge} from "../utils/tools.js";
+import {useFunctionQueue, dataTypeJudge, createProxyObject} from "./utils/tools.js";
 
 /**
- *
- * @param pageNum 当前页码
- * @param pageSizeNum 分页大小
- * @returns {{dataHandler: ((function({data?: [], resData?: []}, boolean=): (*[]))|*), reload: reloadHandler, invokeAllFn: (*|invokeAllFn), pageInfoProxy: (*|Object), reachBottomHandler: reachBottomHandler, mixinReachBottomPullDownRefresh: {onReachBottom(): void, onLoad(): void, onPullDownRefresh(): void}, setFunction: (*|setFunction), addFunctions: (*|addFunctionsCheckDuplicate)}}
+ * 创建具有刷新和无限滚动功能的分页处理程序。
+ * @param {number} pageNum - 当前页码.
+ * @param {number} pageSizeNum - 分页大小.
+ * @returns {{
+ *   dataHandler: ((function({data?: [], resData?: []}, boolean=): (*[]))|*),
+ *   reload: function(): void,
+ *   handleScrollAndRefresh: {
+ *     onReachBottom(): void,
+ *     onLoad(): void,
+ *     onPullDownRefresh(): void,
+ *   },
+ *   invokeAllFunctions: function(): void,
+ *   pageInfoProxy: Object,
+ *   reachBottomHandler: function(): void,
+ *   addFunction: function(fn: Function): void,
+ *   setFunction: function(fn: Function): void
+ * }}
  */
+
 export default function useReachBottom(pageNum = 1, pageSizeNum = 10,) {
     let platform = uni
     if (wx) {
@@ -21,12 +35,12 @@ export default function useReachBottom(pageNum = 1, pageSizeNum = 10,) {
     let isByReload = false
 
 
-    const {setFunction, addFunctions, invokeAllFn} = useDoQueue()
+    const {setFun, addFun, invokeAllFn} = useFunctionQueue()
     const pageInfo = {
         page: page,
         pageSize: pageSize,
     };
-    const pageInfoProxy = createProxy(pageInfo)
+    const pageInfoProxy = createProxyObject(pageInfo)
 
 
     function resetPageInfo() {
@@ -38,11 +52,14 @@ export default function useReachBottom(pageNum = 1, pageSizeNum = 10,) {
 
 
     // 重新加载
-    function reloadHandler() {
+    function reloadHandler(callback) {
         isByReload = true
         isNoData = false
         resetPageInfo()
         invokeAllFn();
+        if (typeof callback === 'function') {
+            callback()
+        }
     }
 
     // 触底加载下一页数据
@@ -106,7 +123,7 @@ export default function useReachBottom(pageNum = 1, pageSizeNum = 10,) {
     }
 
     // #ifndef VUE3
-    const mixinReachBottomPullDownRefresh = {
+    const handleScrollAndRefresh = {
         onLoad() {
             resetPageInfo()
         },
@@ -121,14 +138,14 @@ export default function useReachBottom(pageNum = 1, pageSizeNum = 10,) {
 
     return {
         // #ifndef VUE3
-        mixinReachBottomPullDownRefresh,
+        handleScrollAndRefresh,
         // #endif
         // #ifdef VUE3
         reachBottomHandler,
         // #endif
         pageInfoProxy,
-        setFunction,
-        addFunctions,
+        setFun,
+        addFun,
         invokeAllFn,
         reload: reloadHandler,
         dataHandler: resDataHandler,

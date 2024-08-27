@@ -20,6 +20,7 @@ const preserveUniAppConditionals = () => {
     };
 };
 export default {
+    // input: './src/EventBusCore.js',
     input: './index.js',
     output: {
         file: 'dist/ylxuni.min.js',

@@ -2,6 +2,7 @@ import {EventBusCore} from "./EventBusCore.js";
 
 const instanceEventBus = new EventBusCore()
 
+
 export class UseEventBus {
 
     static platform = null

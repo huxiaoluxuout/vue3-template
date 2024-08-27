@@ -15,7 +15,8 @@
 
 <script>
 
-import {componentsMixin, localStringStyle, ylxStyleObjectToString} from "@/components/ylx-components/ylx-JS/template";
+import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
+import {convertStyleObjectToString} from "@/utils/tools.js";
 import {computedRatio, parseSize} from "@/utils/tools";
 import {loading, loadingErr} from "@/components/ylx-components/ylx-static/base64.js";
 
@@ -115,13 +116,13 @@ export default {
       }
 
 
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         ...attrObj
       }) + localStringStyle(this.customStyle)
     },
 
     resultLoadingStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         background: `url(${this.loadingSrc})`,
         backgroundSize: '100%,100%',
         backgroundRepeat: 'no-repeat'
@@ -129,7 +130,7 @@ export default {
       }) + localStringStyle(this.customLoadingStyle)
     },
     resultLoadingErrStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         background: `url(${this.loadingErrSrc})`,
         backgroundSize: '100%,100%',
         backgroundRepeat: 'no-repeat'

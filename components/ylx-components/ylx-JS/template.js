@@ -1,10 +1,10 @@
-import {ylxStyleObjectToString} from "@/utils/uniTools";
+import {convertStyleObjectToString} from "@/utils/tools.js";
 
  const localStringStyle = (style) => {
     if (typeof style === 'string') {
         return style;
     } else {
-        return ylxStyleObjectToString({
+        return convertStyleObjectToString({
             ...style
         })
     }
@@ -27,7 +27,6 @@ import {ylxStyleObjectToString} from "@/utils/uniTools";
     }
 };
 export {
-    ylxStyleObjectToString,
     localStringStyle,
     componentsMixin
 }

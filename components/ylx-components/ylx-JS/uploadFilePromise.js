@@ -19,7 +19,6 @@ const configPrams = {
  */
 
 export function uploadFilePromise(tempFilePath, config) {
-    console.log('uploadFilePromise--uploadFilePromise')
     const options = Object.assign(configPrams, config)
     return new Promise((resolve) => {
         uni.uploadFile({

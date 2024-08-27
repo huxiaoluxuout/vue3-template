@@ -58,7 +58,9 @@
 <script>
 import pagesConfig from "@/pages.json";
 
-import {ylxFilterPath, ylxNavigateTo, ylxStyleObjectToString} from "@/utils/uniTools";
+import {ylxFilterPath, ylxNavigateTo, } from "@/utils/uniTools";
+import {convertStyleObjectToString} from "@/utils/tools.js";
+
 import {localStringStyle} from "@/components/ylx-components/ylx-JS/template";
 
 
@@ -192,7 +194,7 @@ export default {
     },
 
     ylxNavbarContainerStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         position: 'absolute',
         top: this.defaultContentTop,
         transform: 'translateY(-50%)',
@@ -201,7 +203,7 @@ export default {
 
 
     navbarStyle_() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         backgroundColor: this.bgColor,
         height: `${this.navbarHeight}px`,
         borderBottom: !this.configNavBar_.hiddenBorder ? '1px solid #f3f3f3' : 'none',
@@ -209,7 +211,7 @@ export default {
       })
     },
     titleStyle_() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         'color': this.color,
         'fontSize': this.size,
       })
@@ -221,7 +223,7 @@ export default {
     },
 
     resultCustomLeftIconStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         color: this.iconColor,
         fontSize: this.iconSize,
         boxSizing: 'border-box',

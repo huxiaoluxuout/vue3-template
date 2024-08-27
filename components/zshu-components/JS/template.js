@@ -1,4 +1,5 @@
-import {ylxStyleObjectToString} from "@/utils/uniTools";
+import {convertStyleObjectToString} from "@/utils/tools.js";
+
 
 export const componentsMixin = {
     options: {
@@ -20,7 +21,7 @@ export const componentsMixin = {
             if (typeof this.customStyle === 'string') {
                 return this.customStyle;
             } else {
-                return ylxStyleObjectToString({
+                return convertStyleObjectToString({
                     ...this.customStyle
                 });
             }

@@ -33,8 +33,8 @@
 </template>
 <script>
 
-import {componentsMixin, localStringStyle, ylxStyleObjectToString} from "@/components/ylx-components/ylx-JS/template";
-import {computedRatio} from "@/utils/tools";
+import {componentsMixin, localStringStyle, } from "@/components/ylx-components/ylx-JS/template";
+import {computedRatio,convertStyleObjectToString} from "@/utils/tools";
 
 export default {
   mixins: [componentsMixin],
@@ -74,7 +74,7 @@ export default {
 
 
     resultCustomStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         // 其它代码
       }) + localStringStyle(this.customStyle)
     },

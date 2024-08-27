@@ -50,8 +50,8 @@
 <script>
 
 
-import {componentsMixin, localStringStyle, ylxStyleObjectToString} from "@/components/ylx-components/ylx-JS/template";
-
+import {componentsMixin, localStringStyle } from "@/components/ylx-components/ylx-JS/template";
+import {convertStyleObjectToString} from "@/utils/tools.js";
 
 export default {
   mixins: [componentsMixin],
@@ -171,7 +171,7 @@ export default {
   },
   computed: {
     resultCustomStyle() {
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         height: '100%'
       }) + localStringStyle(this.customStyle)
     },

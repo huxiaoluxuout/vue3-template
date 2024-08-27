@@ -1,5 +1,5 @@
 // 将参数转换为查询字符串
-const encodeObjectToQueryString = (params, starStr = '?') => {
+export const encodeObjectToQueryString = (params, starStr = '?') => {
     if (Object.keys(params).length === 0) {
         return '';
     }
@@ -11,7 +11,7 @@ const encodeObjectToQueryString = (params, starStr = '?') => {
 }
 
 // 解析查询字符串
-const encodeParseQueryString = (queryString) => {
+export const encodeParseQueryString = (queryString) => {
     const params = {};
     if (queryString.startsWith('?')) {
         queryString = queryString.slice(1);
@@ -24,16 +24,52 @@ const encodeParseQueryString = (queryString) => {
     return params;
 };
 
-// 对象转成字符串 (style)
-const objectStyleToString = (obj) => {
-    let str = '';
-    for (const key in obj) {
-        str += `${key.replace(/([A-Z])/g, '-$1').toLowerCase()}:${obj[key]};`;
+/**
+ * 提取指定属性并返回一个新对象
+ * @param {Object} sourceAttributes - 源属性对象
+ * @param {Array} additionalKeys - 需要额外提取的键数组
+ * @returns {Object} - 包含提取属性的新对象
+ */
+export const extractAttributes = (sourceAttributes, additionalKeys = []) => {
+    // 默认需要提取的属性数组
+    const defaultKeys = ['flex', 'backgroundColor', 'filter', 'color'];
+
+    // 初始化结果对象。
+    const extractedAttributes = {};
+
+    // 遍历默认键数组，提取属性值并添加到结果对象中。
+    for (const key of defaultKeys) {
+        const value = sourceAttributes[key];
+        if (value !== null && value !== undefined) {
+            extractedAttributes[key] = value;
+        }
     }
-    return str;
+
+    // 遍历额外键数组，提取属性值并添加到结果对象中。
+    for (const key of additionalKeys) {
+        const value = sourceAttributes[key];
+        if (value !== null && value !== undefined) {
+            extractedAttributes[key] = value;
+        }
+    }
+
+    return extractedAttributes;
+};
+
+/**
+ * 将样式对象转换为 CSS 字符串
+ * @param {Object} styleObject - 样式对象
+ * @returns {string} - CSS 字符串
+ */
+export const convertStyleObjectToString = (styleObject) => {
+    const styleStringArray = [];
+    for (const property in styleObject) {
+        styleStringArray.push(`${property.replace(/([A-Z])/g, '-\$1').toLowerCase()}:${styleObject[property]}`);
+    }
+    return styleStringArray.join(';');
 }
 
-function splitQueryUrl(pathUrl) {
+export function splitQueryUrl(pathUrl) {
     let url = /^\//.test(pathUrl) ? pathUrl : '/' + pathUrl;
     let [path, query] = url.split('?');
     return {
@@ -45,7 +81,7 @@ function splitQueryUrl(pathUrl) {
 
 
 // 根据传入的索引批量删除
-function removeElementsByIndex(arr, indexes, callback) {
+export function removeElementsByIndex(arr, indexes, callback) {
     indexes = Array.isArray(indexes) ? indexes : [indexes];
     // 根据传入的索引进行删除
     for (let i = indexes.length - 1; i >= 0; i--) {
@@ -58,7 +94,7 @@ function removeElementsByIndex(arr, indexes, callback) {
 
 }
 
-function isEmptyData(value) {
+export function isEmptyData(value) {
     const dataType = Object.prototype.toString.call(value).replace(/\[object (\w+)]/, "$1").toLowerCase();
     if (value === undefined || value === null) {
         return true;
@@ -74,61 +110,15 @@ function isEmptyData(value) {
     return false;
 }
 
-function deepEqual(obj1, obj2) {
-    // 判断是否为对象
-    if (obj1 === obj2) return true;
-    if (!(obj1 instanceof Object) || !(obj2 instanceof Object)) return false;
-
-    // 获取属性列表
-    let props1 = Object.getOwnPropertyNames(obj1);
-    let props2 = Object.getOwnPropertyNames(obj2);
-
-    // 属性数量不同，直接返回 false
-    if (props1.length !== props2.length) return false;
-
-    // 逐一比较属性值
-    for (let propName of props1) {
-        if (!obj2.hasOwnProperty(propName)) return false;
-
-        let val1 = obj1[propName];
-        let val2 = obj2[propName];
-
-        // 递归处理对象和数组
-        if (val1 instanceof Object) {
-            if (!deepEqual(val1, val2)) return false;
-        } else if (val1 instanceof Array) {
-            if (!arrayEquals(val1, val2)) return false;
-        } else if (val1 !== val2) {
-            return false;
-        }
-    }
-
-    return true;
-}
-
-function simulateOperation() {
-    return new Promise((resolve, reject) => {
-        const delay = Math.floor(Math.random() * (5000 - 1000 + 1)) + 1000;
-
-        const operationShouldFail = Math.random() < 0.3;// 假设有30%的概率失败
-        setTimeout(() => {
-            if (operationShouldFail) {
-                reject('失败');
-            } else {
-                resolve('成功');
-            }
-        }, delay);
-    });
-}
 
 // 判断数据类型
-function dataTypeJudge(val, type) {
+export function dataTypeJudge(val, type) {
     const dataType = Object.prototype.toString.call(val).replace(/\[object (\w+)\]/, "$1").toLowerCase();
     return type ? dataType === type : dataType;
 }
 
 // 将时间戳格式化为日期字符串
-function formatTimestamp(timestamp) {
+export function formatTimestamp(timestamp) {
     const date = new Date(timestamp);
     const year = date.getFullYear();
     const month = (date.getMonth() + 1).toString().padStart(2, '0');
@@ -140,14 +130,14 @@ function formatTimestamp(timestamp) {
 }
 
 // 输出时间戳
-function dateTimestamp(date) {
+export function dateTimestamp(date) {
 // 将日期字符串转换为日期对象
     const dateObject = new Date(date);
 // 获取时间戳（毫秒数）
     return dateObject.getTime();
 }
 
-function computedRatio(strRatio) {
+export function computedRatio(strRatio) {
     let result = strRatio
     if (strRatio.indexOf(':') !== -1) {
         let ratio = strRatio.split(':').map(Number);
@@ -156,7 +146,7 @@ function computedRatio(strRatio) {
     return result
 }
 
-const promiseCallback = (promiseFn, ...args) => {
+export const promiseCallback = (promiseFn, ...args) => {
     return {
         onSuccess: (callback) => {
             promiseFn(...args).then(res => {
@@ -172,7 +162,7 @@ const promiseCallback = (promiseFn, ...args) => {
 }
 
 
-function parseSize(str) {
+export function parseSize(str) {
     let match = str.match(/(\d+)(rpx|px)/i);
     if (match) {
         return {
@@ -187,19 +177,21 @@ function parseSize(str) {
     }
 }
 
-function removeTrailingZeros(value) {
+export function removeTrailingZeros(value) {
     let stringValue = value.toString();
     return stringValue.replace(/(\.\d*?[1-9])0+$|\.0*$/, '\$1');
 }
-function verificationID(IDStr) {
+
+export function verificationID(IDStr) {
     const cP = /^[1-9]\d{5}(18|19|([23]\d))\d{2}((0[1-9])|(10|11|12))(([0-2][1-9])|10|20|30|31)\d{3}[0-9Xx]$/;
     return cP.test(IDStr)
 }
 
-function verificationPhone(phoneStr) {
+export function verificationPhone(phoneStr) {
     let reg = /^1[3|4|5|6|7|8|9][0-9]{9}$/
     return reg.test(phoneStr)
 }
+
 /*
   if (!verificationPhone(phone.value)) {
     uni.showToast({
@@ -210,23 +202,19 @@ function verificationPhone(phoneStr) {
   }
 * */
 
-export {
-    encodeObjectToQueryString,
-    encodeParseQueryString,
-    objectStyleToString,
-    removeElementsByIndex,
-    isEmptyData,
-    splitQueryUrl,
-    simulateOperation,
-    dataTypeJudge,
-    formatTimestamp,
-    dateTimestamp,
-    computedRatio,
-    promiseCallback,
-    parseSize,
-    removeTrailingZeros,
-    verificationID,
-    verificationPhone
 
+
+export function simulateOperation() {
+    return new Promise((resolve, reject) => {
+        const delay = Math.floor(Math.random() * (5000 - 1000 + 1)) + 1000;
+
+        const operationShouldFail = Math.random() < 0.3;// 假设有30%的概率失败
+        setTimeout(() => {
+            if (operationShouldFail) {
+                reject('失败');
+            } else {
+                resolve('成功');
+            }
+        }, delay);
+    });
 }
-

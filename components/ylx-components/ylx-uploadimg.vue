@@ -24,11 +24,16 @@
 
 import {uploadFileUrl} from "@/network/config"
 
-import {ylxNavigateTo, ylxStyleObjectToString} from "@/utils/uniTools";
+import {convertStyleObjectToString} from "@/utils/tools.js";
+import {ylxNavigateTo} from "@/utils/uniTools.js";
+
 import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
-import {uniChooseImage} from "@/utils/common/authorize/uniApi";
+
+
 import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
 import {uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
+
+import {ylxChooseImage as uniChooseImage} from "@/utils/common/useYlxUni.js";
 
 export default {
   name: "ylx-uploadimg",
@@ -114,7 +119,7 @@ export default {
     resultStyle() {
 
       const [a, b] = this.scale.split(':')
-      return ylxStyleObjectToString({
+      return convertStyleObjectToString({
         '--num-columns': this.columnsLimit,
         '--scale': this.scale,
         '--aspect-ratio': this.scale.indexOf(':') !== -1 ? `${a}/${b}` : `${a}/${a}`,
