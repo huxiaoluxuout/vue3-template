@@ -2,13 +2,16 @@
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
     <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
 
-    <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
-                   @updateFileImageList="updateFileImageList"></ylx-uploadimg>
+        <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
+                       @updateFileImageList="updateFileImageList"></ylx-uploadimg>
 
     <button @click="uploadimg">uploadimg</button>
     <hr/>
-    isLogeIn:{{isLogeIn}}
-    <button @click="setLoginClick">setLogin</button>
+
+    login:{{ login }}
+    <button @click="setToggle">login</button>
+    <hr/>
+    <button @click="getLocation">ylxGetLocation</button>
     <hr/>
     <button @click="sendGlobal">sendGlobal</button>
     <button @click="instanceMyOrderHandler">my-order</button>
@@ -24,12 +27,11 @@
 
 <script setup>
 
-import {ref, computed, watch} from 'vue';
+import {ref, computed, watch, toRefs, reactive} from 'vue';
 import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
 
-import {useUserStore} from "@/stores/user.js";
 
-import {ylxEventBus, ylxMustLogIn} from "@/utils/common/useYlxUni.js";
+import {ylxEventBus, ylxMustLogIn} from "@/ylxuniCore/useylxuni.js";
 
 
 /*-------------------------------------------------------*/
@@ -54,13 +56,24 @@ function uploadimg() {
   refUploadimg.value.chooseFile()
 }
 
-const userStore = useUserStore()
 
-const isLogeIn = computed(() => userStore.isLoggedIn)
-function setLoginClick() {
-  userStore.setLogin(!isLogeIn.value)
+
+function getLocation() {
+  console.log('getLocation')
+  /*ylxGetLocation().then(res => {
+    console.log('res', res)
+  })*/
+}
+function eventBusMine() {
+  /* ylxEventBus.emit({
+     targetPath: '/pages/mine/mine',
+     options: {age: 18}
+   }, true, 'switchTab')*/
 }
 
+function sendGlobal() {
+  // ylxEventBus.emitGlobal()
+}
 
 onLoad(() => {
 
@@ -68,26 +81,23 @@ onLoad(() => {
 
 /*--------------------------*/
 function myOrder() {
-  ylxEventBus.emit({
-    targetPath: '/pagesSubMine/myOrder/myOrder',
-    source: 'xixi'
-  }, true)
+  /* ylxEventBus.emit({
+     targetPath: '/pagesSubMine/myOrder/myOrder',
+     source: 'xixi'
+   }, true)*/
 }
 
 
+
+/*-------------------------*/
+ylxMustLogIn.setInitLogin(reactive)
+const login = ref(ylxMustLogIn.loginProxyObject)
 const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({onSuccess: myOrder})
 
-
-function eventBusMine() {
-  ylxEventBus.emit({
-    targetPath: '/pages/mine/mine',
-    options: {age: 18}
-  }, true, 'switchTab')
+function setToggle() {
+  ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
 }
-
-function sendGlobal() {
-  ylxEventBus.emitGlobal()
-}
+/*-------------------------*/
 
 
 </script>

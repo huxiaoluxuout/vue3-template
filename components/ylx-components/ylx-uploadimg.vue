@@ -33,7 +33,7 @@ import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx
 import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
 import {uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
 
-import {ylxChooseImage as uniChooseImage} from "@/utils/common/useYlxUni.js";
+import uniChooseImage from "@/components/ylx-components/ylx-JS/chooseImage.esm.js"
 
 export default {
   name: "ylx-uploadimg",

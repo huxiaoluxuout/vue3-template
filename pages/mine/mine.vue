@@ -7,18 +7,23 @@
         <view class="ylx-section-wrapper__right">》</view>
       </view>
     </view>
-    <ylx-calendar></ylx-calendar>
+<!--    <ylx-calendar></ylx-calendar>-->
+
+    login:{{ login }}
+    <button @click="setToggle">login</button>
   </view>
 </template>
 <script setup>
-import {ref, computed, watch} from 'vue';
+import {ref, computed, watch,reactive} from 'vue';
+
 import {onLoad, onTabItemTap, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 import {ylxNavigateTo} from "@/utils/uniTools";
 import YlxGap from "@/components/ylx-components/ylx-gap.vue";
+import {ylxMustLogIn} from "@/ylxuniCore/useylxuni.js";
 
 
 
-import {ylxEventBus} from "@/utils/common/useYlxUni.js";
+// import {ylxEventBus} from "@/utils/common/useylxuni.js";
 
 
 const myOrderGridList = ref([
@@ -34,12 +39,21 @@ onPullDownRefresh(()=>{
 })
 
 
-ylxEventBus.on(({args,source}) => {
+/*ylxEventBus.on(({args,source}) => {
   console.log(...args,source)
-});
+});*/
 
 
 /*---------------------------------------------------------------*/
+
+ylxMustLogIn.setInitLogin(reactive)
+const login = ref(ylxMustLogIn.loginProxyObject)
+
+//
+function setToggle() {
+  ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
+}
+
 </script>
 
 

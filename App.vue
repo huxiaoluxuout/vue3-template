@@ -4,8 +4,6 @@ import {onLaunch} from '@dcloudio/uni-app'
 import {wxLogin} from "@/network/apis/meiFa";
 
 import {useUserStore} from "@/stores/user";
-import {ylxEventBus} from "@/utils/common/useYlxUni.js";
-
 const userStore = useUserStore();
 
 function getWxLoginInfo() {
@@ -22,11 +20,11 @@ onLaunch(() => {
 
   getWxLoginInfo()
 
-  ylxEventBus.onGlobal(({args, source})=>{
+  /*ylxEventBus.onGlobal(({args, source})=>{
     console.log('instanceWxEventBus',...args, source)
     // getWxLoginInfo()
 
-  })
+  })*/
 
 })
 </script>
