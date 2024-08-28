@@ -6,6 +6,9 @@ import {wxLogin} from "@/network/apis/meiFa";
 import {useUserStore} from "@/stores/user";
 const userStore = useUserStore();
 
+/*----------------------------------*/
+import {ylxEventBus} from "@/ylxuniCore/useylxuni.js";
+
 function getWxLoginInfo() {
   wxLogin().then((loginRes) => {
     if (!loginRes.data.is_register) {
@@ -20,11 +23,11 @@ onLaunch(() => {
 
   getWxLoginInfo()
 
-  /*ylxEventBus.onGlobal(({args, source})=>{
-    console.log('instanceWxEventBus',...args, source)
+  ylxEventBus.onGlobal(({args, source})=>{
+    console.log('ylxEventBus',args[0], source)
     // getWxLoginInfo()
 
-  })*/
+  })
 
 })
 </script>

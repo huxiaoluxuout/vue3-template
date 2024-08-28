@@ -10,6 +10,7 @@
 
 import {ref, computed, watch} from 'vue';
 import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
+import {ylxEventBus} from "@/ylxuniCore/useylxuni.js";
 /*-------------------------------------------------------------*/
 
 const pageLoading = ref(false)
@@ -24,7 +25,13 @@ const labelList = ref([
 ])
 const activeIds = ref([0])
 const activeStatus = computed(() => activeIds.value[0])
+/*-------------------------------------*/
 
+ylxEventBus.on(({args, source}) => {
+  const [{setToggle}] = args
+  setToggle()
+
+})
 
 </script>
 

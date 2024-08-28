@@ -11,11 +11,12 @@
     login:{{ login }}
     <button @click="setToggle">login</button>
     <hr/>
-    <button @click="getLocation">ylxGetLocation</button>
-    <hr/>
+
     <button @click="sendGlobal">sendGlobal</button>
     <button @click="instanceMyOrderHandler">my-order</button>
     <button @click="eventBusMine">eventBusMine</button>
+    <hr/>
+    <button @click="getLocation">ylxGetLocation</button>
     <hr/>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
@@ -65,27 +66,30 @@ function getLocation() {
   })*/
 }
 function eventBusMine() {
-  /* ylxEventBus.emit({
-     targetPath: '/pages/mine/mine',
-     options: {age: 18}
-   }, true, 'switchTab')*/
+  ylxEventBus.emit({
+    targetPath: '/pages/mine/mine',
+    options: {age: 18}
+  }, true, 'switchTab')
 }
 
 function sendGlobal() {
-  // ylxEventBus.emitGlobal()
+  ylxEventBus.emitGlobal()
 }
 
-onLoad(() => {
-
-})
+function myOrder() {
+   ylxEventBus.emit({
+     targetPath: '/pagesSubMine/myOrder/myOrder',
+     options:{
+       age:10,
+       color:'red',
+       name:'haha',
+       'setToggle':setToggle
+     },
+     source: 'xixi'
+   }, true)
+}
 
 /*--------------------------*/
-function myOrder() {
-  /* ylxEventBus.emit({
-     targetPath: '/pagesSubMine/myOrder/myOrder',
-     source: 'xixi'
-   }, true)*/
-}
 
 
 
