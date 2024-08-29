@@ -16,7 +16,9 @@
     <button @click="instanceMyOrderHandler">my-order</button>
     <button @click="eventBusMine">eventBusMine</button>
     <hr/>
-    <button @click="getLocation">ylxGetLocation</button>
+
+    <button @click="ylxNavigateTo('pages/select-identity/select-identity?id=45',{haha:'哈哈哈'})">快玛页面</button>
+<!--    <button @click="getLocation">ylxGetLocation</button>-->
     <hr/>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
       AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
@@ -26,13 +28,16 @@
   </view>
 </template>
 
-<script setup>
+<script setup lang="js">
 
 import {ref, computed, watch, toRefs, reactive} from 'vue';
 import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
 
 
+
+
 import {ylxEventBus, ylxMustLogIn} from "@/ylxuniCore/useylxuni.js";
+import {ylxNavigateTo} from "@/utils/uniTools.js";
 
 
 /*-------------------------------------------------------*/
@@ -98,7 +103,7 @@ function myOrder() {
 
 
 /*-------------------------*/
-ylxMustLogIn.setInitLogin(reactive)
+// ylxMustLogIn.setInitLogin(reactive)
 const login = ref(ylxMustLogIn.loginProxyObject)
 const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({onSuccess: myOrder})
 

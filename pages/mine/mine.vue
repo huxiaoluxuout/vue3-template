@@ -46,7 +46,7 @@ onPullDownRefresh(()=>{
 
 /*---------------------------------------------------------------*/
 
-ylxMustLogIn.setInitLogin(reactive)
+// ylxMustLogIn.setInitLogin(reactive)
 const login = ref(ylxMustLogIn.loginProxyObject)
 
 //
