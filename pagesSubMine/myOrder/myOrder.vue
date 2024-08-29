@@ -28,8 +28,7 @@ const activeStatus = computed(() => activeIds.value[0])
 /*-------------------------------------*/
 
 ylxEventBus.on(({args, source}) => {
-  const [{setToggle}] = args
-  setToggle()
+  console.log('pageAlias',source)
 
 })
 

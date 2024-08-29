@@ -23,8 +23,8 @@ onLaunch(() => {
 
   getWxLoginInfo()
 
-  ylxEventBus.onGlobal(({args, source})=>{
-    console.log('ylxEventBus',args[0], source)
+  ylxEventBus.onGlobal((data)=>{
+    console.log('ylxEventBus',data)
     // getWxLoginInfo()
 
   })

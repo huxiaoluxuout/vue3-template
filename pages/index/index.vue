@@ -73,7 +73,11 @@ function eventBusMine() {
 }
 
 function sendGlobal() {
-  ylxEventBus.emitGlobal()
+  ylxEventBus.emitGlobal({
+    age:10,
+    color:'red',
+    name:'haha',
+  },'触发页面的别名')
 }
 
 function myOrder() {
