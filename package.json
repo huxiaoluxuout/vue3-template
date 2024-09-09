@@ -21,7 +21,5 @@
     "url": "https://github.com/huxiaoluxuout/vue3-template/issues"
   },
   "homepage": "https://github.com/huxiaoluxuout/vue3-template#readme",
-  "dependencies": {
-    "ylxuni": "file:.yalc/ylxuni"
-  }
+  "dependencies": {}
 }
