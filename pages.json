@@ -11,14 +11,14 @@
     {
       "path": "pages/index/index",
       "style": {
-        "navigationBarTitleText": "首页",
+        "navigationBarTitleText": "%home.title%",
         "navigationStyle": "custom"
       }
     },
     {
       "path": "pages/mine/mine",
       "style": {
-        "navigationBarTitleText": "MINE",
+        "navigationBarTitleText": "%mine.title%",
         "navigationBarBackgroundColor": "#fff",
         "enablePullDownRefresh": true
       }
@@ -83,14 +83,14 @@
     "backgroundColor": "#ffffff",
     "list": [
       {
+        "text": "%tabbar.home%",
         "pagePath": "pages/index/index",
-        "text": "首页",
         "iconPath": "static/tabbar/index.png",
         "selectedIconPath": "static/tabbar/index_on.png"
       },
       {
+        "text": "%tabbar.mine%",
         "pagePath": "pages/mine/mine",
-        "text": "我的",
         "iconPath": "static/tabbar/mine.png",
         "selectedIconPath": "static/tabbar/mine_on.png"
       }
