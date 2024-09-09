@@ -11,3 +11,5 @@ const proxyObj=new Proxy(obj,{
 })
 console.log(proxyObj.age);
 console.log(proxyObj.color);
+
+
