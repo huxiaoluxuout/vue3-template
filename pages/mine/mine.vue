@@ -1,6 +1,12 @@
 <template>
   <view class="page-content-tabbar">
     <ylx-gap height="1rpx"></ylx-gap>
+    <view>
+      <button @click="toggleLocale">中文/ENG</button>
+      <h2>0: {{ t('home.title') }}</h2>
+      <h4>1: {{ t('mine.title') }}</h4>
+    </view>
+
     <view class="nav-bottom-wrapper">
       <view class="flex align-center justify-between nav-item" v-for="item in myOrderGridList" :key="item.id" @click="ylxNavigateTo(item.pagePath+'?id='+item.id)">
         <text class="nav-text">{{ item.text }}</text>
@@ -53,6 +59,29 @@ const login = ref(ylxMustLogIn.loginProxyObject)
 function setToggle() {
   ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
 }
+/*--------------------------------------*/
+
+
+/*-------------------------------------------------------*/
+
+import useI18n, {setLocale} from "@/locale/useI18n.js";
+const {t, locale} = useI18n();
+
+
+// 中英语言切换
+
+function toggleLocale() {
+  const uniLocale = uni.getLocale()
+
+  if (uniLocale==='en'){
+    setLocale('zh-Hans',t, locale)
+  }else  if (uniLocale==='zh-Hans'){
+    setLocale('en',t, locale)
+
+  }
+
+}
+
 
 </script>
 

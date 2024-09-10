@@ -1,6 +1,7 @@
 <template>
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
-    <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
+    <ylx-navbar :title="t('home.title')" bg-color="#fff"></ylx-navbar>
+    <!--    <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>-->
     <view>
       <button @click="toggleLocale">中文/ENG</button>
       <h2>0: {{ t('home.title') }}</h2>
@@ -50,16 +51,6 @@ import {ylxNavigateTo} from "@/utils/uniTools.js";
 
 /*-------------------------------------------------------*/
 
-
-import {useI18n} from "vue-i18n";
-
-
-const {t, locale} = useI18n();
-import pagesConfig from "@/pages.json";
-
-const tabBarList = pagesConfig.tabBar.list || []
-const len = tabBarList.length
-/*-------------------------------------------------------*/
 
 const refUploadimg = ref(null)
 const fileImageList = ref([
@@ -131,38 +122,27 @@ function setToggle() {
   ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
 }
 
-/*-------------------------*/
+/*--------------------------------------------------*/
+
+import useI18n, {setLocale} from "@/locale/useI18n.js";
+
+const {t, locale} = useI18n();
 
 
 // 中英语言切换
-
 function toggleLocale() {
   const uniLocale = uni.getLocale()
 
-  changeLocale(uniLocale)
+  if (uniLocale==='en'){
+    setLocale('zh-Hans',t, locale)
+  }else  if (uniLocale==='zh-Hans'){
+    setLocale('en',t, locale)
+
+  }
 
 }
 
-/*-------------------------*/
-function changeLocale(uniLocale) {
-  const mappingLocale = {
-    "zh-Hans": "en",
-    "en": "zh-Hans",
-  }
-
-  uni.setLocale(mappingLocale[uniLocale])
-
-  locale.value = mappingLocale[uniLocale]
-
-  for (let index = 0; index < len; index++) {
-    uni.setTabBarItem({
-      index: index,
-      text: t(tabBarList[index].text.replace(/%/g, ''))
-    });
-  }
-}
-
-/*-------------------------*/
+/*--------------------------------------------------*/
 
 
 </script>

@@ -1,6 +1,7 @@
 {
   "home.title": "Home page",
   "mine.title": "Mine Page",
+  "mine.color": "Color",
   "tabbar.home": "HOME",
   "tabbar.mine": "MINE"
 }
