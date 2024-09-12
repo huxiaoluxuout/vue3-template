@@ -1,5 +1,6 @@
-// import ylxIntercept from "ylxuni"
+
 // import ylxIntercept from "@/.yalc/ylxuni/index.js"
+
 import ylxIntercept from "@/ylxuniCore/ylxuni.esm.js"
 
 const ylxInstance = ylxIntercept()
