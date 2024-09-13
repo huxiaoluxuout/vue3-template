@@ -58,13 +58,19 @@
 <script>
 import pagesConfig from "@/pages.json";
 
-import {ylxFilterPath, ylxNavigateTo, } from "@/utils/uniTools";
+import {ylxFilterPath, ylxNavigateTo,} from "@/utils/uniTools";
 import {convertStyleObjectToString} from "@/utils/tools.js";
 
 import {localStringStyle} from "@/components/ylx-components/ylx-JS/template";
 
 
-const {tabBar: {list: tabBarPages} = {list: []}} = pagesConfig
+const {
+  tabBar: {
+    list: tabBarPages = []
+  } = {},
+  pages: Pages
+} = pagesConfig;
+
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
 
@@ -302,7 +308,12 @@ export default {
           uni.navigateBack({delta: 1});
         } else {
           // 首页
-          const indexPagePath = pagesConfig.tabBar.list[0].pagePath
+          let indexPagePath = []
+          if (!tabBarPages.length) {
+            indexPagePath = Pages[0].path
+          } else {
+            indexPagePath = tabBarPages[0].pagePath
+          }
           ylxNavigateTo(indexPagePath);
         }
       } catch (error) {

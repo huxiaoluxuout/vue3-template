@@ -110,7 +110,11 @@ export const ylxToast = (title, duration = 1500, mask = false, icon = 'none') =>
 
 
 import pagesConfig from "@/pages.json";
-const {tabBar: {list: tabBarPages} = {list: []}} = pagesConfig
+const {
+    tabBar: {
+        list: tabBarPages = []
+    } = {}
+} = pagesConfig;
 
 const toTargetPage = (pagePath, parseInfo = {}, api) => {
     if (!pagePath) return;
