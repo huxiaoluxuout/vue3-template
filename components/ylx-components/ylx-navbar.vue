@@ -4,11 +4,11 @@
       <view class="navbar-content__container">
         <view class="ylx-navbar-container" :style="ylxNavbarContainerStyle">
           <template v-if="!configNavBar_.hiddenLeftIcon">
-            <view v-if="configNavBar_.isTabBarPage" class="navbar-container__left">
+            <view v-if="configNavBar_.isTabBarPage" class="navbar-container__left 0000">
               <slot name="left"></slot>
             </view>
 
-            <view v-else class="navbar-container__left" @click="leftIconClick">
+            <view v-else class="navbar-container__left 1111" @click="leftIconClick">
               <slot name="left_back_icon">
                 <text class="iconfont" :class="defaultLeftIconName" :style="resultCustomLeftIconStyle"></text>
               </slot>
@@ -96,7 +96,7 @@ export default {
     },
     title: {
       type: String,
-      default: '',
+      default: '顶部导航标题',
     },
     color: {
       type: String,
@@ -121,13 +121,15 @@ export default {
       }
     },
 
-    // 直接下显示首页的icon
+    // 直接显示首页的icon
     showHomeIcon: Boolean,
     hiddenBorder: Boolean,
     // 隐藏占位
     hiddenNavbar: Boolean,
     // 遮罩
-    overlay: Boolean
+    overlay: Boolean,
+
+    hiddenLeftIcon: Boolean
 
   },
   data() {
@@ -170,7 +172,6 @@ export default {
     },
 
     configNavBar_() {
-
       const isTabBarPage = tabBarPages.map(item => ylxFilterPath(item.pagePath)).includes(ylxFilterPath(this.currentPagePath));
 
       return Object.assign({
@@ -179,7 +180,7 @@ export default {
         right: false,
         hiddenLeftIcon: false,
         hiddenBorder: this.hiddenBorder,
-      }, this.configNavBar);
+      }, this.configNavBar,{hiddenLeftIcon:this.hiddenLeftIcon});
     },
 
 

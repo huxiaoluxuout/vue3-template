@@ -1,6 +1,5 @@
 <template>
   <view className="page-content">
-
     <ylx-page-loading :show-loading="pageLoading"></ylx-page-loading>
 
   </view>
