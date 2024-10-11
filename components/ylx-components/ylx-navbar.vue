@@ -64,12 +64,7 @@ import {convertStyleObjectToString} from "@/utils/tools.js";
 import {localStringStyle} from "@/components/ylx-components/ylx-JS/template";
 
 
-const {
-  tabBar: {
-    list: tabBarPages = []
-  } = {},
-  pages: Pages
-} = pagesConfig;
+const {tabBar: {list: tabBarPages = []} = { list: [] }} = pagesConfig || {};
 
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
