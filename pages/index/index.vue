@@ -1,11 +1,11 @@
 <template>
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
-    <ylx-navbar :title="t('home.title')" bg-color="#fff"></ylx-navbar>
+    <ylx-navbar :title="$t('home.title')" bg-color="#fff"></ylx-navbar>
     <!--    <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>-->
     <view>
       <button @click="toggleLocale">中文/ENG</button>
-      <h2>0: {{ t('home.title') }}</h2>
-      <h4>1: {{ t('mine.title') }}</h4>
+      <h2>0: {{ $t('home.title') }}</h2>
+      <h4>1: {{ $t('mine.title') }}</h4>
     </view>
     <ylx-gap height="20px"></ylx-gap>
     <hr/>
@@ -28,7 +28,6 @@
     <button @click="eventBusMine">eventBusMine</button>
     <hr/>
 
-    <button @click="ylxNavigateTo('pages/select-identity/select-identity?id=45',{haha:'哈哈哈'})">快玛页面</button>
     <!--    <button @click="getLocation">ylxGetLocation</button>-->
     <hr/>
     <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
@@ -124,9 +123,9 @@ function setToggle() {
 
 /*--------------------------------------------------*/
 
-import useI18n, {setLocale} from "@/locale/useI18n.js";
+import {setUseI18n} from "@/locale/useI18n.js";
+const {setLocale} = setUseI18n()
 
-const {t, locale} = useI18n();
 
 
 // 中英语言切换
@@ -134,10 +133,14 @@ function toggleLocale() {
   const uniLocale = uni.getLocale()
 
   if (uniLocale==='en'){
-    setLocale('zh-Hans',t, locale)
-  }else  if (uniLocale==='zh-Hans'){
-    setLocale('en',t, locale)
+    setLocale('zh-Hans')
 
+  }else  if (uniLocale==='zh-Hans'){
+    setLocale('en')
+
+
+  }else {
+    setLocale('zh-Hans')
   }
 
 }

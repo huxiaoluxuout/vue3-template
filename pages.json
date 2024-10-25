@@ -29,15 +29,6 @@
         "navigationBarTitleText": "登录",
         "navigationStyle": "custom"
       }
-    },
-    {
-      "path": "pages/select-identity/select-identity",
-      "style": {
-        "navigationBarTitleText": "",
-        "enablePullDownRefresh": false,
-        "navigationStyle": "custom"
-
-      }
     }
   ],
   "globalStyle": {

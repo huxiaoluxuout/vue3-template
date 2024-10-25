@@ -3,7 +3,7 @@ import uni from "@dcloudio/vite-plugin-uni";
 
 export default defineConfig({
     server: {
-        open: true,
+        open: false,
         proxy: { //配置多个代理
             '/test-api': {
                 target: "http://192.168.2.100:8071",
@@ -13,8 +13,12 @@ export default defineConfig({
         }
     },
     plugins: [
-        uni()
+        uni(),
     ],
+
+    alias:{
+        'vue-i18n':'vue-i18n/dist/vue-i18n.cjs.js'
+    }
 
 });
 

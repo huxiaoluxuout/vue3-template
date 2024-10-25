@@ -2,13 +2,14 @@ import {useI18n} from "vue-i18n";
 
 import pagesConfig from "@/pages.json";
 
-const tabBarList = pagesConfig.tabBar.list || []
-const len = tabBarList.length
 
-export default useI18n
+const {tabBar: {list: tabBarList = []} = { list: [] }} = pagesConfig || {};
+
+const len = tabBarList.length || 0
 
 
-export function setLocale(targetLocaleCode, t, locale) {
+
+ function setLocaleCode(targetLocaleCode, t, locale) {
 
     uni.setLocale(targetLocaleCode)
 
@@ -19,5 +20,16 @@ export function setLocale(targetLocaleCode, t, locale) {
             index: index,
             text: t(tabBarList[index].text.replace(/%/g, ''))
         });
+    }
+}
+
+export function setUseI18n() {
+    const {t, locale} = useI18n();
+    return {
+        setLocale:function (targetLocaleCode) {
+            setLocaleCode(targetLocaleCode, t, locale)
+        },
+        t,
+        locale
     }
 }

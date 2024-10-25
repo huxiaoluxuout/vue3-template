@@ -10,14 +10,14 @@ const userStore = useUserStore();
 import {ylxEventBus} from "@/ylxuniCore/useylxuni.js";
 
 function getWxLoginInfo() {
-  wxLogin().then((loginRes) => {
+  /*wxLogin().then((loginRes) => {
     if (!loginRes.data.is_register) {
       userStore.logout()
     } else {
       userStore.login(loginRes.data)
     }
 
-  })
+  })*/
 }
 onLaunch(() => {
 
