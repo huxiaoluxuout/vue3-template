@@ -64,23 +64,31 @@ function setToggle() {
 
 /*-------------------------------------------------------*/
 
-import useI18n, {setLocale} from "@/locale/useI18n.js";
-const {t, locale} = useI18n();
+/*--------------------------------------------------*/
+
+import {setUseI18n} from "@/locale/useI18n.js";
+const {setLocale} = setUseI18n()
+
 
 
 // 中英语言切换
-
 function toggleLocale() {
   const uniLocale = uni.getLocale()
 
   if (uniLocale==='en'){
-    setLocale('zh-Hans',t, locale)
-  }else  if (uniLocale==='zh-Hans'){
-    setLocale('en',t, locale)
+    setLocale('zh-Hans')
 
+  }else  if (uniLocale==='zh-Hans'){
+    setLocale('en')
+
+
+  }else {
+    setLocale('zh-Hans')
   }
 
 }
+
+/*--------------------------------------------------*/
 
 
 </script>
