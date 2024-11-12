@@ -19,16 +19,14 @@
 
       <ylx-gap height="30px"></ylx-gap>
 
+
       <!--  #ifdef MP -->
-      <ylx-button custom-class="login-btn" custom-style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler"
-                  text="微信一键登录"></ylx-button>
+      <button class="login-btn" style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler">MP 微信一键登录</button>
       <!-- #endif -->
 
       <!--  #ifdef WEB || APP-PLUS-->
-      <ylx-button custom-class="login-btn" custom-style="font-size:14px;line-height: 3.4;" @btnClick="getTestToken"
-                  text="微信一键登录"></ylx-button>
+      <button class="login-btn" style="font-size:14px;line-height: 3.4;" @click="getTestToken">微信一键登录</button>
       <!-- #endif -->
-
 
     </view>
   </view>
@@ -158,7 +156,7 @@ export default {
   font-weight: bolder;
   background: #48A6EE !important;
   width: 90% !important;
-
+  border-radius: 100px;
 }
 
 /*--------------------------------------*/
