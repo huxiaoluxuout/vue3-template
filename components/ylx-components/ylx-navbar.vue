@@ -115,7 +115,10 @@ export default {
       default: () => {
       }
     },
-
+    zIndex: {
+      type: [Number, String],
+      default:20
+    },
     // 直接显示首页的icon
     showHomeIcon: Boolean,
     hiddenBorder: Boolean,
@@ -208,6 +211,7 @@ export default {
       return convertStyleObjectToString({
         backgroundColor: this.bgColor,
         height: `${this.navbarHeight}px`,
+        zIndex:this.zIndex,
         borderBottom: !this.configNavBar_.hiddenBorder ? '1px solid #f3f3f3' : 'none',
         ...this.navbarStyle
       })
@@ -334,7 +338,6 @@ export default {
   left: 0;
   right: 0;
   box-sizing: border-box;
-  z-index: 9999;
   display: flex;
   align-items: center;
 }
@@ -346,7 +349,6 @@ export default {
   height: 100%;
   /* 两端距离 */
   margin-left: 30rpx;
-  z-index: 10;
 }
 
 
