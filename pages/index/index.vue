@@ -8,7 +8,6 @@
     </view>
     <ylx-gap height="20px"></ylx-gap>
     <hr/>
-    <button @click="setToggle">设置登录状态 login:{{ login }}</button>
     <hr/>
 
     <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
@@ -18,8 +17,12 @@
     <hr/>
 
     <button @click="sendGlobal">sendGlobal</button>
-    <button @click="instanceMyOrderHandler">my-order</button>
     <button @click="eventBusMine">跳转tabbar页面</button>
+    <hr/>
+
+    <button @click="instanceMyOrderHandler">my-order(需要登录)</button>
+    <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
+
 
     <hr/>
 
@@ -55,10 +58,10 @@ function toggleLocale() {
 }
 
 /*---------------------登录----------------------------------*/
-// ylxMustLogIn.setInitLogin(reactive)
-const login = ref(ylxMustLogIn.loginProxyObject)
-const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({onSuccess: myOrder})
 
+const loginProxy = ref(ylxMustLogIn.loginProxyObject)
+const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({alreadyLoggedIn: myOrder})
+const hasLogin = computed(()=>loginProxy.value.login)
 function setToggle() {
   ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
 }

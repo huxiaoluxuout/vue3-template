@@ -1,5 +1,6 @@
 
 // import ylxIntercept from "@/.yalc/ylxuni/index.js"
+
 import {EventBusCore} from "@/.yalc/ylxuni/src/EventBusCore";
 export const instanceEventBus = new EventBusCore()
 
