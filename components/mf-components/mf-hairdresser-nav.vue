@@ -1,5 +1,5 @@
-<script setup>
-
+<script setup lang="js">
+import {ref} from 'vue';
 
 const props = defineProps({
   hiddenNav: Boolean,
@@ -9,10 +9,28 @@ const props = defineProps({
     default: 'name'
   }
 })
+const show = ref(false)
 
-const btnClick = () => {
+function confirm() {
+  console.log('确定')
+  $emit('confirm',)
+  show.value = false
 }
 
+function cancel() {
+  console.log('取消')
+  $emit('cancel')
+  show.value = false
+
+
+}
+
+let $emit=defineEmits(['confirm','cancel'])
+
+// 将组件中的属性暴露出去，这样父组件可以获取
+defineExpose({
+  show
+})
 </script>
 
 <script>
@@ -24,7 +42,7 @@ export default {
 </script>
 
 <template>
-  <view :class="customClass" @click="btnClick"></view>
+  <view :class="customClass">111</view>
 
 </template>
 

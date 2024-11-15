@@ -58,13 +58,13 @@
 <script>
 import pagesConfig from "@/pages.json";
 
-import {ylxFilterPath, ylxNavigateTo,} from "@/utils/uniTools";
+import {ylxFilterPath, ylxRedirectTo,} from "@/utils/uniTools";
 import {convertStyleObjectToString} from "@/utils/tools.js";
 
 import {localStringStyle} from "@/components/ylx-components/ylx-JS/template";
 
 
-const {tabBar: {list: tabBarPages = []} = { list: [] }} = pagesConfig || {};
+const {pages:pagesAll,tabBar: {list: tabBarPages = []} = { list: [] }} = pagesConfig || {};
 
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
@@ -306,11 +306,11 @@ export default {
           // 首页
           let indexPagePath = []
           if (!tabBarPages.length) {
-            indexPagePath = Pages[0].path
+            indexPagePath = pagesAll[0].path
           } else {
             indexPagePath = tabBarPages[0].pagePath
           }
-          ylxNavigateTo(indexPagePath);
+          ylxRedirectTo(indexPagePath);
         }
       } catch (error) {
         console.error('Error while handling leftIconClick:', error);

@@ -1,7 +1,6 @@
 <template>
   <view className="page-content">
     <ylx-page-loading :show-loading="pageLoading"></ylx-page-loading>
-
   </view>
 </template>
 
@@ -26,10 +25,20 @@ const activeIds = ref([0])
 const activeStatus = computed(() => activeIds.value[0])
 /*-------------------------------------*/
 
-ylxEventBus.on(({args, source}) => {
-  console.log('pageAlias',source)
+function btn() {
+  ylxEventBus.emit({
+    targetPath:'/pagesSubMine/foo/foo',
+    options:{
+      params:{
+        time:new Date().getSeconds(),
+        name:'myOrder',
+      }
+    },
+    source:'myOrder'
+  })
 
-})
+  uni.navigateBack()
+}
 
 </script>
 

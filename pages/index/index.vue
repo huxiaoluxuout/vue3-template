@@ -1,40 +1,28 @@
 <template>
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
-    <ylx-navbar :title="$t('home.title')" bg-color="#fff"></ylx-navbar>
-    <!--    <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>-->
+    <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
     <view>
       <button @click="toggleLocale">中文/ENG</button>
       <h2>0: {{ $t('home.title') }}</h2>
-      <h4>1: {{ $t('mine.title') }}</h4>
+      <h4>1: {{ t('mine.title') }}</h4>
     </view>
     <ylx-gap height="20px"></ylx-gap>
     <hr/>
-
-
-    <!--    <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
-                       @updateFileImageList="updateFileImageList"></ylx-uploadimg>
-
-        <button @click="uploadimg">uploadimg</button>-->
-
-
+    <button @click="setToggle">设置登录状态 login:{{ login }}</button>
     <hr/>
 
-    login:{{ login }}
-    <button @click="setToggle">login</button>
+    <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
+                   @updateFileImageList="updateFileImageList"></ylx-uploadimg>
+    <button @click="uploadimg">uploadimg</button>
+
     <hr/>
 
     <button @click="sendGlobal">sendGlobal</button>
     <button @click="instanceMyOrderHandler">my-order</button>
-    <button @click="eventBusMine">eventBusMine</button>
+    <button @click="eventBusMine">跳转tabbar页面</button>
+
     <hr/>
 
-    <!--    <button @click="getLocation">ylxGetLocation</button>-->
-    <hr/>
-    <div v-for="(item,index) in 4" :key="index" style="margin-top: 10px;margin-bottom: 10px;">
-      AAALorem ipsum dolor sit amet, consectetur adipisicing elit. Asperiores, aut consequatur cum delectus deleniti
-      eius eos explicabo facere magnam, maxime omnis quam quidem velit voluptas voluptatum.
-    </div>
-    <!--  -->
   </view>
 </template>
 
@@ -47,9 +35,37 @@ import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
 import {ylxEventBus, ylxMustLogIn} from "@/ylxuniCore/useylxuni.js";
 import {ylxNavigateTo} from "@/utils/uniTools.js";
 
+/*--------------------------------------------------*/
+import {setUseI18n} from "@/locale/useI18n.js";
+const {setLocale,t} = setUseI18n()
+
+// 中英语言切换
+function toggleLocale() {
+  const uniLocale = uni.getLocale()
+
+  if (uniLocale==='en'){
+    setLocale('zh-Hans')
+
+  }else  if (uniLocale==='zh-Hans'){
+    setLocale('en')
+
+  }else {
+    setLocale('zh-Hans')
+  }
+}
+
+/*---------------------登录----------------------------------*/
+// ylxMustLogIn.setInitLogin(reactive)
+const login = ref(ylxMustLogIn.loginProxyObject)
+const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({onSuccess: myOrder})
+
+function setToggle() {
+  ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
+}
 
 /*-------------------------------------------------------*/
 
+/*---------------------上传图片----------------------------------*/
 
 const refUploadimg = ref(null)
 const fileImageList = ref([
@@ -67,18 +83,12 @@ function updateFileImageList({type, param}) {
     fileImageList.value.splice(param.fileImageListLen, 1, param.itemAssign)
   }
 }
-
+// 自定义触发选择上传图片
 function uploadimg() {
   refUploadimg.value.chooseFile()
 }
+/*-------------------------------------------------------*/
 
-
-function getLocation() {
-  console.log('getLocation')
-  /*ylxGetLocation().then(res => {
-    console.log('res', res)
-  })*/
-}
 
 function eventBusMine() {
   ylxEventBus.emit({
@@ -102,7 +112,6 @@ function myOrder() {
       age: 10,
       color: 'red',
       name: 'haha',
-      'setToggle': setToggle
     },
     source: 'xixi'
   }, true)
@@ -110,42 +119,6 @@ function myOrder() {
 
 /*--------------------------*/
 
-
-
-/*-------------------------*/
-// ylxMustLogIn.setInitLogin(reactive)
-const login = ref(ylxMustLogIn.loginProxyObject)
-const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({onSuccess: myOrder})
-
-function setToggle() {
-  ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
-}
-
-/*--------------------------------------------------*/
-
-import {setUseI18n} from "@/locale/useI18n.js";
-const {setLocale} = setUseI18n()
-
-
-
-// 中英语言切换
-function toggleLocale() {
-  const uniLocale = uni.getLocale()
-
-  if (uniLocale==='en'){
-    setLocale('zh-Hans')
-
-  }else  if (uniLocale==='zh-Hans'){
-    setLocale('en')
-
-
-  }else {
-    setLocale('zh-Hans')
-  }
-
-}
-
-/*--------------------------------------------------*/
 
 
 </script>
