@@ -61,6 +61,7 @@ function toggleLocale() {
 
 const loginProxy = ref(ylxMustLogIn.loginProxyObject)
 const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({alreadyLoggedIn: myOrder})
+// const hasLogin = computed(()=>ylxMustLogIn.loginProxyObject.login)
 const hasLogin = computed(()=>loginProxy.value.login)
 function setToggle() {
   ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
