@@ -20,9 +20,9 @@
     <button @click="eventBusMine">跳转tabbar页面</button>
     <hr/>
 
-    <button @click="instanceMyOrderHandler">my-order(需要登录)</button>
+    <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order(需要登录)</button>
+    <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
     <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
-
 
     <hr/>
 
@@ -60,11 +60,17 @@ function toggleLocale() {
 /*---------------------登录----------------------------------*/
 
 const loginProxy = ref(ylxMustLogIn.loginProxyObject)
-const instanceMyOrderHandler = ylxMustLogIn.interceptMastLogIn({alreadyLoggedIn: myOrder})
-// const hasLogin = computed(()=>ylxMustLogIn.loginProxyObject.login)
-const hasLogin = computed(()=>loginProxy.value.login)
+const hasLogin = computed(() => loginProxy.value.login)
+
 function setToggle() {
   ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
+}
+
+function interceptToPage(fn,...args) {
+  ylxMustLogIn.interceptMastLogIn({
+    onLoggedIn: ()=>fn(...args),
+    // confirm:  ()=>ylxNavigateTo('/pages/login/login')
+  })()
 }
 
 /*-------------------------------------------------------*/
