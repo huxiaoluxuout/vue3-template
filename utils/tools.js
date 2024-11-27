@@ -218,3 +218,15 @@ export function simulateOperation() {
         }, delay);
     });
 }
+export function replaceStr(str,startStr, newStartStr) {
+    if (str.startsWith(startStr)) {
+        return str.replace(startStr, newStartStr);
+    }
+    return str;
+}
+
+// 检查 URL 是否以 http://localhost 开头，并进行替换
+export function replaceLocalhostUrl(url, newHost) {
+    const baseUrl = newHost.split(':')[0] + ':' + newHost.split(':')[1];
+    return  replaceStr(url,'http://localhost',baseUrl)
+}

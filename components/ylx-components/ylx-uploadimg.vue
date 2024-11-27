@@ -31,7 +31,7 @@ import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx
 
 
 import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
-import {uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
+import {imgHttpSuccess, uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
 
 import uniChooseImage from "@/components/ylx-components/ylx-JS/ylxuni.chooseImage.esm.js"
 
@@ -91,6 +91,10 @@ export default {
       type: String,
       default: 'file'
     },
+    config: {
+      type: Object,
+      default: ()=>{}
+    },
 
     hiddenUploadIcon: Boolean,
 
@@ -101,14 +105,7 @@ export default {
 
     imgSuccessHandler: {
       type: Function,
-      default: (res, resolve) => {
-        let resData = JSON.parse(res.data)
-        if (resData.code === 0) {
-          resolve(resData.data.fullurl)
-        } else {
-          console.error('处理后端返回上传成功后的数据', resData.msg)
-        }
-      }
+      default: imgHttpSuccess
     },
   },
 
@@ -238,7 +235,7 @@ export default {
       })
 
       for (let i = 0; i < arrFile.length; i++) {
-        const imgUrl = await this.uploadFilePromise(arrFile[i].url, {imgSuccessHandler: that.imgSuccessHandler})
+        const imgUrl = await uploadFilePromise(arrFile[i].url, that.imgSuccessHandler,that.config)
         const item = that.localFileList[fileImageListLen]
         that.$emit('updateFileImageList', {
           type: 'success',
@@ -254,10 +251,7 @@ export default {
 
         fileImageListLen++
       }
-
     },
-    // 上传图片
-    uploadFilePromise: uploadFilePromise,
 
   }
 

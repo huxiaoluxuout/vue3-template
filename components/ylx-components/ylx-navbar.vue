@@ -58,13 +58,13 @@
 <script>
 import pagesConfig from "@/pages.json";
 
-import {ylxFilterPath, ylxRedirectTo,} from "@/utils/uniTools";
+import {ylxFilterPath, ylxNavigateTo,} from "@/utils/uniTools";
 import {convertStyleObjectToString} from "@/utils/tools.js";
 
 import {localStringStyle} from "@/components/ylx-components/ylx-JS/template";
 
 
-const {pages:pagesAll,tabBar: {list: tabBarPages = []} = { list: [] }} = pagesConfig || {};
+const {pages:allPages,tabBar: {list: tabBarPages = []} = { list: [] }} = pagesConfig || {};
 
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
@@ -91,7 +91,8 @@ export default {
     },
     title: {
       type: String,
-      default: '顶部导航标题',
+      default: '',
+      // default: '顶部导航标题',
     },
     color: {
       type: String,
@@ -119,6 +120,7 @@ export default {
       type: [Number, String],
       default:20
     },
+
     // 直接显示首页的icon
     showHomeIcon: Boolean,
     hiddenBorder: Boolean,
@@ -310,11 +312,11 @@ export default {
           // 首页
           let indexPagePath = []
           if (!tabBarPages.length) {
-            indexPagePath = pagesAll[0].path
+            indexPagePath = allPages[0].path
           } else {
             indexPagePath = tabBarPages[0].pagePath
           }
-          ylxRedirectTo(indexPagePath);
+          ylxNavigateTo(indexPagePath);
         }
       } catch (error) {
         console.error('Error while handling leftIconClick:', error);

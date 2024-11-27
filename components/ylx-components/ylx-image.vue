@@ -5,7 +5,7 @@
       <view class="loading-content" :style="resultLoadingStyle"></view>
     </view>
 
-    <image v-show="loadingStatus==='success'" class="ylx-scale-img" :style="imageStyle+customStyle" :src="imageSrc" :mode="mode" :showMenuByLongPress="showMenuByLongPress"
+    <image v-show="loadingStatus==='success'" class="ylx-scale-img" :style="imageStyle+customStyle" :src="imageUrl" :mode="mode" :showMenuByLongPress="showMenuByLongPress"
            @click="clickHandler" @load="loadingStatus = 'success'" @error="loadingStatus = 'error'"></image>
 
     <view v-if="loadingStatus==='error'" class="ylx-error-img" :style="resultLoadingErrStyle"></view>
@@ -16,12 +16,14 @@
 <script>
 
 import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
-import {convertStyleObjectToString} from "@/utils/tools.js";
+import {convertStyleObjectToString, replaceLocalhostUrl} from "@/utils/tools.js";
 import {computedRatio, parseSize} from "@/utils/tools";
 import {loading, loadingErr} from "@/components/ylx-components/ylx-static/base64.js";
+import {BASE_URL} from "@/network/config";
 
 export default {
   name: "ylx-image",
+  components: {},
   mixins: [componentsMixin],
   props: {
 
@@ -88,8 +90,13 @@ export default {
       if (!this.src.trim()) {
         this.loadingStatus = 'error'
       }
+
       return this.src
     },
+    imageUrl() {
+      return replaceLocalhostUrl(this.imageSrc, BASE_URL)
+    },
+
     resultCustomStyle() {
       const result = computedRatio(this.scale);
       const {num: width, unit} = parseSize(this.width);

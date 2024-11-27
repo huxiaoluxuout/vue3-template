@@ -38,4 +38,23 @@ function splitUrl(url) {
 }
 
 
+export function interceptorRequestJavaWangFei() {
+    uni.addInterceptor('request', {
+        invoke(args) {
+            if (args.data) {
+                for (let pramsKey in args.data) {
+                    if (args.data.hasOwnProperty(pramsKey)) {
+                        if(args.data[pramsKey]===''){
+                            delete args.data[pramsKey]
+                        }
+                    }
+                }
+            }
+        },
+        fail(err) {
+            // 处理调用失败的情况
+            console.error(err);
+        },
+    })
 
+}
