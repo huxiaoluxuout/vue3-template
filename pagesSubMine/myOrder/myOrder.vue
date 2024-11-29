@@ -1,6 +1,12 @@
 <template>
   <view className="page-content">
     <ylx-page-loading :show-loading="pageLoading"></ylx-page-loading>
+    <view>time:{{params.time}}</view>
+    <view>name:{{params.name}}</view>
+
+    <button @click="emitBackPage">向上一页发送数据</button>
+    <button @click="toPage">跳转order详情</button>
+    <button @click="closef1">closef1</button>
   </view>
 </template>
 
@@ -9,6 +15,7 @@
 import {ref, computed, watch} from 'vue';
 import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 import {ylxEventBus} from "@/ylxuniCore/useylxuni.js";
+import {ylxNavigateTo} from "@/utils/uniTools";
 /*-------------------------------------------------------------*/
 
 const pageLoading = ref(false)
@@ -25,19 +32,51 @@ const activeIds = ref([0])
 const activeStatus = computed(() => activeIds.value[0])
 /*-------------------------------------*/
 
-function btn() {
+
+const params = ref('')
+
+ylxEventBus.on(({args,source})=>{
+  params.value=args[0].params
+  args[0].thenCallback()
+  console.log('1',args[0].params)
+
+})
+
+ylxEventBus.on(({args,source})=>{
+  console.log('2',args[0].params)
+  params.value=args[0].params
+
+  args[0].thenCallback()
+
+
+})
+
+function f1({args,source}) {
+  params.value=args[0].params
+
+  console.log('f1',args[0].params.time)
+}
+ylxEventBus.on(f1)
+ylxEventBus.on(f1)
+
+
+function closef1() {
+  ylxEventBus.clear(f1,{del:true})
+}
+function toPage() {
+ylxNavigateTo('pagesSubMine/orderDetails')
+}
+function emitBackPage() {
   ylxEventBus.emit({
-    targetPath:'/pagesSubMine/foo/foo',
+    targetPath:'/pages/index/index',
     options:{
       params:{
         time:new Date().getSeconds(),
-        name:'myOrder',
+        name:'来自-myOrder',
       }
     },
     source:'myOrder'
   })
-
-  uni.navigateBack()
 }
 
 </script>

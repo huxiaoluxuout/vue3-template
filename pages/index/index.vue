@@ -23,8 +23,8 @@
 
     <hr/>
 
-    <button @click="sendGlobal">sendGlobal</button>
-    <button @click="eventBusMine">跳转tabbar页面</button>
+<!--    <button @click="sendGlobal">sendGlobal</button>-->
+<!--    <button @click="eventBusMine">跳转tabbar页面</button>-->
     <hr/>
 
     <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order(需要登录)</button>
@@ -121,6 +121,9 @@ function chooseAvatarApi(avatar) {
 }
 
 /*-------------------------------------------------------*/
+ylxEventBus.on(({args,source})=>{
+  console.log('index:',args[0],source)
+})
 
 
 function eventBusMine() {
