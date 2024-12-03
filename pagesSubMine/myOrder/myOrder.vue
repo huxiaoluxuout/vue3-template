@@ -7,6 +7,7 @@
     <button @click="emitBackPage">向上一页发送数据</button>
     <button @click="toPage">跳转order详情</button>
     <button @click="closef1">closef1</button>
+    <button @click="fn1">f1</button>
   </view>
 </template>
 
@@ -61,7 +62,10 @@ ylxEventBus.on(f1)
 
 
 function closef1() {
-  ylxEventBus.clear(f1,{del:true})
+  ylxEventBus.off(f1)
+}
+function fn1() {
+  ylxEventBus.off(fn1)
 }
 function toPage() {
 ylxNavigateTo('pagesSubMine/orderDetails')
