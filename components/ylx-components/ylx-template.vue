@@ -23,7 +23,7 @@ export default {
       return convertStyleObjectToString({
         // 其它代码
 
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
   },
 

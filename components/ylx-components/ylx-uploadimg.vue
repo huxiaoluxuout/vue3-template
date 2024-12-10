@@ -122,7 +122,7 @@ export default {
         '--aspect-ratio': this.scale.indexOf(':') !== -1 ? `${a}/${b}` : `${a}/${a}`,
         '--view-width': this.width,
         '-gap': this.gap,
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
     localFileList() {
       this.fileImageList.forEach(item => {

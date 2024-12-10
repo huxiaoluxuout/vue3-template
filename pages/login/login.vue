@@ -21,11 +21,11 @@
 
 
       <!--  #ifdef MP -->
-      <button class="login-btn" style="font-size:14px;line-height: 3.4;" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler">MP 微信一键登录</button>
+      <button class="login-btn" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler">MP 手机号授权登录</button>
       <!-- #endif -->
 
       <!--  #ifdef WEB || APP-PLUS-->
-      <button class="login-btn" style="font-size:14px;line-height: 3.4;" @click="getTestToken">微信一键登录</button>
+      <button class="login-btn">WEB|APP 授权登录</button>
       <!-- #endif -->
 
     </view>
@@ -34,11 +34,12 @@
 
 <script setup>
 import {ref} from 'vue'
-import {ylxLoginCode, ylxRedirectTo} from "@/utils/uniTools";
+import {ylxLoginCode} from "@/utils/uniTools";
 import {onLoad} from '@dcloudio/uni-app'
 
-import {localToken, wxRegister} from "@/network/apis/meiFa";
+
 import {useUserStore} from "@/stores/user";
+import {ylxMustLogIn} from "@/ylxuniCore/useylxuni";
 
 const userStore = useUserStore();
 
@@ -52,36 +53,27 @@ onLoad((options) => {
 
 // 获取手机号
 function getMobilePhoneHandler(btnEvent) {
-  ylxLoginCode()
-      .then(loginCodeRes => {
-        wxRegister({
-          phone_code: btnEvent.detail.code,
-          code: loginCodeRes.code,
-        }).then((loginRes) => {
-          const resData = loginRes.data
-          setToken(resData)
-        })
+  // console.log('btnEvent',btnEvent)
+  const {iv, encryptedData, code: phoneCode} = btnEvent.detail
+  ylxLoginCode().then(loginCodeRes => {
+    // console.log('loginCodeRes', loginCodeRes)
+    // 后端登录接口
+    wxLogin({
+      code: loginCodeRes.code,
+      encryptedData,
+      iv,
+      phone: phoneCode,
+      avatar: '',
+      name: '',
+    }).then((loginRes) => {
+      const resData = loginRes.data
+      ylxMustLogIn.setLoginToken({
+        tokenKey: 'token',
+        tokenData: resData.token
+      }, () => {
+        uni.navigateBack()
       })
-}
-
-const setToken = (resData) => {
-  userStore.login(resData)
-
-  uni.setStorage({
-    key: 'token',
-    data: resData.token,
-    success: function () {
-      ylxRedirectTo('pages/index/index')
-
-    }
-  })
-}
-
-// 测试使用
-const getTestToken = () => {
-  localToken().then(loginRes => {
-    const resData = loginRes.data
-    setToken(resData)
+    })
   })
 }
 
@@ -150,13 +142,14 @@ export default {
 }
 
 /*--------------------------------------*/
-:deep(.login-btn) {
-  font-size: 18px;
+.login-btn {
   color: #ffffff;
   font-weight: bolder;
   background: #48A6EE !important;
   width: 90% !important;
   border-radius: 100px;
+  font-size: 14px;
+  line-height: 3.4;
 }
 
 /*--------------------------------------*/

@@ -118,7 +118,7 @@ export default {
       return convertStyleObjectToString({
         '--num-columns': this.numColumns,
         '--gap': this.gap,
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
 
     resultItemStyle() {

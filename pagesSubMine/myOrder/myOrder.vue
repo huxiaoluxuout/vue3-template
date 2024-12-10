@@ -6,7 +6,9 @@
 
     <button @click="emitBackPage">向上一页发送数据</button>
     <button @click="toPage">跳转order详情</button>
-    <button @click="closef1">closef1</button>
+
+    <button @click="close" class="mt-30">close</button>
+    <button @click="clear" class="mt-30">*clear(清除所有，需要重新打开)</button>
   </view>
 </template>
 
@@ -60,7 +62,10 @@ ylxEventBus.on(f1)
 ylxEventBus.on(f1)
 
 
-function closef1() {
+function close() {
+  ylxEventBus.off(f1,{del:true})
+}
+function clear() {
   ylxEventBus.clear(f1,{del:true})
 }
 function toPage() {

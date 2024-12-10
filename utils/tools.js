@@ -230,3 +230,31 @@ export function replaceLocalhostUrl(url, newHost) {
     const baseUrl = newHost.split(':')[0] + ':' + newHost.split(':')[1];
     return  replaceStr(url,'http://localhost',baseUrl)
 }
+// 数组的循环播放
+export class ArrayPlayer {
+    constructor(options) {
+        this.onIndex = options.onIndex; // 当前显示的索引
+        this.list = options.list;       // 数组列表
+        this.callback = options.callback; // 索引变化时的回调函数
+        this.loop = true;               // 控制是否循环播放
+    }
+
+    async play() {
+        this.loop = true;
+        while (this.loop) {
+            const item = this.list[this.onIndex]; // 获取当前信息
+
+            await new Promise(resolve => setTimeout(resolve, item.delay * 1000)); // 异步延时
+
+            let onIndex = (this.onIndex + 1) % this.list.length; // 更新索引实现循环
+            this.onIndex = onIndex
+            this.callback?.(onIndex); // 执行回调函数
+        }
+
+    }
+
+    // 用于停止数组的循环播放
+    stop() {
+        this.loop = false;
+    }
+}

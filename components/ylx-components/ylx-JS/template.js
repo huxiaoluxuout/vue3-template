@@ -24,7 +24,12 @@ import {convertStyleObjectToString} from "@/utils/tools.js";
             default: ''
         },
 
-    }
+    },
+     computed: {
+         customStringStyle() {
+             return localStringStyle(this.customStyle)
+         },
+     }
 };
 export {
     localStringStyle,

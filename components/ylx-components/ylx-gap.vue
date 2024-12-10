@@ -34,7 +34,7 @@ export default {
         height: this.height,
         width: this.width,
         'background-color': this.bgColor,
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
   }
 }

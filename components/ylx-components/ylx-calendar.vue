@@ -173,7 +173,7 @@ export default {
     resultCustomStyle() {
       return convertStyleObjectToString({
         height: '100%'
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
 
     sectionMonths() {

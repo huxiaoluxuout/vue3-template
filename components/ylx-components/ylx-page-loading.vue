@@ -1,11 +1,11 @@
 <template>
-  <view v-if="showLoading" class="ylx-page-loading" :class="customClass" :style="customStyle">
+  <view v-if="showLoading" class="ylx-page-loading" :class="customClass" :style="customStringStyle">
     <image :src="loadingPage" class="ylx-page-loading-img"></image>
   </view>
 </template>
 <script>
 
-import {localStringStyle, componentsMixin} from "@/components/ylx-components/ylx-JS/template";
+import {componentsMixin} from "@/components/ylx-components/ylx-JS/template";
 import {loadingPage} from "@/components/ylx-components/ylx-static/base64.js";
 
 

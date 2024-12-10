@@ -50,7 +50,7 @@ export default {
         borderRadius: this.rounded,
         backgroundColor: this.bgColor,
         color: this.color,
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
   },
 

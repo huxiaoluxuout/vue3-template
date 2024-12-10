@@ -5,7 +5,7 @@
       <view class="loading-content" :style="resultLoadingStyle"></view>
     </view>
 
-    <image v-show="loadingStatus==='success'" class="ylx-scale-img" :style="imageStyle+customStyle" :src="imageUrl" :mode="mode" :showMenuByLongPress="showMenuByLongPress"
+    <image v-show="loadingStatus==='success'" class="ylx-scale-img" :style="imageStyle+customStringStyle" :src="imageUrl" :mode="mode" :showMenuByLongPress="showMenuByLongPress"
            @click="clickHandler" @load="loadingStatus = 'success'" @error="loadingStatus = 'error'"></image>
 
     <view v-if="loadingStatus==='error'" class="ylx-error-img" :style="resultLoadingErrStyle"></view>
@@ -125,7 +125,7 @@ export default {
 
       return convertStyleObjectToString({
         ...attrObj
-      }) + localStringStyle(this.customStyle)
+      }) + this.customStringStyle
     },
 
     resultLoadingStyle() {

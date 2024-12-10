@@ -16,7 +16,7 @@
     <hr/>
 
     <view class="relative">
-      <button class="ylx-open-type" open-type="chooseAvatar" @chooseavatar="chooseAvatarApi"></button>
+      <button class="ylx-open-type" open-type="chooseAvatar" @chooseavatar="uniApiChooseAvatar"></button>
       <view class="fs-24">修改头像</view>
 
     </view>
@@ -27,7 +27,7 @@
 <!--    <button @click="eventBusMine">跳转tabbar页面</button>-->
     <hr/>
 
-    <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order(需要登录)</button>
+    <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order</button>
     <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
     <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
 
@@ -67,18 +67,19 @@ function toggleLocale() {
 }
 
 /*---------------------登录----------------------------------*/
-
+// 页面渲染判断 //
 const loginProxy = ref(ylxMustLogIn.loginProxyObject)
 const hasLogin = computed(() => loginProxy.value.login)
+// 页面渲染判断 //
 
 function setToggle() {
   ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
 }
 
 function interceptToPage(fn, ...args) {
-  ylxMustLogIn.interceptMastLogIn({
-    onLoggedIn: () => fn(...args),
-    // confirm:  ()=>ylxNavigateTo('/pages/login/login')
+  ylxMustLogIn.intercept({
+    success: () => fn(...args),
+    fail:  ()=>ylxNavigateTo('/pages/login/login')
   })()
 }
 
@@ -113,7 +114,7 @@ function uploadimg() {
 const avatar = computed(() => fileImageList.value[0]?.url || '');
 
 // 上传小程序头像
-function chooseAvatarApi(avatar) {
+function uniApiChooseAvatar(avatar) {
   let tempFile = avatar.detail.avatarUrl
   uploadFileCallback(tempFile, imgHttpSuccess, (url) => {
     fileImageList.value[0] = {url: url}
