@@ -23,14 +23,14 @@
 
     <hr/>
 
-<!--    <button @click="sendGlobal">sendGlobal</button>-->
-<!--    <button @click="eventBusMine">跳转tabbar页面</button>-->
+    <!--    <button @click="sendGlobal">sendGlobal</button>-->
+    <!--    <button @click="eventBusMine">跳转tabbar页面</button>-->
     <hr/>
 
     <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order</button>
     <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
     <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
-
+    <view>hasLoading:{{ hasLoading }}</view>
     <hr/>
 
   </view>
@@ -39,10 +39,10 @@
 <script setup lang="js">
 
 import {ref, computed, watch, toRefs, reactive} from 'vue';
-import {onLoad, onTabItemTap} from '@dcloudio/uni-app'
+import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 
-import {ylxEventBus, ylxMustLogIn} from "@/ylxuniCore/useylxuni.js";
+import {ylxEventBus, ylxMustLogIn, ylxNextPage} from "@/ylxuniCore/useylxuni.js";
 import {ylxNavigateTo} from "@/utils/uniTools.js";
 
 /*--------------------------------------------------*/
@@ -70,6 +70,7 @@ function toggleLocale() {
 // 页面渲染判断 //
 const loginProxy = ref(ylxMustLogIn.loginProxyObject)
 const hasLogin = computed(() => loginProxy.value.login)
+
 // 页面渲染判断 //
 
 function setToggle() {
@@ -79,10 +80,29 @@ function setToggle() {
 function interceptToPage(fn, ...args) {
   ylxMustLogIn.intercept({
     success: () => fn(...args),
-    fail:  ()=>ylxNavigateTo('/pages/login/login')
+    fail: () => ylxNavigateTo('/pages/login/login')
   })()
 }
 
+/*------------------------loading-------------------------------*/
+
+const {ylxRefresh,ylxSetFun,ylxSetData,ylxInvokeFn,ylxReachBottom} = ylxNextPage.useNextPage()
+/*-----------------------------------------------------------*/
+const loadingProxy = ref(ylxNextPage.loadingProxyObject)
+const hasLoading = computed(() => loadingProxy.value.loading)
+
+const list =ref([])
+function add() {
+  setTimeout(()=>{
+    console.log({time:new Date().getSeconds()})
+    list.value=ylxSetData({},{time:new Date().getSeconds()})
+  },2000)
+}
+ylxSetFun(add)
+
+ylxInvokeFn()
+onReachBottom(ylxReachBottom)
+onPullDownRefresh(ylxRefresh);
 /*-------------------------------------------------------*/
 
 /*---------------------上传图片----------------------------------*/
@@ -122,8 +142,8 @@ function uniApiChooseAvatar(avatar) {
 }
 
 /*-------------------------------------------------------*/
-ylxEventBus.on(({args,source})=>{
-  console.log('index:',args[0],source)
+ylxEventBus.on(({args, source}) => {
+  console.log('index:', args[0], source)
 })
 
 

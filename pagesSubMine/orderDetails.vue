@@ -18,7 +18,8 @@ ylxEventBus.on(f1)
 
 function emitBackPage() {
   ylxEventBus.emit({
-    targetPath:'/pagesSubMine/myOrder/myOrder',
+    prevPage:true,
+    // targetPath:'/pagesSubMine/myOrder/myOrder',
     options:{
       params:{
         time:new Date().getSeconds(),
@@ -30,6 +31,7 @@ function emitBackPage() {
       uni.navigateBack()
     })
 }
+
 </script>
 
 

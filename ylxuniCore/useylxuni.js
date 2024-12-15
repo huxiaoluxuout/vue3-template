@@ -1,9 +1,9 @@
 import {reactive} from 'vue'
 
-import ylxIntercept from "@/.yalc/ylxuni/index.js"
-// import ylxIntercept from "@/ylxuniCore/ylxuni.esm.js"
+import ylxuni from "@/.yalc/ylxuni/index.js"
+// import ylxuni from "@/ylxuniCore/ylxuni.esm.js"
 
-const ylxInstance = ylxIntercept(uni,reactive)
+const ylxInstance = ylxuni(uni,reactive)
 
-export const ylxNextPage = ylxInstance.ylxNextPage.useNextPage
-export const { ylxEventBus, ylxMustLogIn } = ylxInstance
+
+export const { ylxEventBus, ylxMustLogIn,ylxNextPage } = ylxInstance
