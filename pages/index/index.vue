@@ -86,7 +86,7 @@ function interceptToPage(fn, ...args) {
 
 /*------------------------loading-------------------------------*/
 
-const {ylxRefresh,ylxSetFun,ylxSetData,ylxInvokeFn,ylxReachBottom} = ylxNextPage.useNextPage()
+const {ylxRefresh,ylxSetFn,ylxSetData,ylxInvokeFn,ylxReachBottom} = ylxNextPage.useNextPage()
 /*-----------------------------------------------------------*/
 const loadingProxy = ref(ylxNextPage.loadingProxyObject)
 const hasLoading = computed(() => loadingProxy.value.loading)
@@ -98,7 +98,7 @@ function add() {
     list.value=ylxSetData({},{time:new Date().getSeconds()})
   },2000)
 }
-ylxSetFun(add)
+ylxSetFn(add)
 
 ylxInvokeFn()
 onReachBottom(ylxReachBottom)
