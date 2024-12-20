@@ -1,6 +1,9 @@
 <template>
   <view>
-    测试页面
+
+    <view style="position:fixed;bottom: 400px;left: 0;right: 0;display:flex;justify-content: center;transform: translateY(50%)">
+      <ylx-test-animation-image></ylx-test-animation-image>
+    </view>
   </view>
 </template>
 

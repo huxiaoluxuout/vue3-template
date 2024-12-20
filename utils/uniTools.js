@@ -115,7 +115,13 @@ const {
         list: tabBarPages = []
     } = {}
 } = pagesConfig;
-
+/**
+ *
+ * @param pagePath
+ * @param {object} parseInfo
+ * @param {boolean} parseInfo.toPage
+ * @param api
+ */
 const toTargetPage = (pagePath, parseInfo = {}, api) => {
     if (!pagePath) return;
 
@@ -135,8 +141,17 @@ const toTargetPage = (pagePath, parseInfo = {}, api) => {
 
         let startStr = pagePath.indexOf('?') === -1 ? '?' : '&';
         let queryString = '';
-        if (Object.keys(parseInfo).length) {
-            queryString = startStr + Object.keys(parseInfo).map((key) => `${key}=${parseInfo[key]}`).join('&');
+
+        const toPage = parseInfo.toPage
+        if (toPage) {
+            delete parseInfo.toPage
+            if (Object.keys(parseInfo).length) {
+                queryString = startStr + 'pageInfo=' + encodeURIComponent(JSON.stringify(parseInfo))
+            }
+        } else {
+            if (Object.keys(parseInfo).length) {
+                queryString = startStr + Object.keys(parseInfo).map((key) => `${key}=${parseInfo[key]}`).join('&');
+            }
         }
 
         uni[api]({
@@ -149,6 +164,20 @@ const toTargetPage = (pagePath, parseInfo = {}, api) => {
             }
         })
     }
+}
+
+/**
+ *
+ * @param {object} options
+ * @param {string} options.pageInfo
+ * @returns {string}
+ */
+export function ylxTargetPageDecode(options) {
+    if(!options?.pageInfo){
+        return  ''
+    }
+    let {pagePath,pagePrams}=JSON.parse(decodeURIComponent(options.pageInfo))
+    return pagePath+pagePrams
 }
 
 /**

@@ -34,7 +34,7 @@
 
 <script setup>
 import {ref} from 'vue'
-import {ylxLoginCode} from "@/utils/uniTools";
+import {ylxLoginCode, ylxRedirectTo, ylxTargetPageDecode} from "@/utils/uniTools";
 import {onLoad} from '@dcloudio/uni-app'
 
 
@@ -45,10 +45,13 @@ const userStore = useUserStore();
 
 const navbarHeight = ref(44)
 
-const typeValue = ref('1')
+let toTargetPage = ''
 onLoad((options) => {
-  typeValue.value = options.type
+
+  toTargetPage = ylxTargetPageDecode(options)
+  console.log('toTargetPage', toTargetPage)
 })
+
 
 
 // 获取手机号
@@ -71,7 +74,13 @@ function getMobilePhoneHandler(btnEvent) {
         tokenKey: 'token',
         tokenData: resData.token
       }, () => {
-        uni.navigateBack()
+        // 分享的目标页
+        if(toTargetPage){
+          ylxRedirectTo(toTargetPage)
+        }else {
+          uni.navigateBack()
+
+        }
       })
     })
   })

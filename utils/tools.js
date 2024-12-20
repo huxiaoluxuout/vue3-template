@@ -1,21 +1,29 @@
-// 将参数转换为查询字符串
-export const encodeObjectToQueryString = (params, starStr = '?') => {
+/**
+ * 将参数转换为查询字符串
+ * @param {object} params
+ * @param {string} [prefix]
+ * @returns {string}
+ */
+export const objToStr = (params, prefix = '?') => {
     if (Object.keys(params).length === 0) {
-        return '';
+        return ''
+    } else {
+        const str = Object.keys(params).map(key => `${key}=${params[key]}`).join('&');
+        return prefix + str;
     }
 
-    const separator = Object.keys(params)[0] === starStr ? '' : '&';
-    return separator + Object.keys(params)
-        .map(key => `${encodeURIComponent(key)}=${encodeURIComponent(params[key])}`)
-        .join('&');
+
 }
 
-// 解析查询字符串
-export const encodeParseQueryString = (queryString) => {
+/**
+ * 解析查询字符串
+ * @param {string} queryString
+ * @returns {object}}
+ */
+export const strToObj = (queryString) => {
+    if (!queryString.startsWith('?')) return
     const params = {};
-    if (queryString.startsWith('?')) {
-        queryString = queryString.slice(1);
-    }
+    queryString = queryString.slice(1);
     const keyValues = queryString.split('&');
     keyValues.forEach(keyValue => {
         const [key, value] = keyValue.split('=');
@@ -23,6 +31,7 @@ export const encodeParseQueryString = (queryString) => {
     });
     return params;
 };
+
 
 /**
  * 提取指定属性并返回一个新对象

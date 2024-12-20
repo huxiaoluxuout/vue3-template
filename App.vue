@@ -1,5 +1,5 @@
 <script setup>
-import {onLaunch} from '@dcloudio/uni-app'
+import {onLaunch,onShow} from '@dcloudio/uni-app'
 
 import {wxLogin} from "@/network/apis/meiFa";
 
@@ -7,7 +7,9 @@ import {useUserStore} from "@/stores/user";
 const userStore = useUserStore();
 
 /*----------------------------------*/
-import {ylxEventBus} from "@/ylxuniCore/useylxuni.js";
+import {ylxEventBus, ylxMustLogIn} from "@/ylxuniCore/useylxuni.js";
+import {ylxRedirectTo} from "@/utils/uniTools";
+import {objToStr} from "@/utils/tools";
 
 function getWxLoginInfo() {
   /*wxLogin().then((loginRes) => {
@@ -28,6 +30,19 @@ onLaunch(() => {
     // getWxLoginInfo()
 
   })
+
+})
+
+onShow((options) => {
+  console.log('App onShow', options)
+  if(options.scene===1007||options.scene===1008){
+    console.log('来自分享')
+    // 来自分享,未登录。跳转到登录页，
+    if (!ylxMustLogIn.loginProxyObject.login) {
+      ylxRedirectTo('pages/login/login',{toPage:true,pagePath:options.path,pagePrams:objToStr(options.query)})
+    }
+
+  }
 
 })
 </script>

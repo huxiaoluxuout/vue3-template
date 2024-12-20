@@ -11,7 +11,7 @@
       "path": "testPage",
       "style": {
         "navigationBarTitleText": "测试页面",
-        "enablePullDownRefresh": true
+        "enablePullDownRefresh": false
       }
     },
     {
