@@ -18,14 +18,8 @@
     <view class="relative">
       <button class="ylx-open-type" open-type="chooseAvatar" @chooseavatar="uniApiChooseAvatar"></button>
       <view class="fs-24">修改头像</view>
-
     </view>
 
-    <hr/>
-
-    <!--    <button @click="sendGlobal">sendGlobal</button>-->
-    <!--    <button @click="eventBusMine">跳转tabbar页面</button>-->
-    <hr/>
 
     <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order</button>
     <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
@@ -38,7 +32,7 @@
 
 <script setup lang="js">
 
-import {ref, computed, watch, toRefs, reactive} from 'vue';
+import {ref, computed} from 'vue';
 import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 
@@ -95,8 +89,10 @@ const list =ref([])
 function add() {
   setTimeout(()=>{
     console.log({time:new Date().getSeconds()})
-    list.value=ylxSetData({},{time:new Date().getSeconds()})
-  },2000)
+    list.value=ylxSetData({
+      data:{},resData:{}
+    },false)
+  },200)
 }
 ylxSetFn(add)
 

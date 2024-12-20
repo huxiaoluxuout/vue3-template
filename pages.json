@@ -8,6 +8,13 @@
   },
   "pages": [
     {
+      "path": "testPage",
+      "style": {
+        "navigationBarTitleText": "测试页面",
+        "enablePullDownRefresh": true
+      }
+    },
+    {
       "path": "pages/index/index",
       "style": {
         "navigationBarTitleText": "%home.title%",
@@ -30,6 +37,7 @@
         "navigationStyle": "custom"
       }
     }
+
   ],
   "globalStyle": {
     "navigationBarTextStyle": "black",
