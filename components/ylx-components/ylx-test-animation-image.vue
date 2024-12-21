@@ -39,18 +39,18 @@ export default {
     imageGroups: {
       type: Array,
       default: () => ([
-        "/static/love/1.png",
-        "/static/love/2.png",
-        "/static/love/3.png",
-        "/static/love/4.png",
-        "/static/love/5.png",
-        "/static/love/6.png",
-        "/static/love/7.png",
-        "/static/love/8.png",
-        "/static/love/9.png",
-        "/static/love/10.png",
-        "/static/love/11.png",
-        "/static/love/12.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/1.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/2.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/3.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/4.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/5.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/6.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/7.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/8.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/9.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/10.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/11.png",
+        "https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/12.png",
       ])
     },
     itemImageWidth: {
@@ -64,7 +64,7 @@ export default {
     },
     centerImageSrc: {
       type: String,
-      default: '/static/love/1.png'
+      default: 'https://env-00jxgajxo70c.normal.cloudstatic.cn/imgs/love/1.png'
     },
 
     // 控制灵敏度
