@@ -151,17 +151,6 @@ export default {
       let currentValue = (distanceX / distanceY)
       let currentChange = currentValue - lastValue > 0
 
-     /* if (distanceX > 0 && distanceY > 0) {
-        this.setDegSteps(currentChange)
-      } else if (distanceX < 0 && distanceY < 0) {
-        this.setDegSteps(currentChange)
-
-      } else if (distanceX < 0 && distanceY > 0) {
-        this.setDegSteps(currentChange)
-
-      } else if (distanceX > 0 && distanceY < 0) {
-        this.setDegSteps(currentChange)
-      }*/
       this.setDegSteps(currentChange)
 
 
