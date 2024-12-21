@@ -1,7 +1,7 @@
 <template>
 
   <view id="box" class="box" :style="{ transform:`rotate(${degDiff}deg)`, width: `${width}`, height: `${width}`}"
-        @touchmove.stop="touchmove" @touchstart="touchStart" @touchend="touchEnd">
+        @touchmove.prevent="touchmove" @touchstart="touchStart" @touchend="touchEnd">
     <image class="image-item" :class="imageItemTransform"
            v-for="(itemUrl,index) in imageGroups" :key="index" :src="itemUrl"
            :style="{
