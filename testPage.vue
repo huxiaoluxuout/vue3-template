@@ -1,8 +1,8 @@
 <template>
   <view>
 
-    <view style="position:fixed;bottom:20px;left: 0;right: 0;display:flex;justify-content: center;transform: translateY(50%);">
-      <ylx-test-animation-image width="500rpx" is-open :rotate-step="5" @centerClick="centerClick" @itemClick="itemClick"></ylx-test-animation-image>
+    <view style="position:fixed;bottom:420px;left: 0;right: 0;display:flex;justify-content: center;transform: translateY(50%);">
+      <ylx-test-animation-image width="500rpx" is-open :rotate-step="10" @centerClick="centerClick" @itemClick="itemClick"></ylx-test-animation-image>
     </view>
   </view>
 </template>
@@ -12,10 +12,10 @@ export default {
 
   methods: {
     centerClick(isOpen) {
-      uni.showToast({
+     /* uni.showToast({
         title: isOpen ? '打开' : '关闭',
         icon: 'none'
-      });
+      })*/
     },
     itemClick(index) {
       uni.showToast({
