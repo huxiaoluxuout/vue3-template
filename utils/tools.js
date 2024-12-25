@@ -267,3 +267,102 @@ export class ArrayPlayer {
         this.loop = false;
     }
 }
+
+export function debounce(func, wait, options = {}) {
+    let timeoutId;
+    let lastArgs;
+    let lastThis;
+    let result;
+    let lastCallTime;
+
+    const { leading = false, trailing = true } = options;
+
+    function invokeFunc(time) {
+        lastArgs = lastThis = undefined;
+        lastCallTime = time;
+        result = func.apply(lastThis, lastArgs);
+        return result;
+    }
+
+    function leadingEdge(time) {
+        lastCallTime = time;
+        timeoutId = setTimeout(timerExpired, wait);
+        return leading ? invokeFunc(time) : result;
+    }
+
+    function timerExpired() {
+        const time = Date.now();
+        if (trailing && lastArgs) {
+            return invokeFunc(time);
+        }
+        timeoutId = lastArgs = lastThis = undefined;
+    }
+
+    function debounced(...args) {
+        const time = Date.now();
+        const isInvoking = shouldInvoke(time);
+
+        lastArgs = args;
+        lastThis = this;
+
+        if (isInvoking) {
+            if (timeoutId === undefined) {
+                return leadingEdge(lastCallTime);
+            }
+            if (trailing) {
+                clearTimeout(timeoutId);
+                timeoutId = setTimeout(timerExpired, wait);
+                return invokeFunc(time);
+            }
+        }
+        if (timeoutId === undefined) {
+            timeoutId = setTimeout(timerExpired, wait);
+        }
+        return result;
+    }
+
+    function shouldInvoke(time) {
+        const timeSinceLastCall = time - lastCallTime;
+        return lastCallTime === undefined || timeSinceLastCall >= wait;
+    }
+
+    debounced.cancel = function() {
+        if (timeoutId !== undefined) {
+            clearTimeout(timeoutId);
+        }
+        lastCallTime = timeoutId = lastArgs = lastThis = undefined;
+    };
+
+    return debounced;
+}
+
+// 三角形判断
+export function isValidTriangle(a, b, c) {
+    // 检查任意两边之和是否大于第三边
+    return (a + b > c) && (a + c > b) && (b + c > a);
+}
+// 算余弦值
+export function getTriangleAngle(a, b, c, sideOppositeAngle) {
+    // 使用余弦定理计算余弦值
+    let cosineValue;
+    if (sideOppositeAngle === 'a') {
+        cosineValue = (b**2 + c**2 - a**2) / (2 * b * c);
+    } else if (sideOppositeAngle === 'b') {
+        cosineValue = (a**2 + c**2 - b**2) / (2 * a * c);
+    } else if (sideOppositeAngle === 'c') {
+        cosineValue = (a**2 + b**2 - c**2) / (2 * a * b);
+    } else {
+        throw new Error('Invalid sideOppositeAngle value. It should be "a", "b", or "c".');
+    }
+
+    // 使用反余弦函数计算角度（以弧度为单位）
+    let angleRadians = Math.acos(cosineValue);
+
+    // 将弧度转换为角度
+    let angleDegrees = angleRadians * (180 / Math.PI);
+
+    // 返回角度值（四舍五入到小数点后两位）
+    return Math.round(angleDegrees * 1000) / 1000;
+    // return angleRadians;
+}
+
