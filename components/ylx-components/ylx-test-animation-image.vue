@@ -10,9 +10,11 @@
           :x="x"
           :y="y"
           @change="onChange"
+          @htouchmove="htouchmove"
       >
+        -->
       </movable-view>
-      <movable-view
+<!--      <movable-view
           class="circle2"
 
           :direction="direction"
@@ -20,7 +22,7 @@
           :y="y2"
           @change="onChange"
       >
-      </movable-view>
+      </movable-view>-->
     </movable-area>
   </view>
 
@@ -68,8 +70,13 @@ export default {
       this.angle += 2; // 每次滑动改变角度
 
       // 根据角度计算新的 x 和 y
-      this.x = this.radius * Math.cos(this.angle * (Math.PI / 180));
-      this.y = this.radius * Math.sin(this.angle * (Math.PI / 180));
+      // this.x = this.radius * Math.cos(this.angle * (Math.PI / 180));
+      // this.y = this.radius * Math.sin(this.angle * (Math.PI / 180));
+    },
+    htouchmove(event) {
+      // 获取当前的角度
+      console.log(event)
+
     },
   }
 };
@@ -87,8 +94,10 @@ export default {
 .movable-area {
   position: relative;
   background: #ccc;
-  border-radius: 50%; /* 圆形边框 */
-  border: 1px solid #000;
+  //border-radius: 50%; /* 圆形边框 */
+  //border: 1px solid #000;
+  clip-path: circle();
+
 }
 
 

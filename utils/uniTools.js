@@ -110,6 +110,7 @@ export const ylxToast = (title, duration = 1500, mask = false, icon = 'none') =>
 
 
 import pagesConfig from "@/pages.json";
+
 const {
     tabBar: {
         list: tabBarPages = []
@@ -119,10 +120,12 @@ const {
  *
  * @param pagePath
  * @param {object} parseInfo
- * @param {boolean} parseInfo.toPage
+ * @param {boolean} parseInfo.toPage --分享页参数
  * @param api
+ * @param {function} [callback]
+ *
  */
-const toTargetPage = (pagePath, parseInfo = {}, api) => {
+const toTargetPage = (pagePath, parseInfo = {}, api, callback) => {
     if (!pagePath) return;
 
     const pattern = /\/?([^?]+)/;
@@ -133,6 +136,11 @@ const toTargetPage = (pagePath, parseInfo = {}, api) => {
     if (isTabBarPage) {
         uni.switchTab({
             url: ylxFilterPath(route),
+            success: function (res) {
+                if (typeof callback === 'function') {
+                    callback()
+                }
+            },
             fail: function (fail) {
                 console.error(fail)
             }
@@ -157,7 +165,9 @@ const toTargetPage = (pagePath, parseInfo = {}, api) => {
         uni[api]({
             url: ylxFilterPath(removeVueExtension(pagePath) + queryString),
             success: function (res) {
-                console.log(res.errMsg)
+                if (typeof callback === 'function') {
+                    callback()
+                }
             },
             fail: function (fail) {
                 console.error('fail', fail.errMsg);
@@ -173,26 +183,36 @@ const toTargetPage = (pagePath, parseInfo = {}, api) => {
  * @returns {string}
  */
 export function ylxTargetPageDecode(options) {
-    if(!options?.pageInfo){
-        return  ''
+    if (!options?.pageInfo) {
+        return ''
     }
-    let {pagePath,pagePrams}=JSON.parse(decodeURIComponent(options.pageInfo))
-    return pagePath+pagePrams
+    let {pagePath, pagePrams} = JSON.parse(decodeURIComponent(options.pageInfo))
+    return pagePath + pagePrams
 }
 
-/**
- * 跳转到应用内的某个页面
- * @param {string} pagePath 目标页面路径
- * @param {Object} parse={id:18} 对象参数
- */
-export const ylxNavigateTo = (pagePath, parse = {}) => toTargetPage(pagePath, parse, 'navigateTo');
-/**
- * 跳转到应用内的某个页面
- * @param {string} pagePath 目标页面路径
- * @param {Object} parse={id:18} 对象参数
- */
-export const ylxRedirectTo = (pagePath, parse = {}) => toTargetPage(pagePath, parse, 'redirectTo');
 
+/**
+ * 跳转到应用内的某个页面
+ * @param {string} pagePath 目标页面路径
+ * @param {Object} [parse]={id:18} 对象参数
+ * @param {function} [callback]
+ */
+export const ylxNavigateTo = (pagePath, parse = {}, callback) => toTargetPage(pagePath, parse, 'navigateTo', callback);
+/**
+ * 跳转到应用内的某个页面
+ * @param {string} pagePath 目标页面路径
+ * @param {Object} [parse]={id:18} 对象参数
+ * @param {function} [callback]
+ *
+ */
+export const ylxRedirectTo = (pagePath, parse = {}, callback) => toTargetPage(pagePath, parse, 'redirectTo', callback);
+
+/**
+ * 跳转到应用内的 tabBar  页面
+ * @param {string} pagePath 目标页面路径
+ * @param {function} [callback]
+ */
+export const ylxSwitchTab = (pagePath, callback) => toTargetPage(pagePath, {} = {}, 'switchTab', callback);
 
 
 // 路径补全
@@ -201,13 +221,14 @@ export const ylxFilterPath = (path) => {
 };
 
 function removeVueExtension(filePath) {
-    if (filePath.lastIndexOf('.vue') !== -1) {
+    if (filePath.lastIndexOf('scanCode.vue') !== -1) {
         console.warn('移除.vue')
         return filePath.replace(/\.vue$/, '');
     } else {
         return filePath
     }
 }
+
 /*========*/
 // IOS 底部兼容
 export const ylxIOSBottomHeight = () => {
@@ -219,3 +240,25 @@ export const ylxIOSBottomHeight = () => {
         return 0
     }
 };
+export const ylxOpenWxDebug = (envType = '') => {
+    uni.getSystemInfo({
+        success(res) {
+            // #ifdef MP
+            const accountInfo = uni.getAccountInfoSync()
+            const {miniProgram} = accountInfo
+            if ((res?.brand && res.brand !== "devtools")) {
+                if (process.env.NODE_ENV === 'development') {
+                    // 打开调试
+                    uni.setEnableDebug({
+                        enableDebug: ['develop'].concat([envType]).includes(miniProgram.envVersion) // 区分  develop:开发版本 trial:体验版 release:正式版
+                    })
+                } else {
+                    console.log('生产环境');
+
+                }
+            }
+            // #endif
+
+        }
+    })
+}
