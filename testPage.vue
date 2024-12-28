@@ -2,7 +2,7 @@
   <view>
 
     <view style="position:fixed;bottom:420px;left: 0;right: 0;display:flex;justify-content: center;transform: translateY(50%);">
-      <ylx-test-animation-image width="500rpx" is-open :rotate-step="10" @centerClick="centerClick" @itemClick="itemClick"></ylx-test-animation-image>
+      <test-animation-image width="500rpx" is-open :rotate-step="10" @centerClick="centerClick" @itemClick="itemClick"></test-animation-image>
     </view>
   </view>
 </template>

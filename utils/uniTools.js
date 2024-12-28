@@ -40,7 +40,11 @@ export const PayMoneyApp = function ({provider, orderInfo}) {
                 resolve(PaymentSuccess);
             },
             fail: function (fail) {
-                console.log(fail)
+
+                if (fail.errMsg === 'requestPayment:fail cancel') {
+                    console.warn('支付取消')
+                }
+                console.err(fail)
                 reject(fail);
             }
         });
@@ -72,7 +76,7 @@ export const PayMoneyMp = (paymentInfo) => {
             },
             fail(fail) {
                 if (fail.errMsg === 'requestPayment:fail cancel') {
-                    Toast('支付取消')
+                    console.warn('支付取消')
                 }
                 reject(fail)
             },

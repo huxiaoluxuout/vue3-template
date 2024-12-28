@@ -3,7 +3,8 @@
     "autoscan": true,
     "custom": {
       "^ylx-(.*)": "@/components/ylx-components/ylx-$1.vue",
-      "^mf-(.*)": "@/components/mf-components/mf-$1.vue"
+      "^mf-(.*)": "@/components/mf-components/mf-$1.vue",
+      "^test-(.*)": "@/components/test-components/test-$1.vue"
     }
   },
   "pages": [
