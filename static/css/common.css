@@ -1,3 +1,8 @@
+.test {
+    background-color: rgba(230,65,110,0.3) !important;
+    box-sizing: border-box;
+}
+/*-----------------------------------------*/
 .ylx-flex-container-wrapper{
     --width:750rpx;
     width: var(--width);
@@ -59,6 +64,7 @@
     padding-right: 30rpx;
     box-sizing: border-box;
 }
+
 .page-content-margin-y {
     margin-top: 30rpx;
     margin-bottom: 30rpx;
