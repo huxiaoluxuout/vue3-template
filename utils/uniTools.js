@@ -122,25 +122,31 @@ const {
 } = pagesConfig;
 /**
  *
- * @param pagePath
+ * @param pagePath --目标页
  * @param {object} parseInfo
- * @param {boolean} parseInfo.toPage --分享页参数
  * @param api
  * @param {function} [callback]
+ * @param {Object} [config]-其它配置
+ * @param {boolean} config.isOpenBack -- 开启返回到目标页
+ * @param {boolean} config.toPage -- 分享页参数
+ * @param {boolean} config.isSkip -- 当前页面是要跳转到的页面不跳转
  *
  */
-const toTargetPage = (pagePath, parseInfo = {}, api, callback) => {
+const toTargetPage = (pagePath, parseInfo = {}, api, callback, config) => {
     if (!pagePath) return;
 
     const pattern = /\/?([^?]+)/;
-    const route = pagePath.match(pattern)[1];
-    const isTabBarPage = tabBarPages.map(item => ylxFilterPath(item.pagePath)).includes(ylxFilterPath(route));
 
+    const targetRoute = pagePath.match(pattern)[1];
+    const isTabBarPage = tabBarPages.map(item => ylxFilterPath(item.pagePath)).includes(ylxFilterPath(targetRoute));
+
+    const Pages = getCurrentPages()
+    const currentPage = Pages[Pages.length - 1].route
 
     if (isTabBarPage) {
         uni.switchTab({
-            url: ylxFilterPath(route),
-            success: function (res) {
+            url: ylxFilterPath(targetRoute),
+            success: function () {
                 if (typeof callback === 'function') {
                     callback()
                 }
@@ -154,9 +160,7 @@ const toTargetPage = (pagePath, parseInfo = {}, api, callback) => {
         let startStr = pagePath.indexOf('?') === -1 ? '?' : '&';
         let queryString = '';
 
-        const toPage = parseInfo.toPage
-        if (toPage) {
-            delete parseInfo.toPage
+        if (config.toPage) {
             if (Object.keys(parseInfo).length) {
                 queryString = startStr + 'pageInfo=' + encodeURIComponent(JSON.stringify(parseInfo))
             }
@@ -164,6 +168,34 @@ const toTargetPage = (pagePath, parseInfo = {}, api, callback) => {
             if (Object.keys(parseInfo).length) {
                 queryString = startStr + Object.keys(parseInfo).map((key) => `${key}=${parseInfo[key]}`).join('&');
             }
+        }
+
+        // 当前页面是要跳转到的页面不跳转
+        if (config.isSkip) {
+            if (currentPage === targetRoute) {
+                if (typeof callback === 'function') {
+                    callback()
+                }
+                return;
+            }
+        }
+
+        let pagesRoute = Pages.map(item => item.route)
+
+        // 开启返回到目标页
+        if (config.isOpenBack) {
+            let index = pagesRoute.findIndex(item => item === targetRoute)
+            let deltaNum = pagesRoute.length - 1 - index
+            uni.navigateBack({
+                delta: deltaNum,
+                success: function () {
+                    if (typeof callback === 'function') {
+                        callback()
+                    }
+                }
+            })
+            return;
+
         }
 
         uni[api]({
@@ -200,23 +232,45 @@ export function ylxTargetPageDecode(options) {
  * @param {string} pagePath 目标页面路径
  * @param {Object} [parse]={id:18} 对象参数
  * @param {function} [callback]
+ * @param {Object} [config]
+ * @param {boolean} [config.isOpenBack]
+ * @param {boolean} [config.toPage]
+ * @param {boolean} [config.isSkip]
+ *
  */
-export const ylxNavigateTo = (pagePath, parse = {}, callback) => toTargetPage(pagePath, parse, 'navigateTo', callback);
+export const ylxNavigateTo = (pagePath, parse = {}, callback, config = {
+    isOpenBack: false,
+    toPage: false,
+    isSkip: true
+}) => toTargetPage(pagePath, parse, 'navigateTo', callback, config);
 /**
  * 跳转到应用内的某个页面
  * @param {string} pagePath 目标页面路径
  * @param {Object} [parse]={id:18} 对象参数
  * @param {function} [callback]
+ * @param {Object} [config]
+ * @param {boolean} [config.isOpenBack]
+ * @param {boolean} [config.toPage]
+ * @param {boolean} [config.isSkip]
+ *
  *
  */
-export const ylxRedirectTo = (pagePath, parse = {}, callback) => toTargetPage(pagePath, parse, 'redirectTo', callback);
+export const ylxRedirectTo = (pagePath, parse = {}, callback, config = {
+    isOpenBack: false,
+    toPage: false,
+    isSkip: true
+}) => toTargetPage(pagePath, parse, 'redirectTo', callback, config);
 
 /**
  * 跳转到应用内的 tabBar  页面
  * @param {string} pagePath 目标页面路径
  * @param {function} [callback]
+ * @param {Object} [config]
+ * @param {boolean} [config.isOpenBack]
+ * @param {boolean} [config.toPage]
+ * @param {boolean} [config.isSkip]
  */
-export const ylxSwitchTab = (pagePath, callback) => toTargetPage(pagePath, {} = {}, 'switchTab', callback);
+export const ylxSwitchTab = (pagePath, callback, config = {isOpenBack: false, toPage: false, isSkip: true}) => toTargetPage(pagePath, {} = {}, 'switchTab', callback, config);
 
 
 // 路径补全
