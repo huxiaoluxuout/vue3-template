@@ -1,8 +1,8 @@
 <template>
-  <view class="ylx-navbar" :style="{opacity:viewOpacity,'--navbar-height':navbarHeight+'px'}">
-    <view class="ylx-navbar-wrap" :style="navbarStyle_">
+  <view class="ylx-navbar" :style="{opacity:1,'--navbar-height':navbarHeight+'px'}">
+    <view class="ylx-navbar-wrap" :style="_navbarStyle">
       <view class="navbar-content__container">
-        <view class="ylx-navbar-container" :style="ylxNavbarContainerStyle">
+        <view class="ylx-navbar-container" :style="_ylxNavbarContainerStyle">
           <template v-if="!configNavBar_.hiddenLeftIcon">
             <view v-if="configNavBar_.isTabBarPage" class="navbar-container__left 0000">
               <slot name="left"></slot>
@@ -10,23 +10,23 @@
 
             <view v-else class="navbar-container__left 1111" @click="leftIconClick">
               <slot name="left_back_icon">
-                <text class="iconfont" :class="defaultLeftIconName" :style="resultCustomLeftIconStyle"></text>
+                <text class="iconfont" :class="defaultLeftIconName" :style="_leftIconStyle"></text>
               </slot>
             </view>
           </template>
 
-          <view class="ylx-navbar-container__center" :style="{justifyContent:justifyContent}">
+          <view class="ylx-navbar-container__center">
             <slot name="center">
               <view class="ylx-navbar-content-title">
                 <template v-if="configNavBar_.title">
-                  <view style="display: flex;align-items: center;width: 100%;" :style="titleStyle_">
-                    <view style="flex:1;"></view>
+                  <view style="display: flex;align-items: center;width: 100%;" :style="_titleStyle">
+                    <!--                    <view style="flex:1;"></view>-->
                     <!-- #ifdef MP -->
-                    <view class="title" :style="titleStyle">{{ configNavBar_.title }}</view>
+                    <view class="title" :style="_titleTextStyle">{{ configNavBar_.title }}</view>
                     <!-- #endif -->
 
                     <!-- #ifndef MP -->
-                    <view class="title">{{ configNavBar_.title }}</view>
+                    <view class="title" :style="_titleTextStyle">{{ configNavBar_.title }}</view>
                     <!-- #endif -->
                     <view style="flex:1;"></view>
 
@@ -51,20 +51,18 @@
       <view :style="{width: rightWidth}"></view>
       <view v-if="overlay" class="overlay"></view>
     </view>
-    <view v-if="!hiddenNavbar" :style="{width: '100%',height:navbarHeight + 'px'}"></view>
+    <view v-if="!hiddenNavbar" class="" :style="{width: '100%',height:navbarHeight + 'px'}"></view>
 
   </view>
 </template>
 <script>
 import pagesConfig from "@/pages.json";
 
-import {ylxFilterPath, ylxNavigateTo,} from "@/utils/uniTools";
-import {convertStyleObjectToString} from "@/utils/tools.js";
-
-import {localStringStyle} from "@/components/ylx-components/ylx-JS/template";
+import {localStringStyle} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {convertStyleObjectToString, ylxFilterPath} from "@/components/ylx-components/ylx-JS/common";
 
 
-const {pages:allPages,tabBar: {list: tabBarPages = []} = { list: [] }} = pagesConfig || {};
+const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesConfig || {};
 
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
@@ -80,10 +78,8 @@ export default {
       }
     },
     navbarStyle: {
-      type: Object,
-      default: () => {
-        return {}
-      }
+      type: [Object, String],
+      default: ''
     },
     bgColor: {
       type: String,
@@ -92,7 +88,6 @@ export default {
     title: {
       type: String,
       default: '',
-      // default: '顶部导航标题',
     },
     color: {
       type: String,
@@ -102,23 +97,31 @@ export default {
       type: String,
       default: '16px'
     },
-    justifyContent: {
+    center: {
       type: String,
       default: 'center'
+    },
+    titleStyle: {
+      type: [Object, String],
+      default: ''
+    },
+    titleTextStyle: {
+      type: [Object, String],
+      default: ''
     },
 
     iconSize: {
       type: [String, Number],
       default: '18px'
     },
-    customLeftIconStyle: {
+    leftIconStyle: {
       type: [Object, String],
       default: () => {
       }
     },
     zIndex: {
       type: [Number, String],
-      default:20
+      default: 20
     },
 
     // 直接显示首页的icon
@@ -129,14 +132,23 @@ export default {
     // 遮罩
     overlay: Boolean,
 
-    hiddenLeftIcon: Boolean
+    hiddenLeftIcon: Boolean,
+
+    isLeftClick: Boolean,
+
+    // 胶囊底部和页面内容之间的距离
+    bottomGap: {
+      type: Number,
+      default: 20
+    },
+
 
   },
   data() {
     return {
       menuButtonWidth: 15,
       menuButtonTop: 34, //内容高度
-      bottomGap: 10,//标题到底部之间的距离
+
       menuButtonHeight: 0,
 
       statusBarHeight: 0,
@@ -166,9 +178,11 @@ export default {
     navbarHeight() {
       // 10 标题到底部之间的距离
       let navbarH = this.bottomGap + this.menuButtonTop + this.statusBarHeight + this.menuButtonHeight + this.liuHaiHeight
-      this.$emit('navbarHeight', navbarH)
-      this.$emit('onNavbar', {navbarHeight:navbarH,loadedPages:pages})
-
+      this.$emit('navbarInfo', {
+        navbar: navbarH,
+        statusBar: this.statusBarHeight,
+        loadedPages: JSON.stringify(pages.map(item => item.route))
+      })
       this.viewOpacity = 1
       return navbarH
     },
@@ -182,7 +196,7 @@ export default {
         right: false,
         hiddenLeftIcon: false,
         hiddenBorder: this.hiddenBorder,
-      }, this.configNavBar,{hiddenLeftIcon:this.hiddenLeftIcon});
+      }, this.configNavBar, {hiddenLeftIcon: this.hiddenLeftIcon});
     },
 
 
@@ -202,7 +216,7 @@ export default {
       return top
     },
 
-    ylxNavbarContainerStyle() {
+    _ylxNavbarContainerStyle() {
       return convertStyleObjectToString({
         position: 'absolute',
         top: this.defaultContentTop,
@@ -211,43 +225,41 @@ export default {
     },
 
 
-    navbarStyle_() {
-      return convertStyleObjectToString({
+    _navbarStyle() {
+      return localStringStyle(convertStyleObjectToString({
         backgroundColor: this.bgColor,
         height: `${this.navbarHeight}px`,
-        zIndex:this.zIndex,
+        zIndex: this.zIndex,
         borderBottom: !this.configNavBar_.hiddenBorder ? '1px solid #f3f3f3' : 'none',
-        ...this.navbarStyle
-      })
+      })) + ';' + localStringStyle(this.navbarStyle)
     },
-    titleStyle_() {
-      return convertStyleObjectToString({
+
+    _titleStyle() {
+      return localStringStyle(convertStyleObjectToString({
         'color': this.color,
         'fontSize': this.size,
-      })
+      })) + ';' + localStringStyle(this.titleStyle)
     },
+    _titleTextStyle() {
+      return localStringStyle(convertStyleObjectToString({})) + ';' + localStringStyle(this.titleTextStyle)
 
-
-    iconColor() {
-      return this.calculateIconColor(this.navbarStyle)
-    },
-
-    resultCustomLeftIconStyle() {
+      /*// 根据标题长度计算偏移量
+      const offset = Math.max(0, this.titleOffset - this.title.length * 6); // 假设每个字符减少6px偏移
       return convertStyleObjectToString({
-        color: this.iconColor,
+        marginLeft: `15px`,
+        transition: 'margin-left 0.3s', // 添加过渡效果
+        'font-weight': 700
+      })*/
+    },
+
+    _leftIconStyle() {
+      return localStringStyle(convertStyleObjectToString({
+        color: '#3a3a3a',
         fontSize: this.iconSize,
         boxSizing: 'border-box',
-      }) + localStringStyle(this.customLeftIconStyle)
+        marginRight: '10rpx'
+      })) + ';' + localStringStyle(this.leftIconStyle)
     },
-    titleStyle() {
-      // 根据标题长度计算偏移量
-      const offset = Math.max(0, this.titleOffset - this.title.length * 6); // 假设每个字符减少6px偏移
-      return {
-        marginLeft: `${offset}px`,
-        transition: 'margin-left 0.3s', // 添加过渡效果
-      };
-    }
-
   },
   beforeCreate() {
     pages = getCurrentPages();
@@ -288,40 +300,25 @@ export default {
 
 
   methods: {
-    calculateIconColor(navbarStyle) {
-      const cssKeyValuePairs = [
-        {key: 'background', keyword: /linear-gradient|url/},
-        {key: 'backgroundImage', keyword: /linear-gradient|url/},
-      ];
-
-      for (const {key, keyword} of cssKeyValuePairs) {
-        if (key in navbarStyle) {
-          const cssValue = navbarStyle[key];
-          if (keyword.test(cssValue)) {
-            return '#fff';
-          }
-        }
-      }
-
-      return '#3a3a3a';
-    },
-
     leftIconClick() {
-      try {
+      if (this.isLeftClick) {
+        this.$emit('leftClick', this.pageHierarchy)
+      } else {
         if (this.pageHierarchy > 1) {
           uni.navigateBack({delta: 1});
         } else {
-          // 首页
-          let indexPagePath = []
           if (!tabBarPages.length) {
-            indexPagePath = allPages[0].path
+            // 首页
+            uni.redirectTo({
+              url: ylxFilterPath(allPages[0].path)
+            });
           } else {
-            indexPagePath = tabBarPages[0].pagePath
+            // tabBar 页
+            uni.switchTab({
+              url: ylxFilterPath(tabBarPages[0].pagePath)
+            });
           }
-          ylxNavigateTo(indexPagePath);
         }
-      } catch (error) {
-        console.error('Error while handling leftIconClick:', error);
       }
     },
   },
