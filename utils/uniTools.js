@@ -287,17 +287,7 @@ function removeVueExtension(filePath) {
     }
 }
 
-/*========*/
-// IOS 底部兼容
-export const ylxIOSBottomHeight = () => {
-    const {model} = uni.getDeviceInfo()
-    const models = ['X', 'XR', 'XS', '11', '12', '13', '14', '15'];
-    if (model.indexOf('iPhone') !== -1 && models.some(item => model.indexOf(item) !== -1)) {
-        return 35
-    } else {
-        return 0
-    }
-};
+
 export const ylxOpenWxDebug = (envType = '') => {
     uni.getSystemInfo({
         success(res) {

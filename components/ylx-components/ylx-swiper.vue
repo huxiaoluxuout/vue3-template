@@ -1,5 +1,5 @@
 <template>
-  <view :class="customClass" :style="resultCustomStyle">
+  <view :class="customClass" :style="_resultCustomStyle">
     <view class="ylx-swiper width-height" :style="{'--width':width,'--scale':resultScale}">
       <swiper :current="resultCurrent" @change="ylxSwiperChange" class="width-height">
         <swiper-item v-for="(item,index) in swiperList" :key="index">
@@ -33,8 +33,8 @@
 </template>
 <script>
 
-import {componentsMixin, localStringStyle, } from "@/components/ylx-components/ylx-JS/template";
-import {computedRatio,convertStyleObjectToString} from "@/utils/tools";
+import {componentsMixin, localStringStyle, convertStyleObjectToString,} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {computedRatio} from "@/utils/tools";
 
 export default {
   mixins: [componentsMixin],
@@ -73,10 +73,12 @@ export default {
   computed: {
 
 
-    resultCustomStyle() {
-      return convertStyleObjectToString({
+    _resultCustomStyle() {
+      return localStringStyle(convertStyleObjectToString({
         // 其它代码
-      }) + this.customStringStyle
+
+      })) + ';' + localStringStyle(this.customStyle)
+
     },
     resultScale() {
       return computedRatio(this.scale)

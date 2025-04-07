@@ -58,8 +58,7 @@
 <script>
 import pagesConfig from "@/pages.json";
 
-import {localStringStyle} from "@/components/ylx-components/ylx-JS/styleTemplate";
-import {convertStyleObjectToString, ylxFilterPath} from "@/components/ylx-components/ylx-JS/common";
+import {localStringStyle,convertStyleObjectToString,ylxFilterPath} from "@/components/ylx-components/ylx-JS/styleTemplate";
 
 
 const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesConfig || {};

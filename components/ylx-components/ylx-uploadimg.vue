@@ -1,6 +1,6 @@
 <template>
 
-  <view class="ylx-flex-container" :class="resultClass" :style="resultStyle">
+  <view class="ylx-flex-container" :class="_resultClass" :style="_resultStyle">
     <!--图片-->
     <view class="ylx-flex-item upload-img" v-for="(item,index) in localFileList" :key="index">
       <ylx-image :src="item.thumb" custom-class="ylx-img" width="100%" @imgClick="previewImage(index)"></ylx-image>
@@ -24,10 +24,7 @@
 
 import {uploadFileUrl} from "@/network/config"
 
-import {convertStyleObjectToString} from "@/utils/tools.js";
-import {ylxNavigateTo} from "@/utils/uniTools.js";
-
-import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
+import {componentsMixin, localStringStyle, convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/styleTemplate";
 
 
 import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
@@ -93,7 +90,8 @@ export default {
     },
     config: {
       type: Object,
-      default: ()=>{}
+      default: () => {
+      }
     },
 
     hiddenUploadIcon: Boolean,
@@ -110,19 +108,18 @@ export default {
   },
 
   computed: {
-    resultClass() {
+    _resultClass() {
       return this.customClass + (this.hidden ? 'hidden-view' : '');
     },
-    resultStyle() {
-
+    _resultStyle() {
       const [a, b] = this.scale.split(':')
-      return convertStyleObjectToString({
+      return localStringStyle(convertStyleObjectToString({
         '--num-columns': this.columnsLimit,
         '--scale': this.scale,
         '--aspect-ratio': this.scale.indexOf(':') !== -1 ? `${a}/${b}` : `${a}/${a}`,
         '--view-width': this.width,
         '-gap': this.gap,
-      }) + this.customStringStyle
+      })) + ';' + localStringStyle(this.customStringStyle)
     },
     localFileList() {
       this.fileImageList.forEach(item => {
@@ -164,8 +161,9 @@ export default {
         // #ifdef APP-PLUS
         uni.$off('imgUrl', this.getHandlerImgUrl)
         uni.$once('imgUrl', this.getHandlerImgUrl)
-
-        ylxNavigateTo('pages/custom-camera/custom-camera')
+        uni.navigateTo({
+          url: '/pages/custom-camera/custom-camera'
+        })
         return
         // #endif
 
@@ -235,7 +233,7 @@ export default {
       })
 
       for (let i = 0; i < arrFile.length; i++) {
-        const imgUrl = await uploadFilePromise(arrFile[i].url, that.imgSuccessHandler,that.config)
+        const imgUrl = await uploadFilePromise(arrFile[i].url, that.imgSuccessHandler, that.config)
         const item = that.localFileList[fileImageListLen]
         that.$emit('updateFileImageList', {
           type: 'success',

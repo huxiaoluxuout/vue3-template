@@ -5,7 +5,7 @@
 </template>
 <script>
 
-import {componentsMixin} from "@/components/ylx-components/ylx-JS/template";
+import {componentsMixin} from "@/components/ylx-components/ylx-JS/styleTemplate";
 import {loadingPage} from "@/components/ylx-components/ylx-static/base64.js";
 
 

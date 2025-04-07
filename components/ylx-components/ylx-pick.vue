@@ -1,5 +1,5 @@
 <template>
-  <view class="ylx-flex-container label-view" :class="customClass" :style="resultCustomStyle">
+  <view class="ylx-flex-container label-view" :class="customClass" :style="_resultCustomStyle">
 
     <view class="ylx-flex-item item-pick"
           :class="[isActiveClass(item.id) ,customItemClass]" :style="[isActiveStyle(item.id)]"
@@ -13,8 +13,8 @@
 </template>
 <script>
 
-import {localStringStyle, componentsMixin} from "@/components/ylx-components/ylx-JS/template";
-import {convertStyleObjectToString} from "@/utils/tools.js";
+import {localStringStyle, componentsMixin,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/styleTemplate";
+
 
 export default {
   name: 'ylx-pick',
@@ -114,31 +114,29 @@ export default {
 
   },
   computed: {
-    resultCustomStyle() {
-      return convertStyleObjectToString({
+    _resultCustomStyle() {
+      return localStringStyle(convertStyleObjectToString({
         '--num-columns': this.numColumns,
         '--gap': this.gap,
-      }) + this.customStringStyle
+      })) + ';' + localStringStyle(this.customStyle)
     },
 
     resultItemStyle() {
-      return convertStyleObjectToString({
+      return localStringStyle(convertStyleObjectToString({
         'borderRadius': this.rounded,
         'fontSize': this.size,
         'color': this.color,
         'backgroundColor': this.bgColor,
         border: this.borderDisable ? 'none' : '1px solid #F2F2F2'
-
-      }) + localStringStyle(this.customItemStyle)
+      })) + ';' + localStringStyle(this.customItemStyle)
 
     },
 
     resultActiveStyle() {
-      return convertStyleObjectToString({
+      return localStringStyle(convertStyleObjectToString({
         'borderRadius': this.rounded,
         'fontSize': this.size,
-
-      }) + localStringStyle(this.customActiveStyle)
+      })) + ';' + localStringStyle(this.customActiveStyle)
     },
 
 

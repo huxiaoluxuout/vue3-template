@@ -1,7 +1,7 @@
 <template>
   <view class="root-tabbar" :style="{ '--ios-bottom-height':iosBottomHeight +'px'}">
     <view class="tabbar-container">
-      <view class="item-wrapper" v-for="(item, itemIndex) in list" :key="item.text" @click="clickNavHandler(ylxNavigateTo,itemIndex)">
+      <view class="item-wrapper" v-for="(item, itemIndex) in list" :key="item.text" @click="clickNavHandler(itemIndex)">
         <view class="item-container">
           <image v-if="INDEX ===itemIndex" mode="aspectFit" class="icon-item" :class="{'icon-item-big':itemIndex===1}"
                  :src="'/'+item.selectedIconPath"/>
@@ -12,11 +12,10 @@
           <view class="foot-text" :style="{color:INDEX === itemIndex?selectedColor:color}">{{ item.text }}</view>
 
           <view class="notice" v-show="false">消息角标</view>
-
         </view>
       </view>
     </view>
-    <view class="ios__bottom-tabbar__height"></view>
+    <view class="ios__bottom-tabbar__height test"></view>
   </view>
 </template>
 <script>
@@ -26,8 +25,6 @@ import pagesConfig from "@/pages.json";
 const {tabBar: {list, color, selectedColor}} = pagesConfig
 
 
-import {ylxIOSBottomHeight, ylxNavigateTo} from "@/utils/uniTools";
-
 export default {
   props: {
     INDEX: {
@@ -36,11 +33,14 @@ export default {
     }
   },
   data() {
+
     return {
-      iosBottomHeight: ylxIOSBottomHeight(),
-      list,
+      iosBottomHeight: 0,
+      list: list,
       selectedColor,
-      color
+      color,
+      $$t: null,
+      $locale: null,
     }
   },
 
@@ -49,17 +49,16 @@ export default {
   },
 
   methods: {
-    ylxNavigateTo,
 
-    clickNavHandler(fun, itemIndex) {
-      // console.log('itemIndex', itemIndex)
-
+    clickNavHandler(itemIndex) {
       const item = list[itemIndex]
 
       this.$emit('tabBarClick')
+      // ylxEventBus
+      uni.switchTab({
+        url: '/' + item.pagePath + '?tabBarId=' + itemIndex
+      })
 
-
-      fun(item.pagePath + '?tabBarId=' + itemIndex)
     }
   }
 }

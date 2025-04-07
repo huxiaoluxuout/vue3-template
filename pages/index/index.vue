@@ -1,5 +1,7 @@
 <template>
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
+    <ylx-tabbar :INDEX="0"></ylx-tabbar>
+
     <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
     <view>
       <button @click="toggleLocale">中文/ENG</button>
@@ -42,6 +44,7 @@ import {ylxNavigateTo} from "@/utils/uniTools.js";
 /*--------------------------------------------------*/
 import {setUseI18n} from "@/locale/useI18n.js";
 import {imgHttpSuccess, uploadFileCallback} from "@/components/ylx-components/ylx-JS/uploadFilePromise";
+import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
 
 const {setLocale, t} = setUseI18n()
 

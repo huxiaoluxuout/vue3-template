@@ -15,8 +15,8 @@
 
 <script>
 
-import {componentsMixin, localStringStyle} from "@/components/ylx-components/ylx-JS/template";
-import {convertStyleObjectToString, replaceLocalhostUrl} from "@/utils/tools.js";
+import {componentsMixin, localStringStyle,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {replaceLocalhostUrl} from "@/utils/tools.js";
 import {computedRatio, parseSize} from "@/utils/tools";
 import {loading, loadingErr} from "@/components/ylx-components/ylx-static/base64.js";
 import {BASE_URL} from "@/network/config";
@@ -122,10 +122,11 @@ export default {
         attrObj['backgroundColor'] = 'transparent'
       }
 
-
-      return convertStyleObjectToString({
+      return localStringStyle(convertStyleObjectToString({
         ...attrObj
-      }) + this.customStringStyle
+
+      })) + ';' + localStringStyle(this.customStringStyle)
+
     },
 
     resultLoadingStyle() {
