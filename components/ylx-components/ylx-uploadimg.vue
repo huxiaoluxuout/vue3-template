@@ -169,7 +169,7 @@ export default {
 
       }
 
-      uniChooseImage({
+      uni.chooseImage({
         count: that.chooseCountLimit,
         sizeType: ['original', 'compressed'],
         sourceType: ['album', 'camera'],
@@ -180,6 +180,18 @@ export default {
           console.warn(fail)
         },
       });
+      // TODO App 待完善
+     /* uniChooseImage({
+        count: that.chooseCountLimit,
+        sizeType: ['original', 'compressed'],
+        sourceType: ['album', 'camera'],
+        success: function (res) {
+          that.afterRead(res)
+        },
+        fail: function (fail) {
+          console.warn(fail)
+        },
+      })*/
 
     },
 

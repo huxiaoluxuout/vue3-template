@@ -71,12 +71,16 @@ export async function uploadFileCallback(tempFilePath, onImgSuccessHandler, uplo
  * @returns {Promise<string>} 一个Promise，解析后返回上传文件的URL
  */
 export function imgHttpSuccess(result, handlerFunction) {
-    let resData = JSON.parse(result.data)
-    // console.log('后端返回的原生数据', resData)
-    if (resData.code === 200) {
-        handlerFunction(resData.url)
-    } else {
-        console.error(resData)
+    try {
+        let resData = JSON.parse(result.data)
+        // console.log('后端返回的原生数据', resData)
+        if (resData.code === 200) {
+            handlerFunction(resData.url)
+        } else {
+            console.error(resData)
+        }
+    } catch (e) {
+
     }
 }
 

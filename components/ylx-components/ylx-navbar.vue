@@ -65,6 +65,7 @@ const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesCo
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
 
+
 export default {
 
   name: 'ylx-navbar',
