@@ -55,15 +55,17 @@
   </view>
 </template>
 <script>
-import pagesConfig from "@/pages.json";
 
-import {localStringStyle, convertStyleObjectToString, ylxFilterPath, getSystemInfo, getMenuButtonBounding} from "@/components/ylx-components/ylx-JS/common";
+import {localStringStyle, convertStyleObjectToString, ylxFilterPath, getSystemInfo, getMenuButtonBounding, getPages} from "@/components/ylx-components/ylx-JS/common";
 
-
-const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesConfig || {};
+// import pagesConfig from "@/pages.json";
+// const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesConfig || {};
 
 
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
+
+
+const {pagesAll, tabBarAll} = getPages()
 
 
 export default {
@@ -191,7 +193,7 @@ export default {
     },
 
     configNavBar_() {
-      const isTabBarPage = tabBarPages.map(item => ylxFilterPath(item.pagePath)).includes(ylxFilterPath(this.currentPagePath));
+      const isTabBarPage = tabBarAll.map(path => ylxFilterPath(path)).includes(ylxFilterPath(this.currentPagePath));
 
       return Object.assign({
         title: this.title,//标题名称
@@ -315,15 +317,15 @@ export default {
         if (this.pageHierarchy > 1) {
           uni.navigateBack({delta: 1});
         } else {
-          if (!tabBarPages.length) {
+          if (!tabBarAll.length) {
             // 首页
             uni.redirectTo({
-              url: ylxFilterPath(allPages[0].path)
+              url: ylxFilterPath(pagesAll[0].path)
             });
           } else {
             // tabBar 页
             uni.switchTab({
-              url: ylxFilterPath(tabBarPages[0].pagePath)
+              url: ylxFilterPath(tabBarAll[0].pagePath)
             });
           }
         }

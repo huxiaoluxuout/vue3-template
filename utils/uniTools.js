@@ -1,3 +1,5 @@
+import {getPages} from "@/components/ylx-components/ylx-JS/common";
+
 // 微信登录 code
 export const ylxLoginCode = () => {
     return new Promise((resolve, reject) => {
@@ -113,13 +115,8 @@ export const ylxToast = (title, duration = 1500, mask = false, icon = 'none') =>
 }
 
 
-import pagesConfig from "@/pages.json";
+const {tabBarAll:tabBarPages} = getPages()
 
-const {
-    tabBar: {
-        list: tabBarPages = []
-    } = {}
-} = pagesConfig;
 /**
  *
  * @param pagePath --目标页
@@ -138,7 +135,7 @@ const toTargetPage = (pagePath, parseInfo = {}, api, callback, config) => {
     const pattern = /\/?([^?]+)/;
 
     const targetRoute = pagePath.match(pattern)[1];
-    const isTabBarPage = tabBarPages.map(item => ylxFilterPath(item.pagePath)).includes(ylxFilterPath(targetRoute));
+    const isTabBarPage = tabBarPages.map(path => ylxFilterPath(path)).includes(ylxFilterPath(targetRoute));
 
     const Pages = getCurrentPages()
     const currentPage = Pages[Pages.length - 1].route

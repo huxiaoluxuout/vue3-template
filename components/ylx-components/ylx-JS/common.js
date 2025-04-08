@@ -1,3 +1,7 @@
+import pagesJson from "@/pages.json";
+
+
+
 /**
  * 将样式对象转换为 CSS 字符串
  * @param {Object} styleObject - 样式对象
@@ -31,23 +35,47 @@ const localStringStyle = (styles) => {
 };
 
 
-export const getSystemInfo = (function() {
+export const getSystemInfo = (function () {
     let cachedInfo = null;
-    return function() {
+    return function () {
         if (cachedInfo) return cachedInfo;
         cachedInfo = uni.getSystemInfoSync();
         return cachedInfo;
     }
 })();
-export const getMenuButtonBounding = (function() {
+export const getMenuButtonBounding = (function () {
     let cachedInfo = null;
-    return function() {
+    return function () {
         if (cachedInfo) return cachedInfo;
         cachedInfo = uni.getMenuButtonBoundingClientRect();
         return cachedInfo;
     }
 })();
 
+export const getPages = (function () {
+    let cachedInfo = null;
+    return function () {
+        if (cachedInfo) return cachedInfo;
+
+        const {pages, tabBar: {list: tabBarPages = []} = {list: []}, subPackages: subPages = []} = pagesJson || {};
+
+        const pagesPaths = pages.map(item => item.path);
+
+        // const subPackages = []
+        const subPackages = subPages.reduce((acc, item) => {
+            const paths = item.pages.map(subItem => item.root + ylxFilterPath(subItem.path));
+            return acc.concat(paths);
+        }, []);
+
+        const tabBarPath = tabBarPages.map(item => item.pagePath);
+
+        cachedInfo = {
+            pagesAll: [...pagesPaths, ...subPackages],
+            tabBarAll: tabBarPath
+        }
+        return cachedInfo;
+    }
+})();
 
 
 const componentsMixin = {
