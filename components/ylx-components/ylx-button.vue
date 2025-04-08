@@ -2,7 +2,7 @@
   <button :class="customClass" class="btn" :style="resultCustomStyle" @click.stop="btnClick">{{ text }}</button>
 </template>
 <script>
-import {localStringStyle,convertStyleObjectToString, componentsMixin} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {localStringStyle,convertStyleObjectToString, componentsMixin} from "@/components/ylx-components/ylx-JS/common";
 export default {
   mixins: [componentsMixin],
 

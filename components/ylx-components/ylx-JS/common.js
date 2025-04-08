@@ -30,6 +30,26 @@ const localStringStyle = (styles) => {
     }
 };
 
+
+export const getSystemInfo = (function() {
+    let cachedInfo = null;
+    return function() {
+        if (cachedInfo) return cachedInfo;
+        cachedInfo = uni.getSystemInfoSync();
+        return cachedInfo;
+    }
+})();
+export const getMenuButtonBounding = (function() {
+    let cachedInfo = null;
+    return function() {
+        if (cachedInfo) return cachedInfo;
+        cachedInfo = uni.getMenuButtonBoundingClientRect();
+        return cachedInfo;
+    }
+})();
+
+
+
 const componentsMixin = {
     options: {
         virtualHost: true

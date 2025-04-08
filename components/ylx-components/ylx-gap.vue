@@ -4,7 +4,7 @@
 <script>
 
 
-import {localStringStyle,convertStyleObjectToString, componentsMixin} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {localStringStyle,convertStyleObjectToString, componentsMixin} from "@/components/ylx-components/ylx-JS/common";
 
 export default {
   mixins: [componentsMixin],

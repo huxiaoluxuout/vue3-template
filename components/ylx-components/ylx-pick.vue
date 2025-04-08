@@ -13,7 +13,7 @@
 </template>
 <script>
 
-import {localStringStyle, componentsMixin,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {localStringStyle, componentsMixin,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
 
 
 export default {

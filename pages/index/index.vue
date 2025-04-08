@@ -1,6 +1,5 @@
 <template>
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
-    <ylx-tabbar :INDEX="0"></ylx-tabbar>
 
     <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
     <view>
@@ -28,6 +27,7 @@
     <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
     <view>hasLoading:{{ hasLoading }}</view>
     <hr/>
+    <ylx-tabbar :INDEX="0"></ylx-tabbar>
 
   </view>
 </template>

@@ -1,6 +1,8 @@
 <template>
   <view class="page-content-tabbar">
     mime lorem*12
+    <ylx-navbar title="我的" bg-color="#fff"></ylx-navbar>
+
     <ylx-tabbar :INDEX="1"></ylx-tabbar>
   </view>
 </template>

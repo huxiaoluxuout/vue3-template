@@ -1,5 +1,5 @@
 <template>
-  <view class="ylx-navbar" :style="{opacity:1,'--navbar-height':navbarHeight+'px'}">
+  <view class="ylx-navbar" :style="{opacity:opacity,'--navbar-height':navbarHeight+'px'}">
     <view class="ylx-navbar-wrap" :style="_navbarStyle">
       <view class="navbar-content__container">
         <view class="ylx-navbar-container" :style="_ylxNavbarContainerStyle">
@@ -20,7 +20,6 @@
               <view class="ylx-navbar-content-title">
                 <template v-if="configNavBar_.title">
                   <view style="display: flex;align-items: center;width: 100%;" :style="_titleStyle">
-                    <!--                    <view style="flex:1;"></view>-->
                     <!-- #ifdef MP -->
                     <view class="title" :style="_titleTextStyle">{{ configNavBar_.title }}</view>
                     <!-- #endif -->
@@ -58,7 +57,7 @@
 <script>
 import pagesConfig from "@/pages.json";
 
-import {localStringStyle,convertStyleObjectToString,ylxFilterPath} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {localStringStyle, convertStyleObjectToString, ylxFilterPath, getSystemInfo, getMenuButtonBounding} from "@/components/ylx-components/ylx-JS/common";
 
 
 const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesConfig || {};
@@ -122,6 +121,10 @@ export default {
       type: [Number, String],
       default: 20
     },
+    opacity: {
+      type: Number,
+      default: 1
+    },
 
     // 直接显示首页的icon
     showHomeIcon: Boolean,
@@ -173,7 +176,7 @@ export default {
       }
     },
 
-    //navbar总高 44
+    //navbar总高
     navbarHeight() {
       // 10 标题到底部之间的距离
       let navbarH = this.bottomGap + this.menuButtonTop + this.statusBarHeight + this.menuButtonHeight + this.liuHaiHeight
@@ -264,11 +267,13 @@ export default {
     pages = getCurrentPages();
 
     // #ifdef MP-WEIXIN || MP-ALIPAY
-    menuButtonInfoALI = uni.getMenuButtonBoundingClientRect();
+    menuButtonInfoALI = getMenuButtonBounding();
+    // menuButtonInfoALI = uni.getMenuButtonBoundingClientRect();
     // #endif
 
     // #ifdef APP-PLUS
-    systemInfo = uni.getSystemInfoSync();
+    systemInfo = getSystemInfo();
+    // systemInfo = uni.getSystemInfoSync();
     // #endif
 
   },
@@ -279,11 +284,14 @@ export default {
     this.menuButtonTop = Math.ceil(menuButtonInfoALI.top);
     this.menuButtonHeight = Math.ceil(menuButtonInfoALI.height);
     const that = this
-    uni.getSystemInfo({
+    let os = getSystemInfo();
+    that.menuButtonWidth = Math.ceil(os.screenWidth - menuButtonInfoALI.left + 34);
+
+    /*uni.getSystemInfo({
       success(os) {
         that.menuButtonWidth = Math.ceil(os.screenWidth - menuButtonInfoALI.left + 34);
       }
-    })
+    })*/
 
     // #endif
 

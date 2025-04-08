@@ -24,7 +24,7 @@
 
 import {uploadFileUrl} from "@/network/config"
 
-import {componentsMixin, localStringStyle, convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {componentsMixin, localStringStyle, convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
 
 
 import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";

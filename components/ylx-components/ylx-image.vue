@@ -15,7 +15,7 @@
 
 <script>
 
-import {componentsMixin, localStringStyle,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/styleTemplate";
+import {componentsMixin, localStringStyle,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
 import {replaceLocalhostUrl} from "@/utils/tools.js";
 import {computedRatio, parseSize} from "@/utils/tools";
 import {loading, loadingErr} from "@/components/ylx-components/ylx-static/base64.js";

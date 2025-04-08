@@ -30,7 +30,8 @@
       "style": {
         "navigationBarTitleText": "%mine.title%",
         "navigationBarBackgroundColor": "#fff",
-        "enablePullDownRefresh": true
+        "enablePullDownRefresh": false,
+        "navigationStyle": "custom"
       }
     },
     {
