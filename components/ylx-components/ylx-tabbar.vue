@@ -20,10 +20,8 @@
 </template>
 <script>
 
-import pagesConfig from "@/pages.json";
-
-const {tabBar: {list, color, selectedColor}} = pagesConfig
-
+import {getPages} from "@/components/ylx-components/ylx-JS/common";
+const {tabBar: {list, color, selectedColor}} = getPages()
 
 export default {
   props: {
@@ -38,14 +36,12 @@ export default {
       iosBottomHeight: 0,
       list: list,
       selectedColor,
-      color,
-      $$t: null,
-      $locale: null,
+      color
     }
   },
 
-  created() {
-    uni.hideTabBar()
+  mounted() {
+
   },
 
   methods: {

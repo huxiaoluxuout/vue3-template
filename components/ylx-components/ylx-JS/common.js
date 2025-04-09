@@ -1,7 +1,6 @@
 import pagesJson from "@/pages.json";
 
 
-
 /**
  * 将样式对象转换为 CSS 字符串
  * @param {Object} styleObject - 样式对象
@@ -39,10 +38,18 @@ export const getSystemInfo = (function () {
     let cachedInfo = null;
     return function () {
         if (cachedInfo) return cachedInfo;
+        // #ifdef MP-WEIXIN
+        cachedInfo = uni.getWindowInfo();
+        // #endif
+
+        // #ifndef MP-WEIXIN
         cachedInfo = uni.getSystemInfoSync();
+        // #endif
+
         return cachedInfo;
     }
 })();
+
 export const getMenuButtonBounding = (function () {
     let cachedInfo = null;
     return function () {
@@ -57,7 +64,13 @@ export const getPages = (function () {
     return function () {
         if (cachedInfo) return cachedInfo;
 
-        const {pages, tabBar: {list: tabBarPages = []} = {list: []}, subPackages: subPages = []} = pagesJson || {};
+        const {
+            pages,
+            tabBar: {
+                list: tabBarPages = []
+            } = {list: []},
+            subPackages: subPages = []
+        } = pagesJson || {};
 
         const pagesPaths = pages.map(item => item.path);
 
@@ -71,6 +84,7 @@ export const getPages = (function () {
 
         cachedInfo = {
             pagesAll: [...pagesPaths, ...subPackages],
+            tabBar: pagesJson.tabBar,
             tabBarAll: tabBarPath
         }
         return cachedInfo;
