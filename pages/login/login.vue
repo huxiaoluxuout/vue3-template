@@ -1,5 +1,6 @@
 <template>
-  <view class="page-content login" :style="{'--navbar-height':`${navbarHeight}px`}">
+  <view class="page-content-tabbar login" :style="{'--navbar-height':`${navbarHeight}px`}">
+<!--  <view class="page-content login" :style="{'&#45;&#45;navbar-height':`${navbarHeight}px`}">-->
     <ylx-navbar
         :configNavBar="{ hiddenLeftIcon: false,hiddenBorder: true}"
         :navbar-style="{ background:'rgb(152 207 250)'}"
@@ -29,6 +30,9 @@
       <!-- #endif -->
 
     </view>
+
+
+    <ylx-tabbar :INDEX="2"></ylx-tabbar>
   </view>
 </template>
 
@@ -40,6 +44,7 @@ import {onLoad} from '@dcloudio/uni-app'
 
 import {useUserStore} from "@/stores/user";
 import {ylxMustLogIn} from "@/ylxuniCore/useylxuni";
+import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
 
 const userStore = useUserStore();
 

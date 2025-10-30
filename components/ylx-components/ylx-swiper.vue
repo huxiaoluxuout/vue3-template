@@ -9,19 +9,26 @@
         </swiper-item>
       </swiper>
 
-      <view v-if="!indicatorImage">
+      <view v-if="indicatorType===0">
         <view class="indicator" :style="{bottom:indicatorBottom}">
           <view class="indicator-item" :class="{'active':resultCurrent===index}" v-for="(item, index) in swiperList" @click="btnClick(index)" :key="index">
           </view>
         </view>
       </view>
+      <view v-else-if="indicatorType===1">
+
+        <view class="indicator-num">
+          {{resultCurrent+1}}/{{swiperList.length}}
+        </view>
+      </view>
       <view v-else>
 
         <view class="indicator-image">
-          <view class="flex flex-gap-10 ylx-padding-bottom-10 ylx-padding-top-10 ylx-margin-left-15 ylx-margin-right-15">
-            <ylx-image width="104rpx" height="116rpx" :image-style="`border-radius: 8px;transition-property: border;transition-duration: 80ms;${resultCurrent===index?'border: 1px solid #272729':''};`"
-                       custom-class="indicator-item-img" :src="item['src']" v-for="(item, index) in swiperList" @imgClick="btnClick(index)" :key="index"
-            ></ylx-image>
+          <view class="flex gap-x-10 ylx-padding-bottom-10 ylx-padding-top-10 ylx-margin-left-15 ylx-margin-right-15">
+            <image
+                :style="`width:104rpx;height:104rpx;border-radius: 8px;transition-property: border;transition-duration: 80ms;${resultCurrent===index?'border: 1px solid #FF9800':'border: 1px solid transparent'};`"
+                class="indicator-item-img" :src="item['src']" v-for="(item, index) in swiperList" @click="btnClick(index)" :key="index"
+            ></image>
           </view>
 
         </view>
@@ -67,6 +74,10 @@ export default {
       default: '15rpx'
     },
     indicatorImage: Boolean,
+    indicatorType: {
+      type: Number,
+      default: 0
+    },
     preview: Boolean,
 
   },
@@ -100,7 +111,7 @@ export default {
     swiperPreviewImg(index) {
       if (this.preview) {
         uni.previewImage({
-          urls: this.swiperList.map(item=>item[this.srcKey]),
+          urls: this.swiperList.map(item => item[this.srcKey]),
           current: index,
         })
       }
@@ -115,7 +126,7 @@ export default {
 <style scoped lang="scss">
 .ylx-swiper {
   position: relative;
-
+  background-color: #fff;
   .indicator {
     position: absolute;
     bottom: 15rpx;
@@ -158,8 +169,19 @@ export default {
   bottom: 50rpx;
   left: 30rpx;
   right: 30rpx;
-  background-color: #ebd9c9cf;
+  background-color: rgba(11, 11, 11, 0.21);
   border-radius: 16px;
 
+}
+.indicator-num{
+  position: absolute;
+  right: 30rpx;
+  bottom: 30rpx;
+  font-size: 24rpx;
+  border-radius: 100px;
+  padding: 4rpx 20rpx;
+  box-sizing: border-box;
+  color: #fff;
+  background-color: rgba(57, 57, 57, 0.48);
 }
 </style>

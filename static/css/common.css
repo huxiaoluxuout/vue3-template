@@ -1,24 +1,31 @@
 .test {
-    background-color: rgba(230,65,110,0.3) !important;
+    background-color: rgba(230, 65, 110, 0.3) !important;
     box-sizing: border-box;
 }
+
+.test1 {
+    background-color: rgba(65, 230, 205, 0.3) !important;
+    box-sizing: border-box;
+}
+
 /*-----------------------------------------*/
-.ylx-flex-container-wrapper{
-    --width:750rpx;
+.ylx-flex-container-wrapper {
+    --width: 750rpx;
     width: var(--width);
 }
+
 .ylx-flex-container {
     --num-columns: 2;
     --out-gap: 0;
-    --view-gap-x:30rpx;
-    --view-gap-y:30rpx;
+    --view-gap-x: 30rpx;
+    --view-gap-y: 30rpx;
 
     --item-width: calc(100% / var(--num-columns) - var(--view-gap-x));
 
     display: flex;
     flex-wrap: wrap;
-    column-gap:var(--view-gap-x);
-    row-gap:var(--view-gap-y);
+    column-gap: var(--view-gap-x);
+    row-gap: var(--view-gap-y);
     margin-right: calc(-1 * var(--view-gap-x));
 
     padding-left: var(--out-gap);
@@ -31,6 +38,7 @@
     box-sizing: border-box;
     position: relative;
 }
+
 /*-----------------------------------------*/
 .page-content-tabbar {
     /* #ifdef WEB */
@@ -75,9 +83,11 @@
     padding-bottom: 30rpx;
     box-sizing: border-box;
 }
-.ylx-btn:after{
+
+.ylx-btn:after {
     border: none;
 }
+
 .ylx-open-type {
     position: absolute;
     left: 0;
@@ -86,6 +96,24 @@
     bottom: 0;
     z-index: 100;
     background-color: transparent;
+}
+
+/*-----------------------------------------*/
+.price-wrapper {
+    display: flex;
+    align-items: baseline;
+    font-weight: 700;
+}
+
+.price-unit {
+    color: #1D1E1F;
+    font-size: 24rpx;
+}
+
+.price {
+    --size: 28rpx;
+    color: #1D1E1F;
+    font-size: var(--size);
 }
 
 /*-----------------------------------------*/

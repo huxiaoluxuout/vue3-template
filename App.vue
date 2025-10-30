@@ -34,7 +34,7 @@ onLaunch(() => {
 })
 
 onShow((options) => {
-  console.log('App onShow', options)
+  // console.log('App onShow', options)
   if(options.scene===1007||options.scene===1008){
     console.log('来自分享')
     // 来自分享,未登录。跳转到登录页，

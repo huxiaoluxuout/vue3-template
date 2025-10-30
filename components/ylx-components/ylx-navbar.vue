@@ -31,6 +31,14 @@
 
                   </view>
                 </template>
+                <template v-else-if="titleImg">
+                  <view style="display: flex;align-items: center;width: 100%;" :style="_titleStyle">
+                    <image class="title-img" mode="widthFix" :src="titleImgSrc" :style="_titleImgStyle"></image>
+
+                    <view style="flex:1;"></view>
+                  </view>
+
+                </template>
                 <template v-else>
                   <view style="display:flex;justify-content:center;width: 100%;">
                     <view style="height: 100%;width: calc(100% - 1em);display:flex;justify-content: center;">
@@ -47,6 +55,11 @@
           </view>
         </view>
       </view>
+      <view class="header-bottom" :style="_headerBottomNavbarContainerStyle">
+        <slot name="header-bottom"></slot>
+      </view>
+
+
       <view :style="{width: rightWidth}"></view>
       <view v-if="overlay" class="overlay"></view>
     </view>
@@ -110,6 +123,10 @@ export default {
       type: [Object, String],
       default: ''
     },
+    titleImgStyle: {
+      type: [Object, String],
+      default: ''
+    },
 
     iconSize: {
       type: [String, Number],
@@ -147,6 +164,14 @@ export default {
       default: 20
     },
 
+    headerBottomHeight: {
+      type: Number,
+      default: 0
+    },
+
+    titleImg: Boolean,
+    // 标题图片路径
+    titleImgSrc: '',
 
   },
   data() {
@@ -189,7 +214,7 @@ export default {
         loadedPages: JSON.stringify(pages.map(item => item.route))
       })
       this.viewOpacity = 1
-      return navbarH
+      return navbarH + this.headerBottomHeight
     },
 
     configNavBar_() {
@@ -228,6 +253,14 @@ export default {
         transform: 'translateY(-50%)',
       })
     },
+    _headerBottomNavbarContainerStyle() {
+      return convertStyleObjectToString({
+        position: 'absolute',
+        top: `calc(${this.defaultContentTop} + 30px)`,
+        paddingLeft: '30rpx',
+        paddingRight: '30rpx'
+      })
+    },
 
 
     _navbarStyle() {
@@ -255,6 +288,9 @@ export default {
         transition: 'margin-left 0.3s', // 添加过渡效果
         'font-weight': 700
       })*/
+    },
+    _titleImgStyle() {
+      return localStringStyle(convertStyleObjectToString({})) + ';' + localStringStyle(this.titleImgStyle)
     },
 
     _leftIconStyle() {
@@ -320,12 +356,18 @@ export default {
           if (!tabBarAll.length) {
             // 首页
             uni.redirectTo({
-              url: ylxFilterPath(pagesAll[0].path)
+              url: ylxFilterPath(pagesAll[0]),
+              fail(fail) {
+                console.log('fail',fail)
+              },
             });
           } else {
             // tabBar 页
             uni.switchTab({
-              url: ylxFilterPath(tabBarAll[0].pagePath)
+              url: ylxFilterPath(tabBarAll[0]),
+              fail(fail) {
+                console.log('fail',fail)
+              },
             });
           }
         }
@@ -398,6 +440,15 @@ export default {
   flex: 1;
 
 
+}
+
+.header-bottom {
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.title-img {
+  width: 52%;
 }
 
 .title {

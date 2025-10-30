@@ -2,7 +2,7 @@
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
 
     <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
-    <view>
+<!--    <view>
       <button @click="toggleLocale">中文/ENG</button>
       <h2>0: {{ $t('home.title') }}</h2>
       <h4>1: {{ t('mine.title') }}</h4>
@@ -26,7 +26,10 @@
     <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
     <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
     <view>hasLoading:{{ hasLoading }}</view>
-    <hr/>
+    <hr/>-->
+<!--    <button @click="chooseHexFile">chooseHexFile</button>-->
+    <button @click="handleLogin('agent')">agent</button>
+    <button @click="handleLogin('shop')">shop</button>
     <ylx-tabbar :INDEX="0"></ylx-tabbar>
 
   </view>
@@ -47,6 +50,55 @@ import {imgHttpSuccess, uploadFileCallback} from "@/components/ylx-components/yl
 import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
 
 const {setLocale, t} = setUseI18n()
+function chooseHexFile() {
+  // 检查是否运行在App环境
+
+  plus.io.chooseFile(
+      (file) => {
+        console.log("选择的文件:", file);
+        // 处理文件...
+      },
+      (error) => {
+        console.log("选择文件失败:", error);
+      }
+  )
+  return
+  if (window.plus) {
+    plus.io.chooseFile(
+        function(file) {
+          // 成功回调
+          console.log("选择的文件路径: " + file);
+          if (file.name.endsWith('.hex')) {
+            // 处理hex文件
+            readHexFile(file.fullPath);
+          } else {
+            uni.showToast({
+              title: '请选择hex文件',
+              icon: 'none'
+            });
+          }
+        },
+        function(error) {
+          // 失败回调
+          console.log("选择文件失败: " + JSON.stringify(error));
+          uni.showToast({
+            title: '选择文件失败',
+            icon: 'none'
+          });
+        },
+        {
+          title: '选择hex文件', // 选择器标题
+          mime: 'application/octet-stream', // 限制文件类型
+          filter: '.hex' // 过滤显示hex文件
+        }
+    );
+  } else {
+    uni.showToast({
+      title: '当前环境不支持文件选择',
+      icon: 'none'
+    });
+  }
+}
 
 // 中英语言切换
 function toggleLocale() {
@@ -173,6 +225,20 @@ function myOrder() {
   }, true)
 }
 
+/*--------------------------*/
+
+import {useTabBarStore} from "@/stores/tabBarStore";
+const tabBarStore = useTabBarStore();
+
+const handleLogin = (role) => {
+
+  tabBarStore.setUserRole(role);
+  // 切换角色后，跳转到新 tabBar 配置中的第一个页面（确保有效）
+  const firstTabPath = tabBarStore.currentTabBar[0].pagePath;
+  uni.switchTab({
+    url: `/${firstTabPath}` // 确保路径有效
+  });
+};
 /*--------------------------*/
 
 
