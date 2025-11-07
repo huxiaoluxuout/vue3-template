@@ -366,3 +366,104 @@ export function getTriangleAngle(a, b, c, sideOppositeAngle) {
     // return angleRadians;
 }
 
+export function insertString(originalStr, index, insertStr) {
+    // 边界检查
+    if (index < 0 || index > originalStr.length) {
+        return originalStr;
+    }
+    if (insertStr === '') {
+        return originalStr;
+    }
+
+    // 处理空字符串情况
+    if (originalStr === '') {
+        return insertStr;
+    }
+
+    // 计算各部分长度
+    const prefixLength = index;
+    const insertLength = insertStr.length;
+    const suffixLength = originalStr.length - index;
+    const totalLength = prefixLength + insertLength + suffixLength;
+
+    // 创建数组存储字符编码（UTF-16）
+    const resultCodes = new Array(totalLength);
+    let position = 0;
+
+    // 复制原字符串前缀部分
+    for (let i = 0; i < prefixLength; i++) {
+        resultCodes[position++] = originalStr.charCodeAt(i);
+    }
+
+    // 复制插入字符串部分
+    for (let i = 0; i < insertLength; i++) {
+        resultCodes[position++] = insertStr.charCodeAt(i);
+    }
+
+    // 复制原字符串后缀部分
+    for (let i = 0; i < suffixLength; i++) {
+        resultCodes[position++] = originalStr.charCodeAt(index + i);
+    }
+
+    // 从字符编码数组构建最终字符串
+    return String.fromCharCode.apply(null, resultCodes);
+}
+
+
+/**
+ * 计算两个字符串的最长公共子序列（LCS）映射关系，并生成双向索引映射。
+ *
+ * 该函数返回两个数组：
+ * - `newToOldMap`：新字符串每个字符索引对应旧字符串中的匹配索引，如无匹配则为 -1。
+ * - `oldToNewMap`：旧字符串每个字符索引对应新字符串中的匹配索引，如无匹配则为 -1。
+ *
+ * 通过预先全量映射，支持快速查询新旧字符串中对应匹配字符的索引关系。
+ *
+ * @param {string} oldStr - 旧字符串，用作最长公共子序列的基准。
+ * @param {string} newStr - 新字符串，需要映射到旧字符串。
+ * @returns {Object} 返回包含双向映射的对象
+ *
+ * @example
+ * const oldStr = "ABCDEF";
+ * const newStr = "AEDF";
+ * const { newToOldMap, oldToNewMap } = buildBidirectionalIndexMapsByLCS(oldStr, newStr);
+ * console.log(newToOldMap); // 例如: [0, -1, 3, 4]
+ * console.log(oldToNewMap); // 例如: [0, -1, -1, 2, 3, -1]
+ */
+export function buildBidirectionalIndexMapsByLCS(oldStr, newStr) {
+    const m = oldStr.length, n = newStr.length;
+    const dp = Array(m + 1).fill(null).map(() => Array(n + 1).fill(0));
+
+    // 计算最长公共子序列长度 dp 矩阵
+    for (let i = 1; i <= m; i++) {
+        for (let j = 1; j <= n; j++) {
+            if (oldStr[i - 1] === newStr[j - 1]) {
+                dp[i][j] = dp[i - 1][j - 1] + 1;
+            } else {
+                dp[i][j] = Math.max(dp[i - 1][j], dp[i][j - 1]);
+            }
+        }
+    }
+
+    const newToOldMap = new Array(n).fill(-1);
+    const oldToNewMap = new Array(m).fill(-1);
+
+    // 回溯 dp 矩阵，构建索引映射
+    let i = m, j = n;
+    while (i > 0 && j > 0) {
+        if (oldStr[i - 1] === newStr[j - 1]) {
+            newToOldMap[j - 1] = i - 1;
+            oldToNewMap[i - 1] = j - 1;
+            i--;
+            j--;
+        } else if (dp[i - 1][j] >= dp[i][j - 1]) {
+            i--;
+        } else {
+            j--;
+        }
+    }
+
+    return { newToOldMap, oldToNewMap };
+}
+
+
