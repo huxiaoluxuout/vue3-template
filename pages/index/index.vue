@@ -20,12 +20,6 @@
       <button class="ylx-open-type" open-type="chooseAvatar" @chooseavatar="uniApiChooseAvatar"></button>
       <view class="fs-24">修改头像</view>
     </view>
-
-
-    <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order</button>
-    <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
-    <button @click="setToggle">设置登录状态 hasLogin:{{ hasLogin }}</button>
-    <view>hasLoading:{{ hasLoading }}</view>
     <hr/>-->
 <!--    <button @click="chooseHexFile">chooseHexFile</button>-->
 
@@ -47,7 +41,7 @@ import {ref, computed} from 'vue';
 import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 
-import {ylxEventBus, ylxInterceptorCall, ylxMustLogIn, ylxNextPage} from "@/ylxuniCore/useylxuni.js";
+import {ylxEventBus, ylxInterceptorCall, ylxNextPage} from "@/ylxuniCore/useylxuni.js";
 import {ylxNavigateTo} from "@/utils/uniTools.js";
 
 /*--------------------------------------------------*/
@@ -122,25 +116,8 @@ function toggleLocale() {
 }
 
 /*---------------------登录----------------------------------*/
-// 页面渲染判断 //
-const loginProxy = ref(ylxMustLogIn.loginProxyObject)
-const hasLogin = computed(() => loginProxy.value.login)
 
-// 页面渲染判断 //
-
-function setToggle() {
-  ylxMustLogIn.loginProxyObject.login = !ylxMustLogIn.loginProxyObject.login
-}
-
-function interceptToPage(fn, ...args) {
-  ylxMustLogIn.intercept({
-    success: () => fn(...args),
-    fail: () => ylxNavigateTo('/pages/login/login')
-  })()
-}
-/*-------------------------------------------------------------------*/
-
-// ylxInterceptorCall.initInterceptKeys({ login: true,xixi:false,haha:false})
+ylxInterceptorCall.initInterceptKeys({ login: true,xixi:false,haha:false})
 
 // 页面渲染判断 //
 const loginProxy2 = ref(ylxInterceptorCall.interceptObject)
@@ -157,15 +134,23 @@ function setToggle2() {
   console.log('InterceptKey',InterceptKey)
   ylxInterceptorCall.setInterceptKey('login', !InterceptKey)
 }
+
 function setToggle3() {
-  const InterceptKey = ylxInterceptorCall.getInterceptKey('haha')
+  const InterceptKey = ylxInterceptorCall.getInterceptKey('loginx')
+  console.log('InterceptKey',InterceptKey)
+  ylxInterceptorCall.setInterceptKey('loginx', !InterceptKey)
+
+
+
+
+/*  const InterceptKey = ylxInterceptorCall.getInterceptKey('haha')
   console.log('haha-InterceptKey',InterceptKey)
   ylxInterceptorCall.setInterceptKey('haha', !InterceptKey)
 
   const heheheeheheh = ylxInterceptorCall.getInterceptKey('heheheeheheh')
   console.log('heheheeheheh',heheheeheheh)
   ylxInterceptorCall.setInterceptKey('heheheeheheh', !heheheeheheh)
-  console.log('interceptObject',ylxInterceptorCall.interceptObject)
+  console.log('interceptObject',ylxInterceptorCall.interceptObject)*/
 }
 
 function interceptToPage2(fn, ...args) {
