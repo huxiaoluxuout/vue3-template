@@ -7,3 +7,9 @@ const ylxInstance = ylxuni(uni,reactive)
 
 
 export const { ylxEventBus,ylxNextPage,ylxInterceptorCall } = ylxInstance
+
+export const InterceptKeys ={
+    login: false,// 登录
+    isVip: false,// 会员
+}
+ylxInterceptorCall.initInterceptKeys(InterceptKeys)

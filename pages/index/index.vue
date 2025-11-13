@@ -2,34 +2,38 @@
   <view class="page-content-tabbar page-content-padding-x mf-bgc-f5f6f7">
 
     <ylx-navbar title="首页" bg-color="#fff"></ylx-navbar>
-<!--    <view>
-      <button @click="toggleLocale">中文/ENG</button>
-      <h2>0: {{ $t('home.title') }}</h2>
-      <h4>1: {{ t('mine.title') }}</h4>
-    </view>
-    <ylx-gap height="20px"></ylx-gap>
-    <hr/>
-    <hr/>
+    <!--    <view>
+          <button @click="toggleLocale">中文/ENG</button>
+          <h2>0: {{ $t('home.title') }}</h2>
+          <h4>1: {{ t('mine.title') }}</h4>
+        </view>
+        <ylx-gap height="20px"></ylx-gap>
+        <hr/>
+        <hr/>
 
-    <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
-                   @updateFileImageList="updateFileImageList"></ylx-uploadimg>
-    <button @click="uploadimg">uploadimg</button>
-    <hr/>
+        <ylx-uploadimg ref="refUploadimg" columns-limit="4" :limit="5" :file-image-list="fileImageList"
+                       @updateFileImageList="updateFileImageList"></ylx-uploadimg>
+        <button @click="uploadimg">uploadimg</button>
+        <hr/>
 
-    <view class="relative">
-      <button class="ylx-open-type" open-type="chooseAvatar" @chooseavatar="uniApiChooseAvatar"></button>
-      <view class="fs-24">修改头像</view>
-    </view>
-    <hr/>-->
-<!--    <button @click="chooseHexFile">chooseHexFile</button>-->
+        <view class="relative">
+          <button class="ylx-open-type" open-type="chooseAvatar" @chooseavatar="uniApiChooseAvatar"></button>
+          <view class="fs-24">修改头像</view>
+        </view>
+        <hr/>-->
+    <!--    <button @click="chooseHexFile">chooseHexFile</button>-->
 
-<!--    <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order</button>-->
-    <button @click="interceptToPage2(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
-    <button @click="setToggle2">设置登录状态 hasLogin2:{{ hasLogin2 }}</button>
-    <button @click="setToggle3">设置登录状态 hasLogin3:{{ hasLogin3 }}</button>
+    <!--    <button @click="ylxNavigateTo('/pagesSubMine/myOrder/myOrder')"> 1. my-order</button>-->
 
-<!--    <button @click="handleLogin('agent')">agent</button>-->
-<!--    <button @click="handleLogin('shop')">shop</button>-->
+    <button @click="interceptToPage(ylxNavigateTo,'/pagesSubMine/myOrder/myOrder')">2. my-order(需要登录)</button>
+
+    <button @click="loginFn">登录</button>
+
+    <button @click="setToggle">切换登录状态：{{ hasLogin }}</button>
+
+
+    <!--    <button @click="handleLogin('agent')">agent</button>-->
+    <!--    <button @click="handleLogin('shop')">shop</button>-->
     <ylx-tabbar :INDEX="0"></ylx-tabbar>
 
   </view>
@@ -42,14 +46,19 @@ import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 
 import {ylxEventBus, ylxInterceptorCall, ylxNextPage} from "@/ylxuniCore/useylxuni.js";
-import {ylxNavigateTo} from "@/utils/uniTools.js";
+import {ylxLoginCode, ylxNavigateTo} from "@/utils/uniTools.js";
 
 /*--------------------------------------------------*/
 import {setUseI18n} from "@/locale/useI18n.js";
 import {imgHttpSuccess, uploadFileCallback} from "@/components/ylx-components/ylx-JS/uploadFilePromise";
 import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
+// import {useLogin} from "@/ylxuniCore/useLogin";
+import {useWxLogin} from "@/ylxuniCore/useWxLogin";
 
+const useLogin = useWxLogin()
+/*------------------------------------------------------*/
 const {setLocale, t} = setUseI18n()
+
 function chooseHexFile() {
   // 检查是否运行在App环境
 
@@ -65,7 +74,7 @@ function chooseHexFile() {
   return
   if (window.plus) {
     plus.io.chooseFile(
-        function(file) {
+        function (file) {
           // 成功回调
           console.log("选择的文件路径: " + file);
           if (file.name.endsWith('.hex')) {
@@ -78,7 +87,7 @@ function chooseHexFile() {
             });
           }
         },
-        function(error) {
+        function (error) {
           // 失败回调
           console.log("选择文件失败: " + JSON.stringify(error));
           uni.showToast({
@@ -117,69 +126,48 @@ function toggleLocale() {
 
 /*---------------------登录----------------------------------*/
 
-ylxInterceptorCall.initInterceptKeys({ login: true,xixi:false,haha:false})
-
 // 页面渲染判断 //
-const loginProxy2 = ref(ylxInterceptorCall.interceptObject)
-const hasLogin2 = computed(() => loginProxy2.value.login)
+const hasLogin = computed(() => ylxInterceptorCall.getIntercept.login)
+const hasLogin2 = ref(ylxInterceptorCall.getIntercept.login)
 
-const loginProxy3 = ref(ylxInterceptorCall.interceptObject)
-
-const hasLogin3 = computed(() => loginProxy3.value.haha)
-
-// 页面渲染判断 //
-
-function setToggle2() {
-  const InterceptKey = ylxInterceptorCall.getInterceptKey('login')
-  console.log('InterceptKey',InterceptKey)
-  ylxInterceptorCall.setInterceptKey('login', !InterceptKey)
+function setToggle() {
+  ylxInterceptorCall.setInterceptKey('login', !ylxInterceptorCall.getInterceptKey('login'))
 }
 
-function setToggle3() {
-  const InterceptKey = ylxInterceptorCall.getInterceptKey('loginx')
-  console.log('InterceptKey',InterceptKey)
-  ylxInterceptorCall.setInterceptKey('loginx', !InterceptKey)
+function loginFn() {
+  useLogin.checkTokenValidity(() => {
+    console.log('自动登录')
+  })
 
-
-
-
-/*  const InterceptKey = ylxInterceptorCall.getInterceptKey('haha')
-  console.log('haha-InterceptKey',InterceptKey)
-  ylxInterceptorCall.setInterceptKey('haha', !InterceptKey)
-
-  const heheheeheheh = ylxInterceptorCall.getInterceptKey('heheheeheheh')
-  console.log('heheheeheheh',heheheeheheh)
-  ylxInterceptorCall.setInterceptKey('heheheeheheh', !heheheeheheh)
-  console.log('interceptObject',ylxInterceptorCall.interceptObject)*/
 }
 
-function interceptToPage2(fn, ...args) {
+function interceptToPage(fn, ...args) {
   ylxInterceptorCall.intercept({
     success: () => fn(...args),
     fail: () => ylxNavigateTo('/pages/login/login')
-  },'login')()
+  }, 'login')()
 }
-
-
 
 
 /*-------------------------------------------------------------------*/
 /*------------------------loading-------------------------------*/
 
-const {ylxRefresh,ylxSetFn,ylxSetData,ylxInvokeFn,ylxReachBottom} = ylxNextPage.useNextPage()
+const {ylxRefresh, ylxSetFn, ylxSetData, ylxInvokeFn, ylxReachBottom} = ylxNextPage.useNextPage()
 /*-----------------------------------------------------------*/
 const loadingProxy = ref(ylxNextPage.loadingProxyObject)
 const hasLoading = computed(() => loadingProxy.value.loading)
 
-const list =ref([])
+const list = ref([])
+
 function add() {
-  setTimeout(()=>{
-    console.log({time:new Date().getSeconds()})
-    list.value=ylxSetData({
-      data:{},resData:{}
-    },false)
-  },200)
+  setTimeout(() => {
+    console.log({time: new Date().getSeconds()})
+    list.value = ylxSetData({
+      data: {}, resData: {}
+    }, false)
+  }, 200)
 }
+
 ylxSetFn(add)
 
 ylxInvokeFn()
@@ -259,6 +247,7 @@ function myOrder() {
 /*--------------------------*/
 
 import {useTabBarStore} from "@/stores/tabBarStore";
+
 const tabBarStore = useTabBarStore();
 
 const handleLogin = (role) => {

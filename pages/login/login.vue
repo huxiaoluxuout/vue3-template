@@ -1,15 +1,15 @@
 <template>
-  <view class="page-content-tabbar login" :style="{'--navbar-height':`${navbarHeight}px`}">
-<!--  <view class="page-content login" :style="{'&#45;&#45;navbar-height':`${navbarHeight}px`}">-->
+  <view class="page-content-tabbar useLogin" :style="{'--navbar-height':`${navbarHeight}px`}">
+<!--  <view class="page-content useLogin" :style="{'&#45;&#45;navbar-height':`${navbarHeight}px`}">-->
     <ylx-navbar
         :configNavBar="{ hiddenLeftIcon: false,hiddenBorder: true}"
         :navbar-style="{ background:'rgb(152 207 250)'}"
         @navbarHeight="(e)=>navbarHeight=e" title="登录">
     </ylx-navbar>
     <view class="page-inner-bg"></view>
-    <view class="login-flex">
+    <view class="useLogin-flex">
       <ylx-gap height="100px"></ylx-gap>
-      <view class="login-flex">
+      <view class="useLogin-flex">
         <ylx-image width="200rpx" src="/static/logo.png"></ylx-image>
         <view class="title">您好!</view>
         <view class="subtitle">欢迎使用</view>
@@ -22,11 +22,11 @@
 
 
       <!--  #ifdef MP -->
-      <button class="login-btn" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler">MP 手机号授权登录</button>
+      <button class="useLogin-btn" open-type="getPhoneNumber" @getphonenumber="getMobilePhoneHandler">MP 手机号授权登录</button>
       <!-- #endif -->
 
       <!--  #ifdef WEB || APP-PLUS-->
-      <button class="login-btn">WEB|APP 授权登录</button>
+      <button class="useLogin-btn">WEB|APP 授权登录</button>
       <!-- #endif -->
 
     </view>
@@ -75,7 +75,7 @@ function getMobilePhoneHandler(btnEvent) {
       name: '',
     }).then((loginRes) => {
       const resData = loginRes.data
-      ylxInterceptorCall.setInterceptKey('login',true)
+      ylxInterceptorCall.setInterceptKey('useLogin',true)
 
       // 分享的目标页
       if(toTargetPage){
@@ -110,7 +110,7 @@ export default {
   margin: 0 30rpx;
 }
 
-.login {
+.useLogin {
   position: relative;
 }
 
@@ -124,7 +124,7 @@ export default {
 
 }
 
-.login-flex {
+.useLogin-flex {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -153,7 +153,7 @@ export default {
 }
 
 /*--------------------------------------*/
-.login-btn {
+.useLogin-btn {
   color: #ffffff;
   font-weight: bolder;
   background: #48A6EE !important;
