@@ -1,5 +1,5 @@
 import {TOKEN_EXPIRATION_TIME, TOKEN} from "@/ylxuniCore/storageKey";
-import {ylxInterceptorCall} from "@/ylxuniCore/useylxuni";
+import {ylxIntercept} from "@/ylxuniCore/useylxuni";
 import {Login} from "@/ylxuniCore/useLogin";
 
 export function useWxLogin() {
@@ -30,12 +30,12 @@ export function useWxLogin() {
                 // 检查token是否过期
                 if (res.data + TOKEN_VALID_DURATION < Date.now()) {
                     console.warn('Token已到过期时间');
-                    ylxInterceptorCall.setInterceptKey('login', false)
+                    ylxIntercept.setIntercept('login', false)
                     loginFn(callback)
                 } else {
                     console.log('Token未到过期时间');
                     console.log('Token仍有效');
-                    ylxInterceptorCall.setInterceptKey('login', true)
+                    ylxIntercept.setIntercept('login', true)
                     typeof callback === 'function' && callback()
 
                    /* console.error('Token已经失效');*/
@@ -43,7 +43,7 @@ export function useWxLogin() {
             },
             fail: function (fail) {
                 console.error('获取本地token失败', fail);
-                ylxInterceptorCall.setInterceptKey('login', false)
+                ylxIntercept.setIntercept('login', false)
                 loginFn(callback)
             }
         });
@@ -74,7 +74,7 @@ export function useWxLogin() {
                     data: Date.now(),
                     success: function () {
                         typeof callback === 'function' && callback()
-                        ylxInterceptorCall.setInterceptKey('login', true)
+                        ylxIntercept.setIntercept('login', true)
                     },
                     fail: function (fail) {
                         console.log('保存token过期时间失败', fail)

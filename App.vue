@@ -7,7 +7,7 @@ import {useUserStore} from "@/stores/user";
 const userStore = useUserStore();
 
 /*----------------------------------*/
-import {ylxEventBus, ylxInterceptorCall} from "@/ylxuniCore/useylxuni.js";
+import {ylxEventBus, ylxIntercept} from "@/ylxuniCore/useylxuni.js";
 import {ylxRedirectTo} from "@/utils/uniTools";
 import {objToStr} from "@/utils/tools";
 
@@ -38,7 +38,7 @@ onShow((options) => {
   if(options.scene===1007||options.scene===1008){
     console.log('来自分享')
     // 来自分享,未登录。跳转到登录页，
-    if (!ylxInterceptorCall.interceptObject.login) {
+    if (!ylxIntercept.getIntercepts.login) {
       ylxRedirectTo('pages/login/login',{toPage:true,pagePath:options.path,pagePrams:objToStr(options.query)})
     }
 

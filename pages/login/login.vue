@@ -43,7 +43,7 @@ import {onLoad} from '@dcloudio/uni-app'
 
 
 import {useUserStore} from "@/stores/user";
-import {ylxInterceptorCall} from "@/ylxuniCore/useylxuni";
+import {ylxIntercept} from "@/ylxuniCore/useylxuni";
 import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
 
 const userStore = useUserStore();
@@ -75,7 +75,7 @@ function getMobilePhoneHandler(btnEvent) {
       name: '',
     }).then((loginRes) => {
       const resData = loginRes.data
-      ylxInterceptorCall.setInterceptKey('useLogin',true)
+      ylxIntercept.setIntercept('useLogin',true)
 
       // 分享的目标页
       if(toTargetPage){

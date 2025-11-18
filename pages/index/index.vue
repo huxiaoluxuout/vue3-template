@@ -45,7 +45,7 @@ import {ref, computed} from 'vue';
 import {onLoad, onReachBottom, onPullDownRefresh} from '@dcloudio/uni-app'
 
 
-import {ylxEventBus, ylxInterceptorCall, ylxNextPage} from "@/ylxuniCore/useylxuni.js";
+import {ylxEventBus, ylxIntercept, ylxNextPage} from "@/ylxuniCore/useylxuni.js";
 import {ylxLoginCode, ylxNavigateTo} from "@/utils/uniTools.js";
 
 /*--------------------------------------------------*/
@@ -127,11 +127,11 @@ function toggleLocale() {
 /*---------------------登录----------------------------------*/
 
 // 页面渲染判断 //
-const hasLogin = computed(() => ylxInterceptorCall.getIntercept.login)
-const hasLogin2 = ref(ylxInterceptorCall.getIntercept.login)
+const hasLogin = computed(() => ylxIntercept.getIntercepts.login)
+const hasLogin2 = ref(ylxIntercept.getIntercepts.login)
 
 function setToggle() {
-  ylxInterceptorCall.setInterceptKey('login', !ylxInterceptorCall.getInterceptKey('login'))
+  ylxIntercept.setIntercept('login', !ylxIntercept.getInterceptState('login'))
 }
 
 function loginFn() {
@@ -142,7 +142,7 @@ function loginFn() {
 }
 
 function interceptToPage(fn, ...args) {
-  ylxInterceptorCall.intercept({
+  ylxIntercept.intercept({
     success: () => fn(...args),
     fail: () => ylxNavigateTo('/pages/login/login')
   }, 'login')()
