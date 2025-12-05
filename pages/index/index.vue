@@ -34,7 +34,7 @@
 
     <!--    <button @click="handleLogin('agent')">agent</button>-->
     <!--    <button @click="handleLogin('shop')">shop</button>-->
-    <ylx-tabbar :INDEX="0"></ylx-tabbar>
+
 
   </view>
 </template>

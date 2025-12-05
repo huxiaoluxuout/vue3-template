@@ -17,13 +17,6 @@
       }
     },
     {
-      "path": "testPage",
-      "style": {
-        "navigationBarTitleText": "测试页面",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
       "path": "pages/mine/mine",
       "style": {
         "navigationBarTitleText": "%mine.title%",
@@ -40,23 +33,16 @@
       }
     },
     {
-      "path": "pages/cart_shop/cart_shop",
+      "path": "pages/deviceManagement/deviceManagement",
       "style": {
-        "navigationBarTitleText": "购物车",
+        "navigationBarTitleText": "分组管理",
         "enablePullDownRefresh": false
       }
     },
     {
-      "path": "pages/mine_shop/mine_shop",
+      "path": "pages/newManagement/newManagement",
       "style": {
-        "navigationBarTitleText": "mine_shop",
-        "enablePullDownRefresh": false
-      }
-    },
-    {
-      "path": "pages/index_shop/index_shop",
-      "style": {
-        "navigationBarTitleText": "",
+        "navigationBarTitleText": "新增管理",
         "enablePullDownRefresh": false
       }
     }
@@ -107,22 +93,37 @@
   ],
   "tabBar": {
     "custom": false,
-    "selectedColor": "#272729",
-    "color": "#919499",
+    "selectedColor": "#3677F9",
+    "color": "#999999",
     "backgroundColor": "#ffffff",
     "list": [
       {
-        "text": "首页",
+        "text": "设备列表",
         "pagePath": "pages/index/index",
-        "iconPath": "static/tabbar/index.png",
-        "selectedIconPath": "static/tabbar/index_on.png"
+        "iconPath": "static/tabbar/tabbar1.png",
+        "selectedIconPath": "static/tabbar/on_tabbar1.png"
       },
       {
-        "text": "我的",
+        "text": "分组管理",
+        "pagePath": "pages/deviceManagement/deviceManagement",
+        "iconPath": "static/tabbar/tabbar2.png",
+        "selectedIconPath": "static/tabbar/on_tabbar2.png"
+      },
+
+       {
+        "text": "新增管理",
+        "pagePath": "pages/newManagement/newManagement",
+        "iconPath": "static/tabbar/tabbar3.png",
+        "selectedIconPath": "static/tabbar/on_tabbar3.png"
+      },
+       {
+        "text": "个人中心",
         "pagePath": "pages/mine/mine",
-        "iconPath": "static/tabbar/mine.png",
-        "selectedIconPath": "static/tabbar/mine_on.png"
+        "iconPath": "static/tabbar/tabbar4.png",
+        "selectedIconPath": "static/tabbar/on_tabbar4.png"
       }
+
+
     ]
   },
   "uniIdRouter": {}

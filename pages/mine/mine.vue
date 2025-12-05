@@ -3,11 +3,10 @@
     mime lorem*12
     <ylx-navbar title="我的" bg-color="#fff"></ylx-navbar>
     登录状态：{{ hasLogin2 }}
-    <button @click="loginFn">登录</button>
+<button @click="loginFn">登录</button>
     登录状态 hasLogin3：{{ hasLogin3 }}
 
 
-    <ylx-tabbar :INDEX="1"></ylx-tabbar>
   </view>
 </template>
 <script setup>
