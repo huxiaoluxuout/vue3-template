@@ -32,7 +32,6 @@
     </view>
 
 
-    <ylx-tabbar :INDEX="2"></ylx-tabbar>
   </view>
 </template>
 
@@ -44,7 +43,7 @@ import {onLoad} from '@dcloudio/uni-app'
 
 import {useUserStore} from "@/stores/user";
 import {ylxIntercept} from "@/ylxuniCore/useylxuni";
-import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
+
 
 const userStore = useUserStore();
 
@@ -66,7 +65,7 @@ function getMobilePhoneHandler(btnEvent) {
   ylxLoginCode().then(loginCodeRes => {
     // console.log('loginCodeRes', loginCodeRes)
     // 后端登录接口
-    wxLogin({
+    /*wxLogin({
       code: loginCodeRes.code,
       encryptedData,
       iv,
@@ -84,7 +83,7 @@ function getMobilePhoneHandler(btnEvent) {
         uni.navigateBack()
 
       }
-    })
+    })*/
   })
 }
 

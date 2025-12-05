@@ -51,7 +51,7 @@ import {ylxLoginCode, ylxNavigateTo} from "@/utils/uniTools.js";
 /*--------------------------------------------------*/
 import {setUseI18n} from "@/locale/useI18n.js";
 import {imgHttpSuccess, uploadFileCallback} from "@/components/ylx-components/ylx-JS/uploadFilePromise";
-import YlxTabbar from "@/components/ylx-components/ylx-tabbar.vue";
+
 // import {useLogin} from "@/ylxuniCore/useLogin";
 import {useWxLogin} from "@/ylxuniCore/useWxLogin";
 
