@@ -31,7 +31,7 @@
 
                   </view>
                 </template>
-                <template v-else-if="titleImg">
+                <template v-else-if="titleImgSrc">
                   <view style="display: flex;align-items: center;width: 100%;" :style="_titleStyle">
                     <image class="title-img" mode="widthFix" :src="titleImgSrc" :style="_titleImgStyle"></image>
 
@@ -71,12 +71,7 @@
 
 import {localStringStyle, convertStyleObjectToString, ylxFilterPath, getSystemInfo, getMenuButtonBounding, getPages} from "@/components/ylx-components/ylx-JS/common";
 
-// import pagesConfig from "@/pages.json";
-// const {pages: allPages, tabBar: {list: tabBarPages = []} = {list: []}} = pagesConfig || {};
-
-
 let menuButtonInfoALI = null, systemInfo = null, pages = null;
-
 
 const {pagesAll, tabBarAll} = getPages()
 
@@ -158,12 +153,14 @@ export default {
 
     isLeftClick: Boolean,
 
-    // 胶囊底部和页面内容之间的距离
+    // 胶囊底部和页面内容之间的距离,默认20，px
+    // 影响navbar总高
     bottomGap: {
       type: Number,
       default: 20
     },
-
+    // 等同bottomGap
+    // 影响navbar总高
     headerBottomHeight: {
       type: Number,
       default: 0
@@ -172,6 +169,10 @@ export default {
     titleImg: Boolean,
     // 标题图片路径
     titleImgSrc: '',
+    // 首页路径
+    homePagePath: '/pages/index/index',
+    // tabBar第一个页面路径
+    tabBarFristPagePath: tabBarAll[0] || '',
 
   },
   data() {
@@ -356,17 +357,17 @@ export default {
           if (!tabBarAll.length) {
             // 首页
             uni.redirectTo({
-              url: ylxFilterPath(pagesAll[0]),
+              url: ylxFilterPath(this.homePagePath),
               fail(fail) {
-                console.log('fail',fail)
+                console.log('首页-fail',fail)
               },
             });
           } else {
             // tabBar 页
             uni.switchTab({
-              url: ylxFilterPath(tabBarAll[0]),
+              url: ylxFilterPath(this.tabBarFristPagePath),
               fail(fail) {
-                console.log('fail',fail)
+                console.log('tabBar-fail',fail)
               },
             });
           }
@@ -448,7 +449,7 @@ export default {
 }
 
 .title-img {
-  width: 52%;
+  width: 62%;
 }
 
 .title {

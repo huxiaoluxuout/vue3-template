@@ -21,15 +21,16 @@
 
 <script>
 
+// import {uploadFileUrl} from "@/network/config"
+// import {componentsMixin, localStringStyle, convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
+// import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
+// import {imgHttpSuccess, uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
+// import uniChooseImage from "@/components/ylx-components/ylx-JS/ylxuni.chooseImage.esm.js"
 
-import {uploadFileUrl} from "@/network/config"
-
-import {componentsMixin, localStringStyle, convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
-
-
-import {camera, close} from "@/components/ylx-components/ylx-static/base64.js";
-import {imgHttpSuccess, uploadFilePromise} from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
-
+import { uploadFileUrl } from "@/components/ylx-components/ylx-JS/index.js"
+import { componentsMixin, localStringStyle, convertStyleObjectToString } from "@/components/ylx-components/ylx-JS/common.js";
+import { camera, close } from "@/components/ylx-components/ylx-static/base64.js";
+import { imgHttpSuccess, uploadFilePromise } from "@/components/ylx-components/ylx-JS/uploadFilePromise.js";
 import uniChooseImage from "@/components/ylx-components/ylx-JS/ylxuni.chooseImage.esm.js"
 
 export default {

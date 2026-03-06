@@ -15,11 +15,16 @@
 
 <script>
 
+// import {componentsMixin, localStringStyle,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
+// import {replaceLocalhostUrl} from "@/utils/tools.js";
+// import {computedRatio, parseSize} from "@/utils/tools";
+// import {loading, loadingErr} from "@/components/ylx-components/ylx-static/base64.js";
+// import {BASE_URL} from "@/network/config";
+
 import {componentsMixin, localStringStyle,convertStyleObjectToString} from "@/components/ylx-components/ylx-JS/common";
-import {replaceLocalhostUrl} from "@/utils/tools.js";
-import {computedRatio, parseSize} from "@/utils/tools";
+import {replaceLocalhostUrl,computedRatio,parseSize,BASE_URL} from "@/components/ylx-components/ylx-JS/index.js";
 import {loading, loadingErr} from "@/components/ylx-components/ylx-static/base64.js";
-import {BASE_URL} from "@/network/config";
+
 
 export default {
   name: "ylx-image",
