@@ -58,39 +58,29 @@ export const getMenuButtonBounding = (function () {
         return cachedInfo;
     }
 })();
+let cachedInfo = null
+export const getPages = (function() {
+    if (cachedInfo) return cachedInfo;
+    let pages = pagesJson.pages || []
+    let subPages = pagesJson.subPackages || []
+    let tabBar = pagesJson.tabBar || {}
+    let tabBarPages = tabBar.list || []
 
-export const getPages = (function () {
-    let cachedInfo = null;
-    return function () {
-        if (cachedInfo) return cachedInfo;
+    const pagesPaths = pages.map(item => item.path);
 
-        const {
-            pages,
-            tabBar: {
-                list: tabBarPages = []
-            } = {list: []},
-            subPackages: subPages = []
-        } = pagesJson || {};
+    const subPackages = subPages.reduce((acc, item) => {
+        const paths = item.pages.map(subItem => item.root + ylxFilterPath(subItem.path));
+        return acc.concat(paths);
+    }, []);
 
-        const pagesPaths = pages.map(item => item.path);
+    const tabBarPath = tabBarPages.map(item => item.pagePath);
 
-        // const subPackages = []
-        const subPackages = subPages.reduce((acc, item) => {
-            const paths = item.pages.map(subItem => item.root + ylxFilterPath(subItem.path));
-            return acc.concat(paths);
-        }, []);
-
-        const tabBarPath = tabBarPages.map(item => item.pagePath);
-
-        cachedInfo = {
-            pagesAll: [...pagesPaths, ...subPackages],
-            tabBar: pagesJson.tabBar,
-            tabBarAll: tabBarPath
-        }
-        return cachedInfo;
+    cachedInfo = {
+        tabBarAll: tabBarPath || [],
+        pagesAll: [...pagesPaths, ...subPackages],
     }
-})();
-
+    return cachedInfo;
+});
 
 const componentsMixin = {
     options: {
